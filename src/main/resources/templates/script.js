@@ -71,192 +71,282 @@ async function obtenerProvincia(){
 
 obtenerProvincia()
 
+/*eliminar 1 archivo seleccionado*/
+
+function agregarFuncionInput(input, contenedor) {
+    input.addEventListener("change", function () {
+        // Elimina todos los elementos existentes en el contenedor
+        contenedor.innerHTML = "";
+
+        if (input.files.length > 0) {
+            const fileName = input.files[0].name;
+
+            // Crea un nuevo elemento <li> y agrega el nombre del archivo como contenido
+            const liItem = document.createElement("li");
+            liItem.textContent = fileName;
+
+            // Crea el botón "Quitar"
+            const myButtonRemove = document.createElement("button");
+            myButtonRemove.textContent = "Quitar";
+            myButtonRemove.addEventListener("click", function () {
+                // Elimina el elemento <li>
+                liItem.remove();
+
+                // Limpia el input correspondiente
+                input.value = "";
+
+                // Oculta el botón "Quitar"
+                myButtonRemove.style.display = 'none';
+            });
+
+            // Agrega el botón "Quitar" al elemento <li>
+            liItem.appendChild(myButtonRemove);
+
+            // Agrega el elemento <li> al contenedor de vista previa
+            contenedor.appendChild(liItem);
+        }
+    });
+}
+
+// Obtén los elementos de input y contenedor específicos
+const wordFile = document.getElementById("word");
+const previewWord = document.getElementById("previewWord");
+
+const otroFile = document.getElementById("pdf");
+const previewOtro = document.getElementById("previewPdf");
+
+// Aplica la funcionalidad a los inputs específicos
+agregarFuncionInput(wordFile, previewWord);
+agregarFuncionInput(otroFile, previewOtro);
+
 /*seleccionar varios archivos*/
 
-/*
- * Variables
- */
+ /*
+  * Variables
+  */
 
-let filesList = [];
-const classDragOver = "drag-over";
-const fileInputMulti = document.querySelector("#multi-selector-uniq #files");
-// DEMO Preview
-const multiSelectorUniqPreview = document.querySelector("#multi-selector-uniq #preview");
-
-/*
- * Functions
- */
-
-/**
- * Returns the index of an Array of Files from its name. If there are multiple files with the same name, the last one will be returned.
- * @param {string} name - Name file.
- * @param {Array<File>} list - List of files.
- * @return number
- */
-function getIndexOfFileList(name, list) {
-    return list.reduce(
-        (position, file, index) => (file.name === name ? index : position),
-        -1
-    );
-}
-
-/**
- * Returns a File in text.
- * @param {File} file
- * @return {Promise<string>}
- */
-async function encodeFileToText(file) {
-    return file.text().then((text) => {
-        return text;
-    });
-}
-
-/**
- * Returns an Array from the union of 2 Arrays of Files avoiding repetitions.
- * @param {Array<File>} newFiles
- * @param {Array<File>} currentListFiles
- * @return Promise<File[]>
- */
-async function getUniqFiles(newFiles, currentListFiles) {
-    return new Promise((resolve) => {
-        Promise.all(newFiles.map((inputFile) => encodeFileToText(inputFile))).then(
-            (inputFilesText) => {
-                // Check all the files to save
-                Promise.all(
-                    currentListFiles.map((savedFile) => encodeFileToText(savedFile))
-                ).then((savedFilesText) => {
-                    let newFileList = currentListFiles;
-                    inputFilesText.forEach((inputFileText, index) => {
-                        if (!savedFilesText.includes(inputFileText)) {
-                            newFileList = newFileList.concat(newFiles[index]);
-                        }
-                    });
-                    resolve(newFileList);
-                });
-            }
-        );
-    });
-}
-
-/**
- * Only DEMO. Render preview.
- * @param currentFileList
- * @Only .EMO> param target.
- * @
- */
-function renderPreviews(currentFileList, target, inputFile) {
-    //
-    target.textContent = "";
-    currentFileList.forEach((file, index) => {
-        const myLi = document.createElement("li");
-        myLi.textContent = file.name;
-        myLi.setAttribute("draggable", 'true');
-        myLi.dataset.key = file.name;
-        myLi.addEventListener("drop", eventDrop);
-        myLi.addEventListener("dragover", eventDragOver);
-        const myButtonRemove = document.createElement("button");
-        myButtonRemove.textContent = "Quitar";
-        myButtonRemove.addEventListener("click", () => {
-            filesList = deleteArrayElementByIndex(currentFileList, index);
-            inputFile.files = arrayFilesToFileList(filesList);
-            return renderPreviews(filesList, multiSelectorUniqPreview, inputFile);
-        });
-        myLi.appendChild(myButtonRemove);
-        target.appendChild(myLi);
-    });
-}
-
-/**
- * Returns a copy of the array by removing one position by index.
- * @param {Array<any>} list
- * @param {number} index
- * @return {Array<any>} list
- */
-function deleteArrayElementByIndex(list, index) {
-    return list.filter((item, itemIndex) => itemIndex !== index);
-}
-
-/**
- * Returns a FileLists from an array containing Files.
- * @param {Array<File>} filesList
- * @return {FileList}
- */
-function arrayFilesToFileList(filesList) {
-    return filesList.reduce(function (dataTransfer, file) {
-        dataTransfer.items.add(file);
-        return dataTransfer;
-    }, new DataTransfer()).files;
-}
+ let filesList = [];
 
 
-/**
- * Returns a copy of the Array by swapping 2 indices.
- * @param {number} firstIndex
- * @param {number} secondIndex
- * @param {Array<any>} list
- */
-function arraySwapIndex(firstIndex, secondIndex, list) {
-    const tempList = list.slice();
-    const tmpFirstPos = tempList[firstIndex];
-    tempList[firstIndex] = tempList[secondIndex];
-    tempList[secondIndex] = tmpFirstPos;
-    return tempList;
-}
+ const classDragOver = "drag-over";
+ const fileInputMulti = document.querySelector("#multi-selector-uniq #files");
 
-/*
- * Events
- */
+ // DEMO Preview
+ const multiSelectorUniqPreview = document.querySelector("#multi-selector-uniq #preview");
 
-// Input file
-fileInputMulti.addEventListener("input", async () => {
-    // Get files list from <input>
-    const newFilesList = Array.from(fileInputMulti.files);
-    // Update list files
-    filesList = await getUniqFiles(newFilesList, filesList);
-    // Only DEMO. Redraw
-    renderPreviews(filesList, multiSelectorUniqPreview, fileInputMulti);
-    // Set data to input
-    fileInputMulti.files = arrayFilesToFileList(filesList);
-});
+ /*
+  * Functions
+  */
 
-// Drag and drop
+ /**
+  * Returns the index of an Array of Files from its name. If there are multiple files with the same name, the last one will be returned.
+  * @param {string} name - Name file.
+  * @param {Array<File>} list - List of files.
+  * @return number
+  */
+ function getIndexOfFileList(name, list) {
+     return list.reduce(
+         (position, file, index) => (file.name === name ? index : position),
+         -1
+     );
+ }
 
-// Drag Start - Moving element.
-let myDragElement = undefined;
-document.addEventListener("dragstart", (event) => {
-    // Saves which element is moving.
-    myDragElement = event.target;
-});
+ /**
+  * Returns a File in text.
+  * @param {File} file
+  * @return {Promise<string>}
+  */
+ async function encodeFileToText(file) {
+     return file.text().then((text) => {
+         return text;
+     });
+ }
 
-// Drag over - Element that is below the element that is moving.
-function eventDragOver(event) {
-    // Remove from all elements the class that will show that it is a drop zone.
-    event.preventDefault();
-    multiSelectorUniqPreview
-        .querySelectorAll("li")
-        .forEach((item) => item.classList.remove(classDragOver));
+ /**
+  * Returns an Array from the union of 2 Arrays of Files avoiding repetitions.
+  * @param {Array<File>} newFiles
+  * @param {Array<File>} currentListFiles
+  * @return Promise<File[]>
+  */
+ async function getUniqFiles(newFiles, currentListFiles) {
+     return new Promise((resolve) => {
+         Promise.all(newFiles.map((inputFile) => encodeFileToText(inputFile))).then(
+             (inputFilesText) => {
+                //  Check all the files to save
+                 Promise.all(
+                     currentListFiles.map((savedFile) => encodeFileToText(savedFile))
+                 ).then((savedFilesText) => {
+                     let newFileList = currentListFiles;
+                     inputFilesText.forEach((inputFileText, index) => {
+                         if (!savedFilesText.includes(inputFileText)) {
+                             newFileList = newFileList.concat(newFiles[index]);
+                         }
+                     });
+                     resolve(newFileList);
+                 });
+             }
+         );
+     });
+ }
 
-    // On the element above it, the class is added to show that it is a drop zone.
-    event.target.classList.add(classDragOver);
-}
+ /**
+  * Only DEMO. Render preview.
+  * @param currentFileList
+  * @Only .EMO> param target.
+  * @
+  */
+ function renderPreviews(currentFileList, target, inputFile) {
+     
+     target.textContent = "";
+     currentFileList.forEach((file, index) => {
+         const myLi = document.createElement("li");
+         myLi.textContent = file.name;
+         myLi.setAttribute("draggable", 'true');
+         myLi.dataset.key = file.name;
+         myLi.addEventListener("drop", eventDrop);
+         myLi.addEventListener("dragover", eventDragOver);
+         const myButtonRemove = document.createElement("button");
+         myButtonRemove.textContent = "Quitar";
+         myButtonRemove.classList.add("button-remove")
+         myButtonRemove.addEventListener("click", () => {
+             filesList = deleteArrayElementByIndex(currentFileList, index);
+             inputFile.files = arrayFilesToFileList(filesList);
+             return renderPreviews(filesList, multiSelectorUniqPreview, inputFile);
+         });
+         myLi.appendChild(myButtonRemove);
+         target.appendChild(myLi);
+     });
+ }
 
-// Drop - Element on which it is dropped.
-function eventDrop(event) {
-    // The element that is underneath the element that is moving when it is released is captured.
-    const myDropElement = event.target;
-    // The positions of the elements in the array are swapped. The dataset key is used as an index.
-    filesList = arraySwapIndex(
-        getIndexOfFileList(myDragElement.dataset.key, filesList),
-        getIndexOfFileList(myDropElement.dataset.key, filesList),
-        filesList
-    );
-    // The content of the input file is updated.
-    fileInputMulti.files = arrayFilesToFileList(filesList);
-    // Only DEMO. Changes are redrawn.
-    renderPreviews(filesList, multiSelectorUniqPreview, fileInputMulti);
-}
+ /**
+  * Returns a copy of the array by removing one position by index.
+  * @param {Array<any>} list
+  * @param {number} index
+  * @return {Array<any>} list
+  */
+ function deleteArrayElementByIndex(list, index) {
+     return list.filter((item, itemIndex) => itemIndex !== index);
+ }
+
+ /**
+  * Returns a FileLists from an array containing Files.
+  * @param {Array<File>} filesList
+  * @return {FileList}
+  */
+ function arrayFilesToFileList(filesList) {
+     return filesList.reduce(function (dataTransfer, file) {
+         dataTransfer.items.add(file);
+         return dataTransfer;
+     }, new DataTransfer()).files;
+ }
+
+
+ /**
+  * Returns a copy of the Array by swapping 2 indices.
+  * @param {number} firstIndex
+  * @param {number} secondIndex
+  * @param {Array<any>} list
+  */
+ function arraySwapIndex(firstIndex, secondIndex, list) {
+     const tempList = list.slice();
+     const tmpFirstPos = tempList[firstIndex];
+     tempList[firstIndex] = tempList[secondIndex];
+     tempList[secondIndex] = tmpFirstPos;
+     return tempList;
+ }
+
+ /*
+  * Events
+  */
+
+ // Input file
+ fileInputMulti.addEventListener("input", async () => {
+   //   Get files list from <input>
+     const newFilesList = Array.from(fileInputMulti.files);
+    //  Update list files
+     filesList = await getUniqFiles(newFilesList, filesList);
+     // Only DEMO. Redraw
+     renderPreviews(filesList, multiSelectorUniqPreview, fileInputMulti);
+     // Set data to input
+     fileInputMulti.files = arrayFilesToFileList(filesList);
+ });
 
 
 
+  //Drag and drop
+
+  //Drag Start - Moving element.
+ let myDragElement = undefined;
+ document.addEventListener("dragstart", (event) => {
+     // Saves which element is moving.
+     myDragElement = event.target;
+ });
+
+ // Drag over - Element that is below the element that is moving.
+ function eventDragOver(event) {
+    //  Remove from all elements the class that will show that it is a drop zone.
+     event.preventDefault();
+     multiSelectorUniqPreview
+         .querySelectorAll("li")
+         .forEach((item) => item.classList.remove(classDragOver));
+
+     // On the element above it, the class is added to show that it is a drop zone.
+     event.target.classList.add(classDragOver);
+ }
+
+//  Drop - Element on which it is dropped.
+ function eventDrop(event) {
+     // The element that is underneath the element that is moving when it is released is captured.
+     const myDropElement = event.target;
+     // The positions of the elements in the array are swapped. The dataset key is used as an index.
+     filesList = arraySwapIndex(
+         getIndexOfFileList(myDragElement.dataset.key, filesList),
+         getIndexOfFileList(myDropElement.dataset.key, filesList),
+         filesList
+     );
+    //  The content of the input file is updated.
+     fileInputMulti.files = arrayFilesToFileList(filesList);
+ //     Only DEMO. Changes are redrawn.
+     renderPreviews(filesList, multiSelectorUniqPreview, fileInputMulti);
+ }
+
+
+
+/*validar nombre*/
+
+    function validacionLocador(){
+        
+        
+    let apellidoLocador = document.getElementById("apellidoLocador").value.trim()   
+    let nameLocador = document.getElementById("nameLocador").value.trim()
+    let cuitLocador = document.getElementById("cuitLocador").value
     
+    
+    if(!(/^[A-Z]+$/i).test(nameLocador) || nameLocador == null || nameLocador.length == 0 ) { 
+        alert('[ERROR] El nombre no puede estar vacío o contiene caracteres prohibidos')
+        return false;}
+
+        else if(!(/^[A-Z]+$/i).test(apellidoLocador) || apellidoLocador == null || apellidoLocador.length == 0 ) { 
+            alert('[ERROR] El nombre no puede estar vacío o contiene caracteres prohibidos')
+            return false;}
+
+        else if (isNaN(cuitLocador) || !(/^\d{11}$/.test(cuitLocador))){
+        alert('[ERROR] El cuit debe contener 11 digitos')
+        return false;}
+        
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
