@@ -42,7 +42,7 @@ async function obtenerProvincia(){
 
 
     async function rellenaCiudades(provinciaId,ciudadSelect) {
-        console.log("change",provinciaId)
+        
         // Obtiene el ID de la provincia seleccionada
         
       
@@ -51,7 +51,7 @@ async function obtenerProvincia(){
           .then(response => response.json())
           .then(data => {
 
-            console.log(data)
+           
             // Limpia las opciones anteriores en el select de ciudades
             ciudadSelect.innerHTML = "";
       
@@ -88,6 +88,7 @@ function agregarFuncionInput(input, contenedor) {
             // Crea el botón "Quitar"
             const myButtonRemove = document.createElement("button");
             myButtonRemove.textContent = "Quitar";
+            myButtonRemove.classList.add("button-remove")
             myButtonRemove.addEventListener("click", function () {
                 // Elimina el elemento <li>
                 liItem.remove();
@@ -314,27 +315,176 @@ agregarFuncionInput(otroFile, previewOtro);
 
 /*validar nombre*/
 
-    function validacionLocador(){
-        
-        
-    let apellidoLocador = document.getElementById("apellidoLocador").value.trim()   
-    let nameLocador = document.getElementById("nameLocador").value.trim()
-    let cuitLocador = document.getElementById("cuitLocador").value
+
+
+    function validacionInputLocador(){
+
+        const apellidoLocador = document.getElementById("apellidoLocador").value 
+        const nameLocador = document.getElementById("nameLocador").value
     
     
-    if(!(/^[A-Z]+$/i).test(nameLocador) || nameLocador == null || nameLocador.length == 0 ) { 
+    if(!(/^[A-Z]+$/i).test(nameLocador) || nameLocatario == null || nameLocatario.length == 0 ) { 
         alert('[ERROR] El nombre no puede estar vacío o contiene caracteres prohibidos')
         return false;}
 
-        else if(!(/^[A-Z]+$/i).test(apellidoLocador) || apellidoLocador == null || apellidoLocador.length == 0 ) { 
-            alert('[ERROR] El nombre no puede estar vacío o contiene caracteres prohibidos')
+        else if(!(/^[A-Z]+$/i).test(apellidoLocador) || apellido == null || apellido.length == 0 ) { 
+            alert('[ERROR] El apellido no puede estar vacío o contiene caracteres prohibidos')
             return false;}
 
-        else if (isNaN(cuitLocador) || !(/^\d{11}$/.test(cuitLocador))){
-        alert('[ERROR] El cuit debe contener 11 digitos')
-        return false;}
+        
+
+        else{
+            return true;}
         
 }
+
+function validacionInputLocatario(){
+
+    const apellidoLocatario = document.getElementById("apellidoLocatario").value 
+    const nameLocatario = document.getElementById("nameLocatario").value
+
+
+if(!(/^[A-Z]+$/i).test(nameLocatario) || nameLocatario == null || nameLocatario.length == 0 ) { 
+    alert('[ERROR] El nombre no puede estar vacío o contiene caracteres prohibidos')
+    return false;}
+
+    else if(!(/^[A-Z]+$/i).test(apellidoLocatario) || apellido == null || apellido.length == 0 ) { 
+        alert('[ERROR] El apellido no puede estar vacío o contiene caracteres prohibidos')
+        return false;}
+
+    
+
+    else{
+        return true;}
+    
+}
+
+function validacionInputCodeu(){
+
+    const apellidoCodeu = document.getElementById("apellidoCodeu").value 
+    const nameCodeu = document.getElementById("nameCodeu").value
+
+
+if(!(/^[A-Z]+$/i).test(nameCodeu) || nameCodeu == null || nameCodeu.length == 0 ) { 
+    alert('[ERROR] El nombre no puede estar vacío o contiene caracteres prohibidos')
+    return false;}
+
+    else if(!(/^[A-Z]+$/i).test(apellidoCodeu) || apellido == null || apellido.length == 0 ) { 
+        alert('[ERROR] El apellido no puede estar vacío o contiene caracteres prohibidos')
+        return false;}
+
+    
+
+    else{
+        return true;}
+    
+}
+
+    function validarInput(event) {
+        const inputValue = event.target.value;
+        const regex = /[a-z,]/i;
+    
+        if (!regex.test(inputValue)) {
+            // Si el valor no coincide con la expresión regular, elimina el último carácter
+            event.target.value = inputValue.slice(0, -1);
+        }
+    
+        const lastChar = inputValue.slice(-1);
+    
+        // Verifica si el último carácter es un número y elimínalo si es necesario
+        if (!isNaN(lastChar)) {
+            event.target.value = inputValue.slice(0, -1);
+        }
+    }
+    
+
+
+    
+
+    
+
+    document.getElementById("opciones").addEventListener("change", function () {
+        mostrarOpcionesSeleccionadas();
+    });
+
+    function agregarOpcion() {
+        var select = document.getElementById("opciones");
+        var opcionesSeleccionadas = document.getElementById("opcionesSeleccionadas");
+        var opcionesArray = obtenerArrayDesdeCampoOculto();
+
+        for (var i = 0; i < select.options.length; i++) {
+            if (select.options[i].selected) {
+                var opcion = select.options[i].value;
+                var codeuName = select.options[i].label;
+                console.log(opcion)
+                console.log(opcionesArray)
+                console.log(select.options[i])
+                // Verifica si la opción ya está en el array antes de agregarla
+                if (opcionesArray.indexOf(opcion) === -1) {
+                    opcionesArray.push(opcion);
+
+                    // Agrega la opción a la lista visible
+                    var nuevaOpcion = document.createElement("li");
+                    nuevaOpcion.innerHTML = codeuName + ' <button type="button" onclick="quitarOpcion(\'' + opcion + '\')">Quitar</button>';
+                    opcionesSeleccionadas.appendChild(nuevaOpcion);
+                }
+            }
+        }
+
+        // Actualiza el array oculto en el formulario
+        actualizarCampoOculto(opcionesArray);
+    }
+
+    function quitarOpcion(opcion) {
+        var opcionesSeleccionadas = document.getElementById("opcionesSeleccionadas");
+        var opcionesArray = obtenerArrayDesdeCampoOculto();
+
+        // Elimina la opción de la lista visible
+        for (var i = 0; i < opcionesSeleccionadas.childNodes.length; i++) {
+            if (opcionesSeleccionadas.childNodes[i].innerHTML.includes(opcion)) {
+                opcionesSeleccionadas.removeChild(opcionesSeleccionadas.childNodes[i]);
+                break;
+            }
+        }
+
+        // Elimina la opción del array
+        opcionesArray = opcionesArray.filter(function (item) {
+            return item !== opcion;
+        });
+
+        // Actualiza el array oculto en el formulario
+        actualizarCampoOculto(opcionesArray);
+    }
+
+    function actualizarCampoOculto(opcionesArray) {
+        var inputOpciones = document.getElementById("opcionesSeleccionadasInput");
+
+        // Si el campo oculto ya existe, actualiza su valor; de lo contrario, créalo
+        if (inputOpciones) {
+            inputOpciones.value = JSON.stringify(opcionesArray);
+        } else {
+            inputOpciones = document.createElement("input");
+            inputOpciones.type = "hidden";
+            inputOpciones.name = "opcionesSeleccionadas";
+            inputOpciones.id = "opcionesSeleccionadasInput";
+            inputOpciones.value = JSON.stringify(opcionesArray);
+            document.getElementById("formContrato").appendChild(inputOpciones);
+        }
+    }
+
+    function obtenerArrayDesdeCampoOculto() {
+        var inputOpciones = document.getElementById("opcionesSeleccionadasInput");
+
+        if (inputOpciones && inputOpciones.value) {
+            return JSON.parse(inputOpciones.value);
+        } else {
+            return [];
+        }
+    }
+
+    function mostrarOpcionesSeleccionadas() {
+        // Puedes implementar esto si deseas mostrar las opciones seleccionadas al cambiar la selección
+    }
 
 
 
