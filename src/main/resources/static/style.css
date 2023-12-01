@@ -1,6 +1,9 @@
-body {
+body{
+    background-color: #f5f5f5
+}
+.body-index {
    padding-top: 225px; 
-   background-color: #f5f5f5
+ 
 }
 .form-group {
     margin-top: 10px;
@@ -161,4 +164,60 @@ input[type=number]::-webkit-outer-spin-button {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.container-login{
+    display:flex;
+    flex-direction: column;
+    flex:1;
+    align-items: center;
+    background-color:teal;
+    justify-content:center
+}
+.login-box{
+    background-color:  #9c0202;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom:15px;
+    width: 40vw;
+    margin:auto;
+    border-radius: 5px;
+    align-self: center;
+    box-shadow: 4px 5px 14px rgb(77, 71, 71);
+}
+.form-login{
+    width: 100%;
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding:20px
+}
+
+.login-title{
+    font-size: 30px;
+    padding-top: 15px;
+    color: #ffffff;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.login-box div.brand{
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+.login-box input,.login-box button{
+    width: 100%;
+    margin-bottom:10px;
+}
+.login-box .btn{
+    margin-top: 20px;
+    box-shadow: 1px 1px 6px rgba(29, 29, 29, 0.205);
+}
+div.divider{
+    height: 1px;
+    width: 90%;
+    margin:5px;
+    background-color: #acacac;
+    box-shadow: 1px 1px 10px rgb(255, 255, 255);
 }

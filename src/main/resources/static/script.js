@@ -89,6 +89,7 @@ function agregarFuncionInput(input, contenedor) {
             const myButtonRemove = document.createElement("button");
             myButtonRemove.textContent = "Quitar";
             myButtonRemove.classList.add("button-remove")
+            myButtonRemove.classList.add("btn-primary")
             myButtonRemove.addEventListener("click", function () {
                 // Elimina el elemento <li>
                 liItem.remove();
@@ -209,6 +210,7 @@ agregarFuncionInput(otroFile, previewOtro);
          const myButtonRemove = document.createElement("button");
          myButtonRemove.textContent = "Quitar";
          myButtonRemove.classList.add("button-remove")
+         myButtonRemove.classList.add("btn-primary")
          myButtonRemove.addEventListener("click", () => {
              filesList = deleteArrayElementByIndex(currentFileList, index);
              inputFile.files = arrayFilesToFileList(filesList);
@@ -425,7 +427,8 @@ if(!(/^[A-Z]+$/i).test(nameCodeu) || nameCodeu == null || nameCodeu.length == 0 
 
                     // Agrega la opción a la lista visible
                     var nuevaOpcion = document.createElement("li");
-                    nuevaOpcion.innerHTML = codeuName + ' <button type="button" onclick="quitarOpcion(\'' + opcion + '\')">Quitar</button>';
+                    nuevaOpcion.classList.add("d-flex")
+                    nuevaOpcion.innerHTML = codeuName + ' <button class="btn-primary button-remove" type="button" onclick="quitarOpcion(\'' + opcion + '\')">Quitar</button>';
                     opcionesSeleccionadas.appendChild(nuevaOpcion);
                 }
             }
