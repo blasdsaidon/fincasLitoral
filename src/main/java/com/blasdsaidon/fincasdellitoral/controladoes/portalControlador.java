@@ -35,28 +35,33 @@ public class portalControlador {
     @GetMapping("/")
     public String landing(HttpSession session) {
 
-        //Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         
                 
-        //if (logueado == null) {
-         //   return "redirect:/login";
-       // }
+        if (logueado == null) {
+           return "redirect:/login";
+       }
         
         return "index.html";
     }
     
-    @GetMapping("/login")
-    public String login(@RequestParam(required = false) String error, ModelMap modelo, HttpSession session) {
+   // @GetMapping("/login")
+    //public String login(@RequestParam(required = false) String error, ModelMap modelo, HttpSession session) {
 
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        if (logueado != null) {
-            return "redirect:/";
-        }
-        if (error != null) {
-            modelo.put("error", "Usuario o Contraseña invalidos.");
+     //   Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+      //  if (logueado != null) {
+       //     return "redirect:/";
+       // }
+       // if (error != null) {
+        //    modelo.put("error", "Usuario o Contraseña invalidos.");
 
-        }
-        return "login.html";
+       // }
+       // return "login.html";
+    //}
+    
+     @GetMapping("/login")
+    public String mostrarFormularioLogin() {
+        return "login";
     }
     
     @GetMapping("/registrar")

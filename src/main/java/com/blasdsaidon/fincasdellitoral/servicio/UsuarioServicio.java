@@ -118,13 +118,11 @@ public class UsuarioServicio implements UserDetailsService {
 
             session.setAttribute("usuariosession", usuario);
             
-            
 
             return new User(usuario.getNombreUsuario(), usuario.getPassword(), permisos);
 
         } else {
-        throw new UsernameNotFoundException("Usuario no encontrado: " + nombre);
-            
+            return null;
         }
     }
     
