@@ -61,8 +61,11 @@ public class portalControlador {
     
      @GetMapping("/login")
     public String mostrarFormularioLogin() {
+        
         return "login";
     }
+    
+     
     
     @GetMapping("/registrar")
     public String registrar() {
