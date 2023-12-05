@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.blasdsaidon.fincasdellitoral.controladoes;
+package com.blasdsaidon.fincasdellitoral.controladores;
 
 import com.blasdsaidon.fincasdellitoral.entidades.Usuario;
 import com.blasdsaidon.fincasdellitoral.repositorios.UsuarioRepositorio;
+import com.blasdsaidon.fincasdellitoral.servicio.PropietarioServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.UsuarioServicio;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/")
-public class portalControlador {
+public class PortalControlador {
     
     @Autowired
     private UsuarioServicio usuarioServicio;
      @Autowired
     private UsuarioRepositorio usuarioRepositorio;
+     @Autowired
+     private PropietarioServicio propietarioServicio;
     
     @GetMapping("/")
     public String landing(HttpSession session) {
@@ -124,6 +127,19 @@ public class portalControlador {
             return "redirect:/modificarPerfil/" + idUsuario;
             
         }
+    }
+    
+    @PostMapping("/propietario/crear")
+    public String crearProp( String nombre, String apellido, String fechaNac, String dni, String cuit, String email, String telefono,   String calle,   String numero, @RequestParam(required=false)  String piso,  @RequestParam(required=false)String departamento, 
+            String provincia, String localidad ){
+        try {
+            propietarioServicio.crearPropietario(nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+        return "redirect:/";
     }
 
 }

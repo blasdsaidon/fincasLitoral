@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author blasd
  */
 @Repository
-public interface InmuebleRepository extends JpaRepository<Inmueble, String> {
+public interface InmuebleRepositorio extends JpaRepository<Inmueble, String> {
     
 }
