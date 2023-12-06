@@ -7,13 +7,16 @@ package com.blasdsaidon.fincasdellitoral.servicio;
 import com.blasdsaidon.fincasdellitoral.entidades.Domicilio;
 import com.blasdsaidon.fincasdellitoral.entidades.Inquilino;
 import com.blasdsaidon.fincasdellitoral.repositorios.InquilinoRepositorio;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author blasd
  */
+@Service
 public class InquilinoServicio {
     
     @Autowired
@@ -41,5 +44,12 @@ public class InquilinoServicio {
         
         inquilinoRepo.save(inquilino);
    
+    }
+    
+    @Transactional
+    public List<Inquilino> mostraInquilino(){
+        List<Inquilino> inquilinoLista = inquilinoRepo.findAll();
+        
+        return inquilinoLista;
     }
 }

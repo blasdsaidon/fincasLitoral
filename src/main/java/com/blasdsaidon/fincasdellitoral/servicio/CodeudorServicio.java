@@ -7,6 +7,7 @@ package com.blasdsaidon.fincasdellitoral.servicio;
 import com.blasdsaidon.fincasdellitoral.entidades.Domicilio;
 import com.blasdsaidon.fincasdellitoral.entidades.Codeudor;
 import com.blasdsaidon.fincasdellitoral.repositorios.CodeudorRepositorio;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,11 @@ public class CodeudorServicio {
         codeudor.setDomicilio(domicilio);
         
         codeudorRepo.save(codeudor);
+    }
+    @Transactional
+    public List<Codeudor> mostraCodeudor(){
+        List<Codeudor> codeudorLista = codeudorRepo.findAll();
+        
+        return codeudorLista;
     }
 }

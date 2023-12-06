@@ -4,12 +4,17 @@
  */
 package com.blasdsaidon.fincasdellitoral.controladores;
 
+import com.blasdsaidon.fincasdellitoral.entidades.Codeudor;
+import com.blasdsaidon.fincasdellitoral.entidades.Inmueble;
+import com.blasdsaidon.fincasdellitoral.entidades.Inquilino;
 import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
 import com.blasdsaidon.fincasdellitoral.entidades.Usuario;
 import com.blasdsaidon.fincasdellitoral.repositorios.UsuarioRepositorio;
+import com.blasdsaidon.fincasdellitoral.servicio.CodeudorServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.PropietarioServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.UsuarioServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.InmuebleServicio;
+import com.blasdsaidon.fincasdellitoral.servicio.InquilinoServicio;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +45,14 @@ public class PortalControlador {
      
      @Autowired
      private InmuebleServicio inmuebleServicio;
+     
+     @Autowired
+     private CodeudorServicio codeudorServicio;
+     
+     @Autowired
+     private InquilinoServicio inquilinoServicio;
+     
+     
     /*
      @GetMapping("/")
     public String index(ModelMap modelo){
@@ -54,7 +67,13 @@ public class PortalControlador {
 
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         List<Propietario> listaPropietario = propietarioServicio.mostraPropietario();
-         modelo.addAttribute("listaPropietario", listaPropietario);       
+        List<Inquilino> listaInquilino = inquilinoServicio.mostraInquilino();
+        List<Codeudor> listaCodeudor = codeudorServicio.mostraCodeudor();
+        List<Inmueble> listaInmueble = inmuebleServicio.mostraInmueble();
+         modelo.addAttribute("listaPropietario", listaPropietario);  
+         modelo.addAttribute("listaInquilino", listaInquilino);   
+         modelo.addAttribute("listaCodeudor", listaCodeudor);   
+         modelo.addAttribute("listaInmueble", listaInmueble);   
         if (logueado == null) {
            return "redirect:/login";
        }
@@ -171,5 +190,29 @@ public class PortalControlador {
     
         return "redirect:/";
     }
+    
+    @PostMapping("/codeudor/crear")
+    public String crearCodeudor ( String nombre, String apellido, String fechaNac, String dni, String cuit, String email, String telefono,   String calle,   String numero, @RequestParam(required=false)  String piso,  @RequestParam(required=false)String departamento, 
+            String provincia, String localidad ){
+        
+        try {
+            codeudorServicio.crearCodeudor(nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/";
+    }
+        @PostMapping("/inquilino/crear")
+        public String crearInquilino ( String nombre, String apellido, String fechaNac, String dni, String cuit, String email, String telefono,   String calle,   String numero, @RequestParam(required=false)  String piso,  @RequestParam(required=false)String departamento, 
+            String provincia, String localidad ){
+                
+                try {
+            inquilinoServicio.crearInquilino(nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+                return "redirect:/";
+            }
+    
 
 }

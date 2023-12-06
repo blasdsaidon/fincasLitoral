@@ -5,7 +5,7 @@
     xlmns:sec="http://www.thymeleaf.org/extras/spring-security"
     >
     <head>
-        <title>Rent Receipt Pro</title>
+        <title>Rent Receipt Pro</title>
         <meta charset="UTF-8" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
             <link rel="stylesheet" href="/style.css">
@@ -22,7 +22,7 @@
         
     <div class="containera" >
         <header class="d-flex justify-content-center py-3">
-          <ul class="nav nav-pills">
+          <ul class="nav nav-pills" style="flex-grow: 1; justify-content: center;" >
 
            
             <li class="nav-item"><a href="#locador" class="nav-link">Locador</a></li>
@@ -30,18 +30,25 @@
             <li class="nav-item"><a href="#codeudor" class="nav-link">Codeudores</a></li>
             <li class="nav-item"><a href="#inmueble" class="nav-link">Inmueble</a></li>
             <li class="nav-item"><a href="#contrato" class="nav-link">Contrato</a></li>
-            <li class="nav-item"><a class="nav-link" href="/logout">Cambiar de cuenta</a></li>
-            <li class="nav-item"><a class="nav-link" th:href="@{/modificarPerfil/__${session.usuariosession.idUsuario}__}">Modificar cuenta</a></li>    
-    
-            
-    
-          </ul>
-
-            
-          
+        </ul>
+            <div class="dropdown" style="align-self: flex-end; margin-right: 7px;">
+                <a style="background-color: #9c0202 " class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-square" style="font-size: 25px; color: white"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <div class="dropdown-header text-center font-weight-bold" style="background-color: transparent; cursor: default;">
+                        <strong style="font-size: 15px;" class="capitalizar" th:text="'Hola, ' + ${session.usuariosession.nombreUsuario}"></strong>
+                    </div>
+                  <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+                  <li><a class="dropdown-item" th:href="@{/modificarPerfil/__${session.usuariosession.idUsuario}__}">Modificar cuenta</a></li>
+                </ul>
+              </div>
+        
         </header>
       </div>
     </nav>
+    <!-- <li class="nav-item"><a class="nav-link" href="/logout">Cambiar de cuenta</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/modificarPerfil/__${session.usuariosession.idUsuario}__}">Modificar cuenta</a></li>     -->
      <body class="body-index">
 
         
@@ -64,7 +71,7 @@
                 <input id="apellidoLocador" class="form-control form-group" type="text" th:value="${apellido}" oninput="validarInput(event)" minlength="2" maxlength="50"  name="apellido" placeholder="Apellido de Locador">
 
 
-                <input id="dniLocador" th:value="${dni}" minlength="7" maxlength="8"  class="form-control form-group" type="number"  name="dni" placeholder="DNI de Locador">
+                <input id="dniLocador" th:value="${dni}" minlength="7" maxlength="8"  class="form-control form-group " type="number"  name="dni" placeholder="DNI de Locador">
                 <input id="cuitLocador" th:value="${cuit}" minlength="10" maxlength="11" class="form-control form-group" type="number"  name="cuit"  placeholder="CUIL/CUIT de Locador">
                 <label class="form-label"  for="customFile">Fecha nacimiento</label> 
                 <input  class="form-control form-group" type="date"  name="fechaNac" th:value="${fechaNac}" placeholder="Fecha Nacimiento de Locador">  
@@ -94,34 +101,34 @@
 
         <div>
         
-            <!-- •	Nombre y apellido, DNI, CUIL/T, fecha de nacimiento, domicilio, teléfonos, e-mail  -->
+            <!-- •	(nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad) -->
          <div >
             <div id="locatario"  class=" title"><h3>Crear Locatario</h3></div>
-            <form action="@{/registraProve}" method="POST" onsubmit= "return validacionInputLocatario()" >
+            <form th:action="@{inquilino/crear}" method="POST" onsubmit= "return validacionInputLocatario()" >
                 <div class="col-form" >
                 <div  class="col-6 ">
                  <legend>Datos</legend>
                     
-                <input id="nameLocatario"  class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50"  name="nombre" placeholder="Nombre de Locatario"> 
-                <input id="apellidoLocatario" class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50"  name="apellido" placeholder="Apellido de Locatario">
-                <input minlength="7" maxlength="8" class="form-control form-group" type="number"  name="dni" placeholder="DNI de Locatario">
-                <input minlength="10" maxlength="11" class="form-control form-group" type="number"  name="cuit" placeholder="CUIL/CUIT de Locatario">
+                <input id="nameLocatario" th:value="${nombre}"  class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50"  name="nombre" placeholder="Nombre de Locatario"> 
+                <input id="apellidoLocatario" th:value="${apellido}" class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50"  name="apellido" placeholder="Apellido de Locatario">
+                <input minlength="7" maxlength="8" class="form-control form-group" type="number" th:value="${dni}" name="dni" placeholder="DNI de Locatario">
+                <input minlength="10" maxlength="11" class="form-control form-group" type="number" th:value="${cuit}" name="cuit" placeholder="CUIL/CUIT de Locatario">
                 <label class="form-label" for="customFile">Fecha nacimiento</label>
-                <input  class="form-control form-group" type="date"  name="fechaNacimiento" placeholder="Fecha Nacimiento de Locatario">  
-                <input  class="form-control form-group" type="number"  name="tel" placeholder="Teléfono del Locatario">
-                <input  class="form-control form-group" type="email"  name="mail" placeholder="Email del Locatario">
+                <input  class="form-control form-group" type="date" th:value="${fechaNac}"  name="fechaNac" placeholder="Fecha Nacimiento de Locatario">  
+                <input  class="form-control form-group" type="number" th:value="${telefono}"  name="telefono" placeholder="Teléfono del Locatario">
+                <input  class="form-control form-group" type="email" th:value="${email}"  name="email" placeholder="Email del Locatario">
             </div>
                 <div   class="col-6">
                     <legend>Domicilio</legend>
-                    <input maxlength="50" class="form-control form-group" type="text"  name="calle" placeholder="Calle"> 
-                    <input maxlength="5"  class="form-control form-group" type="number"  name="numero" placeholder="Número"> 
-                    <input maxlength="3" class="form-control form-group" type="number"  name="piso" placeholder="Piso"> 
-                    <input  class="form-control form-group" type="text"  name="departamento" placeholder="Departamento"> 
-                    <select id="provinciasLocat" required class="form-control form-select form-group selectProvincia" name="provincias">
+                    <input maxlength="50" class="form-control form-group" type="text" th:value="${calle}"  name="calle" placeholder="Calle"> 
+                    <input maxlength="5"  class="form-control form-group" type="number" th:value="${numero}"  name="numero" placeholder="Número"> 
+                    <input maxlength="3" class="form-control form-group" type="number" th:value="${piso}" name="piso" placeholder="Piso"> 
+                    <input  class="form-control form-group" type="text" th:value="${departamento}" name="departamento" placeholder="Departamento"> 
+                    <select id="provinciasLocat" required class="form-control form-select form-group selectProvincia" th:value="${provincia}" name="provincia">
                         <option value="" selected>Seleccione provincia</option>
                         </select>
                         
-                        <select id="ciudadesLocat" required class="form-control form-select form-group" name="ciudades" >
+                        <select id="ciudadesLocat" required class="form-control form-select form-group" th:value="${localidad}" name="localidad" >
                             <option value="" selected>Seleccione ciudad</option>
                     </select>
                 </div>
@@ -134,34 +141,34 @@
 
         <div class="section-div">
         
-            <!-- •	Nombre y apellido, DNI, CUIL/T, fecha de nacimiento, domicilio, teléfonos, e-mail  -->
+            <!-- •	<!-- •	(nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad) -->  -->
          <div>
             <div id="codeudor" class=" title"><h3>Crear Codeudor</h3></div>
-            <form action="@{/registraProve}" method="POST" onsubmit= "return validacionInputCodeu()" >
+            <form th:action="@{/codeudor/crear}" method="POST" onsubmit= "return validacionInputCodeu()" >
                 <div class="col-form" >
                 <div  class="col-6 ">
                  <legend>Datos</legend>
                     
-                <input id="nameCodeu"  class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50" name="nombre" placeholder="Nombre de Codeudor"> 
-                <input id="apellidoCodeu"  class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50" name="apellido" placeholder="Apellido de Codeudor">
-                <input minlength="7" maxlength="8"  class="form-control form-group" type="number" name="dni" placeholder="DNI de Codeudor">
-                <input minlength="10" maxlength="11" class="form-control form-group" type="number"  name="cuit" placeholder="CUIL/CUIT de Codeudor">
+                <input id="nameCodeu"  class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50" th:value="${nombre}" name="nombre" placeholder="Nombre de Codeudor"> 
+                <input id="apellidoCodeu"  class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50" th:value="${apellido}" name="apellido" placeholder="Apellido de Codeudor">
+                <input minlength="7" maxlength="8"  class="form-control form-group" type="number" th:value="${dni}" name="dni" placeholder="DNI de Codeudor">
+                <input minlength="10" maxlength="11" class="form-control form-group" type="number" th:value="${cuit}"  name="cuit" placeholder="CUIL/CUIT de Codeudor">
                 <label class="form-label" for="customFile">Fecha nacimiento</label>
-                <input  class="form-control form-group" type="date"  name="fechaNacimiento" placeholder="Fecha Nacimiento de Codeudor">  
-                <input  class="form-control form-group" type="number"  name="tel" placeholder="Teléfono del Codeudor">
-                <input  class="form-control form-group" type="email"  name="mail" placeholder="Email del Codeudor">
+                <input  class="form-control form-group" type="date" th:value="${fechaNac}" name="fechaNac" placeholder="Fecha Nacimiento de Codeudor">  
+                <input  class="form-control form-group" type="number" th:value="${telefono}" name="telefono" placeholder="Teléfono del Codeudor">
+                <input  class="form-control form-group" type="email" th:value="${email}" name="email" placeholder="Email del Codeudor">
             </div>
                 <div   class="col-6">
                     <legend>Domicilio</legend>
-                    <input maxlength="50" class="form-control form-group" type="text"  name="calle" placeholder="Calle"> 
-                    <input maxlength="5"  class="form-control form-group" type="number"  name="numero" placeholder="Número"> 
-                    <input maxlength="3"  class="form-control form-group" type="number"  name="piso" placeholder="Piso"> 
-                    <input  class="form-control form-group" type="text"  name="departamento" placeholder="Departamento"> 
-                    <select id="provinciasCod" required class="form-control form-select form-group selectProvincia" name="provincias">
+                    <input maxlength="50" class="form-control form-group" type="text" th:value="${calle}" name="calle" placeholder="Calle"> 
+                    <input maxlength="5"  class="form-control form-group" type="number" th:value="${numero}"  name="numero" placeholder="Número"> 
+                    <input maxlength="3"  class="form-control form-group" type="number" th:value="${piso}"  name="piso" placeholder="Piso"> 
+                    <input  class="form-control form-group" type="text" th:value="${departamento}" name="departamento" placeholder="Departamento"> 
+                    <select id="provinciasCod" required class="form-control form-select form-group selectProvincia" th:value="${provincia}" name="provincia">
                         <option value="" selected>Seleccione provincia</option>
                         </select>
                         
-                        <select id="ciudadesCod" required class="form-control form-select form-group" name="ciudades" >
+                        <select id="ciudadesCod" required class="form-control form-select form-group" th:value="${localidad}" name="localidad" >
                             <option value="" selected>Seleccione ciudad</option>
                     </select>
                 </div>
@@ -195,12 +202,12 @@
                                 <option value="" selected>Seleccione ciudad</option>
                         </select>
                         <legend>Titular</legend>
-                        <select id="Locador" required class="form-control form-select form-group" name="idProp">
+                        <select id="Locador" required class="form-control form-select form-group capitalizar" name="idProp">
                             <option value="" selected>Seleccione Locador</option>
                             <option
                                 th:each="propietario:${listaPropietario}"
                                 th:value="${propietario.idPersona}"
-                                th:text="${propietario.nombre}"/>
+                                th:text="${propietario.nombre + ' ' + propietario.apellido}"/>
                         </select> 
  <!-- •	String crearInmueble (String calle, String numero, @RequestParam(required=false) String piso, @RequestParam(required=false) String departamento, 
             String provincia, String localidad, String numPartida, String numTGI, String numTOS,
@@ -243,32 +250,36 @@
                     <div  class="col-6 ">
                     <legend>Datos</legend>
                         
-                        <select id="Locatario" required class="form-control form-select form-group" name="provincias">
+                        <select id="Locatario" required class="form-control form-select form-group capitalizar" name="provincias">
                             <option value="" selected>Seleccione Locatario</option>
-                            <option value="" >Locatario 1</option>
-                            <option value="" >Locatario 2</option>
-                            <option value="" >Locatario 3</option>
+                            <option
+                                th:each="inquilino:${listaInquilino}"
+                                th:value="${inquilino.idPersona}"
+                                th:text="${inquilino.nombre + ' ' + inquilino.apellido}"/>
+                            
                         </select> 
 
-                        <select id="Locador" required class="form-control form-select form-group" name="provincias">
+                        <select id="Locador" required class="form-control form-select form-group capitalizar" name="provincias">
                             <option value="" selected>Seleccione Locador</option>
-                            <option value="" >Locador 1</option>
-                            <option value="" >Locador 2</option>
-                            <option value="" >Locador 3</option>
+                            <option
+                                th:each="propietario:${listaPropietario}"
+                                th:value="${propietario.idPersona}"
+                                th:text="${#strings.concat(propietario.nombre, ' ', propietario.apellido)}"/>
                         </select> 
 
-                        <select id="Inmueble" required class="form-control form-select form-group" name="provincias">
+                        <select id="Inmueble" required class="form-control form-select form-group capitalizar" name="provincias">
                                 <option value="" selected>Seleccione Inmueble </option>
-                                <option value="" >Inmueble  1</option>
-                                <option value="" >Inmueble  2</option>
-                                <option value="" >Inmueble  3</option>
+                                <option
+                                th:each="inmueble:${listaInmueble}"
+                                th:value="${inmueble.idInm}"
+                                th:text="${#strings.concat(inmueble.domicilio.calle, ' ', inmueble.domicilio.numero)}"/>
                         </select>
 
-                        <select  id="opciones" class="form-control form-select form-group" >
-                            <option label="Coodeudor 1" value="opcion1">Coodeudor 1</option>
-                            <option label="Coodeudor 2" value="opcion2">Coodeudor 2</option>
-                            <option label="Coodeudor 3" value="opcion3">Coodeudor 3</option>
-                            <option label="Coodeudor 4" value="opcion4">Coodeudor 4</option>
+                        <select  id="opciones" class="form-control form-select form-group capitalizar" >
+                            <option
+                                th:each="codeudor:${listaCodeudor}"
+                                th:value="${codeudor.idPersona}"
+                                th:text="${#strings.concat(codeudor.nombre, ' ', codeudor.apellido)}"/>
                         </select>
                         <div class="columnas form-group">
                         
@@ -360,7 +371,7 @@
                 </div> 
             </form>
         </div>
-
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="/script.js"></script>
     </body>
     

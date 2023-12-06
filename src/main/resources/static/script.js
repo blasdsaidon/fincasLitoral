@@ -88,7 +88,8 @@ function agregarFuncionInput(input, contenedor) {
             // Crea el botón "Quitar"
             const myButtonRemove = document.createElement("button");
             myButtonRemove.textContent = "Quitar";
-            myButtonRemove.classList.add("button-remove")
+            myButtonRemove.classList.add("btn")
+            myButtonRemove.classList.add("button-margin")
             myButtonRemove.classList.add("btn-primary")
             myButtonRemove.addEventListener("click", function () {
                 // Elimina el elemento <li>
@@ -101,6 +102,17 @@ function agregarFuncionInput(input, contenedor) {
                 myButtonRemove.style.display = 'none';
             });
 
+            const myButtonOpen = document.createElement("a");
+        myButtonOpen.textContent = "Abrir";
+        myButtonOpen.classList.add("button-margin")
+        myButtonOpen.classList.add("btn");
+        myButtonOpen.classList.add("btn-primary");
+        myButtonOpen.type="button";
+        myButtonOpen.href = URL.createObjectURL(input.files[0]);
+        myButtonOpen.target = "_blank";
+
+        
+            liItem.appendChild(myButtonOpen);
             // Agrega el botón "Quitar" al elemento <li>
             liItem.appendChild(myButtonRemove);
 
@@ -198,28 +210,41 @@ agregarFuncionInput(otroFile, previewOtro);
   * @
   */
  function renderPreviews(currentFileList, target, inputFile) {
-     
-     target.textContent = "";
-     currentFileList.forEach((file, index) => {
-         const myLi = document.createElement("li");
-         myLi.textContent = file.name;
-         myLi.setAttribute("draggable", 'true');
-         myLi.dataset.key = file.name;
-         myLi.addEventListener("drop", eventDrop);
-         myLi.addEventListener("dragover", eventDragOver);
-         const myButtonRemove = document.createElement("button");
-         myButtonRemove.textContent = "Quitar";
-         myButtonRemove.classList.add("button-remove")
-         myButtonRemove.classList.add("btn-primary")
-         myButtonRemove.addEventListener("click", () => {
-             filesList = deleteArrayElementByIndex(currentFileList, index);
-             inputFile.files = arrayFilesToFileList(filesList);
-             return renderPreviews(filesList, multiSelectorUniqPreview, inputFile);
-         });
-         myLi.appendChild(myButtonRemove);
-         target.appendChild(myLi);
-     });
- }
+    target.textContent = "";
+    currentFileList.forEach((file, index) => {
+        const myLi = document.createElement("li");
+        myLi.textContent = file.name;
+        myLi.setAttribute("draggable", 'true');
+        myLi.dataset.key = file.name;
+        myLi.addEventListener("drop", eventDrop);
+        myLi.addEventListener("dragover", eventDragOver);
+
+        const myButtonRemove = document.createElement("button");
+        myButtonRemove.textContent = "Quitar";
+        myButtonRemove.classList.add("btn")
+        myButtonRemove.classList.add("button-margin");
+        myButtonRemove.classList.add("btn-primary");
+        myButtonRemove.addEventListener("click", () => {
+            filesList = deleteArrayElementByIndex(currentFileList, index);
+            inputFile.files = arrayFilesToFileList(filesList);
+            return renderPreviews(filesList, multiSelectorUniqPreview, inputFile);
+        });
+
+        const myButtonOpen = document.createElement("a");
+        myButtonOpen.textContent = "Abrir";
+        myButtonOpen.classList.add("btn");
+        myButtonOpen.classList.add("button-margin");
+        myButtonOpen.classList.add("btn-primary");
+        myButtonOpen.type="button";
+        myButtonOpen.href = URL.createObjectURL(file);
+        myButtonOpen.target = "_blank";
+
+        myLi.appendChild(myButtonOpen);
+        myLi.appendChild(myButtonRemove);
+        target.appendChild(myLi);
+
+    });
+}
 
  /**
   * Returns a copy of the array by removing one position by index.
@@ -428,7 +453,11 @@ if(!(/^[A-Z]+$/i).test(nameCodeu) || nameCodeu == null || nameCodeu.length == 0 
                     // Agrega la opción a la lista visible
                     var nuevaOpcion = document.createElement("li");
                     nuevaOpcion.classList.add("d-flex")
-                    nuevaOpcion.innerHTML = codeuName + ' <button class="btn-primary button-remove" type="button" onclick="quitarOpcion(\'' + opcion + '\')">Quitar</button>';
+                    
+                    nuevaOpcion.innerHTML =  '<div class="capitalizar" style="text-align: center;">' +
+                    codeuName +
+                    '<button class="btn-primary button-remove" type="button" onclick="quitarOpcion(\'' + opcion + '\')">Quitar</button>' +
+                  '</div>';
                     opcionesSeleccionadas.appendChild(nuevaOpcion);
                 }
             }

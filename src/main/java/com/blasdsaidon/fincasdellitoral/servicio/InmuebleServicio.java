@@ -9,6 +9,7 @@ import com.blasdsaidon.fincasdellitoral.entidades.Inmueble;
 import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
 import com.blasdsaidon.fincasdellitoral.repositorios.InmuebleRepositorio;
 import com.blasdsaidon.fincasdellitoral.repositorios.PropietarioRepositorio;
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,5 +73,12 @@ public class InmuebleServicio {
             
             inmuebleRepo.save(inmueble);        }
         
+    }
+    
+    @Transactional
+    public List<Inmueble> mostraInmueble(){
+        List<Inmueble> inmuebleLista = inmuebleRepo.findAll();
+        
+        return inmuebleLista;
     }
 }
