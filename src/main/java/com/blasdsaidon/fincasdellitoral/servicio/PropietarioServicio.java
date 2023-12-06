@@ -7,6 +7,7 @@ package com.blasdsaidon.fincasdellitoral.servicio;
 import com.blasdsaidon.fincasdellitoral.entidades.Domicilio;
 import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
 import com.blasdsaidon.fincasdellitoral.repositorios.PropietarioRepositorio;
+import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,11 +53,15 @@ public class PropietarioServicio {
         propietario.setDomicilio(domicilio);
         
         propietarioRepo.save(propietario);
-        
-        
-        
-        
-        
+   
     }
+    
+    @Transactional
+    public List<Propietario> mostraPropietario(){
+        List<Propietario> propietarioLista = propietarioRepo.findAll();
+        
+        return propietarioLista;
+    }
+    
     
 }

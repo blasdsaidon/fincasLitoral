@@ -4,10 +4,13 @@
  */
 package com.blasdsaidon.fincasdellitoral.controladores;
 
+import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
 import com.blasdsaidon.fincasdellitoral.entidades.Usuario;
 import com.blasdsaidon.fincasdellitoral.repositorios.UsuarioRepositorio;
 import com.blasdsaidon.fincasdellitoral.servicio.PropietarioServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.UsuarioServicio;
+import com.blasdsaidon.fincasdellitoral.servicio.InmuebleServicio;
+import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,13 +37,24 @@ public class PortalControlador {
     private UsuarioRepositorio usuarioRepositorio;
      @Autowired
      private PropietarioServicio propietarioServicio;
-    
+     
+     @Autowired
+     private InmuebleServicio inmuebleServicio;
+    /*
+     @GetMapping("/")
+    public String index(ModelMap modelo){
+        List<Proveedor> listaProve = proveServicio.mostraProve();
+        
+        modelo.addAttribute("listaPropietario", listaPropietario);
+    return "index";
+     */
+     
     @GetMapping("/")
-    public String landing(HttpSession session) {
+    public String landing(HttpSession session, ModelMap modelo) {
 
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        
-                
+        List<Propietario> listaPropietario = propietarioServicio.mostraPropietario();
+         modelo.addAttribute("listaPropietario", listaPropietario);       
         if (logueado == null) {
            return "redirect:/login";
        }
@@ -139,6 +153,22 @@ public class PortalControlador {
         }
         
         
+        return "redirect:/";
+    }
+    
+    @PostMapping("/inmueble/crear")
+    public String crearInmueble (String calle, String numero, @RequestParam(required=false) String piso, @RequestParam(required=false) String departamento, 
+            String provincia, String localidad, String numPartida, String numTGI, String numTOS,
+            String idProp, String numRegPropiedad, String tomo,String folio, String fechaRegProp,
+            @RequestParam(required=false) String notas){
+        
+        try {
+            inmuebleServicio.crearInmueble(calle, numero, piso, departamento, provincia, localidad, numPartida, numTGI, numTOS, idProp, numRegPropiedad, tomo, folio, fechaRegProp, notas);
+        } catch (Exception e) {
+             e.printStackTrace();
+        }
+        
+    
         return "redirect:/";
     }
 

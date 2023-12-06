@@ -176,49 +176,54 @@
         <div class="section-div">
         
            
+           
          <div>
             <div id="inmueble" class=" title"><h3>Crear Inmueble</h3></div>
-            <form action="@{/registraProve}" method="POST" >
+            <form th:action="@{/inmueble/crear}" method="POST" >
                 <div class="col-form " >
                     <div   class="col-6">
                         <legend>Domicilio</legend>
-                        <input  class="form-control form-group" type="text"  name="calle" placeholder="Calle"> 
-                        <input  class="form-control form-group" type="number" value="${numero}" name="numero" placeholder="Número"> 
-                        <input  class="form-control form-group" type="number" value="${piso}" name="piso" placeholder="Piso"> 
-                        <input  class="form-control form-group" type="text"  name="departamento" placeholder="Departamento"> 
-                        <select id="provinciasInm" required class="form-control form-select form-group selectProvincia" name="provincias">
+                        <input  class="form-control form-group" type="text" th:value="${calle}"  name="calle" placeholder="Calle"> 
+                        <input  class="form-control form-group" type="number" th:value="${numero}" name="numero" placeholder="Número"> 
+                        <input  class="form-control form-group" type="number" th:value="${piso}" name="piso" placeholder="Piso"> 
+                        <input  class="form-control form-group" type="text" th:value="${departamento}" name="departamento" placeholder="Departamento"> 
+                        <select th:value="${provincia}" id="provinciasInm" required class="form-control form-select form-group selectProvincia" name="provincia">
                             <option value="" selected>Seleccione provincia</option>
                             </select>
                             
-                            <select id="ciudadesInm" required class="form-control form-select form-group" name="ciudades" >
+                            <select th:value="${localidad}" id="ciudadesInm" required class="form-control form-select form-group" name="localidad" >
                                 <option value="" selected>Seleccione ciudad</option>
                         </select>
                         <legend>Titular</legend>
-                        <select id="Locador" required class="form-control form-select form-group" name="provincias">
+                        <select id="Locador" required class="form-control form-select form-group" name="idProp">
                             <option value="" selected>Seleccione Locador</option>
-                            <option value="" >Locador 1</option>
-                            <option value="" >Locador 2</option>
-                            <option value="" >Locador 3</option>
+                            <option
+                                th:each="propietario:${listaPropietario}"
+                                th:value="${propietario.idPersona}"
+                                th:text="${propietario.nombre}"/>
                         </select> 
-
+ <!-- •	String crearInmueble (String calle, String numero, @RequestParam(required=false) String piso, @RequestParam(required=false) String departamento, 
+            String provincia, String localidad, String numPartida, String numTGI, String numTOS,
+            String idProp, String numRegPropiedad, String tomo,String folio, String fechaRegProp,
+            @RequestParam(required=false) String notas)  --> 
                     </div>
                 <div class="col-6 ">
                      <!-- •	Datos del inmueble (ubicación, Nº de Partida Inmobiliaria,  Nº Cuenta Tasa General de Inmuebles, Nº Cuenta Agua Corriente y Cloacas, agregado de notas con información adicional, Datos de titulares registrales, Nro de inscripción Registro de la Propiedad –  Tomo – Folio - Fecha) -->
                  <legend>Datos del inmueble</legend>
                     
-                <input  class="form-control form-group" type="number" value="${partida}" name="partida" placeholder="Número de partida Inmobiliaria"> 
-                <input  class="form-control form-group" type="number" value="${tgi}" name="tgi" placeholder="N° Cuenta TGI">
-                <input  class="form-control form-group" type="number" value="${agua}" name="agua" placeholder="N° Cuenta Agua y Cloacas">
+                <input  class="form-control form-group" type="number" th:value="${numPartida}" name="numPartida" placeholder="Número de partida Inmobiliaria"> 
+                <input  class="form-control form-group" type="number" th:value="${numTGI}" name="numTGI" placeholder="N° Cuenta TGI">
+                <input  class="form-control form-group" type="number" th:value="${numTOS}" name="numTOS" placeholder="N° Cuenta Agua y Cloacas">
                 
                 <legend>Inscripción en Registro de la Propiedad</legend>
 
-                <input  class="form-control form-group" type="number" value="${numeroInscripcion}" name="numeroInscripcio" placeholder="Número">
+                <input  class="form-control form-group" type="number" th:value="${numRegPropiedad}" name="numRegPropiedad" placeholder="Número">
                  
-                <input  class="form-control form-group" type="number" value="${tomo}" name="tomo" placeholder="Tomo">
-                <input  class="form-control form-group" type="number" value="${folio}" name="folio" placeholder="Folio">
+                <input  class="form-control form-group" type="number" th:value="${tomo}" name="tomo" placeholder="Tomo">
+                <input  class="form-control form-group" type="number" th:value="${folio}" name="folio" placeholder="Folio">
                 <label class="form-label" for="customFile">Fecha</label> 
-                <input  class="form-control form-group" type="date" value="${fechaInscripcion}" name="fechaInscripcion" placeholder="Fecha"> 
-            
+                <input  class="form-control form-group" type="date" th:value="${fechaRegProp}" name="fechaRegProp" placeholder="Fecha"> 
+                <input type="hidden" th:value="${notas}" name="notas">
             </div>
                 
             </div>  
