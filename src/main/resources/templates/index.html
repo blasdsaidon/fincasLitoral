@@ -30,6 +30,7 @@
             <li class="nav-item"><a href="#codeudor" class="nav-link">Codeudores</a></li>
             <li class="nav-item"><a href="#inmueble" class="nav-link">Inmueble</a></li>
             <li class="nav-item"><a href="#contrato" class="nav-link">Contrato</a></li>
+            <li class="nav-item"><a th:href="@{/contratos}" class="nav-link">Lista de contratos</a></li>
         </ul>
             <div class="dropdown" style="align-self: flex-end; margin-right: 7px;">
                 <a style="background-color: #9c0202 " class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -82,7 +83,7 @@
                     <legend>Domicilio</legend>
                     <input maxlength="50"  class="form-control form-group" type="text" th:value="${calle}"  name="calle" placeholder="Calle"> 
                     <input maxlength="5" class="form-control form-group" type="number" th:value="${numero}"  name="numero" placeholder="Número"> 
-                    <input maxlength="3" class="form-control form-group" type="number" th:value="${piso}" name="piso" placeholder="Piso"> 
+                    <input maxlength="3" class="form-control form-group" type="text" th:value="${piso}" name="piso" placeholder="Piso"> 
                     <input  class="form-control form-group" type="text" th:value="${departamento}"  name="departamento" placeholder="Departamento"> 
                     <select id="provinciasLocad" required class="form-control form-select form-group selectProvincia"  name="provincia">
                         <option th:value="${provincia}" selected>Seleccione provincia</option>
@@ -122,7 +123,7 @@
                     <legend>Domicilio</legend>
                     <input maxlength="50" class="form-control form-group" type="text" th:value="${calle}"  name="calle" placeholder="Calle"> 
                     <input maxlength="5"  class="form-control form-group" type="number" th:value="${numero}"  name="numero" placeholder="Número"> 
-                    <input maxlength="3" class="form-control form-group" type="number" th:value="${piso}" name="piso" placeholder="Piso"> 
+                    <input maxlength="3" class="form-control form-group" type="text" th:value="${piso}" name="piso" placeholder="Piso"> 
                     <input  class="form-control form-group" type="text" th:value="${departamento}" name="departamento" placeholder="Departamento"> 
                     <select id="provinciasLocat" required class="form-control form-select form-group selectProvincia" th:value="${provincia}" name="provincia">
                         <option value="" selected>Seleccione provincia</option>
@@ -162,7 +163,7 @@
                     <legend>Domicilio</legend>
                     <input maxlength="50" class="form-control form-group" type="text" th:value="${calle}" name="calle" placeholder="Calle"> 
                     <input maxlength="5"  class="form-control form-group" type="number" th:value="${numero}"  name="numero" placeholder="Número"> 
-                    <input maxlength="3"  class="form-control form-group" type="number" th:value="${piso}"  name="piso" placeholder="Piso"> 
+                    <input maxlength="3"  class="form-control form-group" type="text" th:value="${piso}"  name="piso" placeholder="Piso"> 
                     <input  class="form-control form-group" type="text" th:value="${departamento}" name="departamento" placeholder="Departamento"> 
                     <select id="provinciasCod" required class="form-control form-select form-group selectProvincia" th:value="${provincia}" name="provincia">
                         <option value="" selected>Seleccione provincia</option>
@@ -192,7 +193,7 @@
                         <legend>Domicilio</legend>
                         <input  class="form-control form-group" type="text" th:value="${calle}"  name="calle" placeholder="Calle"> 
                         <input  class="form-control form-group" type="number" th:value="${numero}" name="numero" placeholder="Número"> 
-                        <input  class="form-control form-group" type="number" th:value="${piso}" name="piso" placeholder="Piso"> 
+                        <input  class="form-control form-group" type="text" th:value="${piso}" name="piso" placeholder="Piso"> 
                         <input  class="form-control form-group" type="text" th:value="${departamento}" name="departamento" placeholder="Departamento"> 
                         <select th:value="${provincia}" id="provinciasInm" required class="form-control form-select form-group selectProvincia" name="provincia">
                             <option value="" selected>Seleccione provincia</option>
@@ -201,14 +202,11 @@
                             <select th:value="${localidad}" id="ciudadesInm" required class="form-control form-select form-group" name="localidad" >
                                 <option value="" selected>Seleccione ciudad</option>
                         </select>
-                        <legend>Titular</legend>
-                        <select id="Locador" required class="form-control form-select form-group capitalizar" name="idProp">
-                            <option value="" selected>Seleccione Locador</option>
-                            <option
-                                th:each="propietario:${listaPropietario}"
-                                th:value="${propietario.idPersona}"
-                                th:text="${propietario.nombre + ' ' + propietario.apellido}"/>
-                        </select> 
+                        <legend>Titulares</legend>
+                        <input type="text" class="form-control form-group capitalizar" id="titularInput" placeholder="Nombre del Titular" name="titulares">
+                        <p>Ingrese nombre y apellido separado por coma</p>
+                        
+                        
  <!-- •	String crearInmueble (String calle, String numero, @RequestParam(required=false) String piso, @RequestParam(required=false) String departamento, 
             String provincia, String localidad, String numPartida, String numTGI, String numTOS,
             String idProp, String numRegPropiedad, String tomo,String folio, String fechaRegProp,
@@ -245,12 +243,12 @@
             <!-- •	Nombre y apellido, DNI, CUIL/T, fecha de nacimiento, domicilio, teléfonos, e-mail  -->
          <div>
             <div id="contrato" class=" title" ><h3>Crear contrato</h3></div>
-            <form id="formContrato" method="POST" onsubmit="return validacionInput()" >
+            <form id="formContrato" method="POST" th:action="@{/contrato/crear}" onsubmit="return validacionInput()" enctype="multipart/form-data">
                 <div class="col-form" >
                     <div  class="col-6 ">
                     <legend>Datos</legend>
                         
-                        <select id="Locatario" required class="form-control form-select form-group capitalizar" name="provincias">
+                        <select id="Locatario" required class="form-control form-select form-group capitalizar" name="idInq">
                             <option value="" selected>Seleccione Locatario</option>
                             <option
                                 th:each="inquilino:${listaInquilino}"
@@ -259,7 +257,7 @@
                             
                         </select> 
 
-                        <select id="Locador" required class="form-control form-select form-group capitalizar" name="provincias">
+                        <select id="Locador" required class="form-control form-select form-group capitalizar" name="idProp">
                             <option value="" selected>Seleccione Locador</option>
                             <option
                                 th:each="propietario:${listaPropietario}"
@@ -267,7 +265,7 @@
                                 th:text="${#strings.concat(propietario.nombre, ' ', propietario.apellido)}"/>
                         </select> 
 
-                        <select id="Inmueble" required class="form-control form-select form-group capitalizar" name="provincias">
+                        <select id="Inmueble" required class="form-control form-select form-group capitalizar" name="idInm">
                                 <option value="" selected>Seleccione Inmueble </option>
                                 <option
                                 th:each="inmueble:${listaInmueble}"
@@ -275,7 +273,7 @@
                                 th:text="${#strings.concat(inmueble.domicilio.calle, ' ', inmueble.domicilio.numero)}"/>
                         </select>
 
-                        <select  id="opciones" class="form-control form-select form-group capitalizar" >
+                        <select   id="opciones" class="form-control form-select form-group capitalizar" >
                             <option
                                 th:each="codeudor:${listaCodeudor}"
                                 th:value="${codeudor.idPersona}"
@@ -294,24 +292,24 @@
                         </div>
                         
                         <label class="form-label" for="customFile">Fecha inicio contrato</label> 
-                        <input  class="form-control form-group" type="date" value="${fechaInicio}" name="fchaInicio" >  
+                        <input  class="form-control form-group" type="date" value="${fechaInicio}" name="fechaInicio" >  
 
                         <label class="form-label" for="customFile">Fecha Actualización de contrato</label> 
                         <div class="form-check form-group">
-                            <input checked class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <input value="viejo" checked class="form-check-input" type="radio" name="fechaActualiza" id="flexRadioDefault1">
                             <label class="form-check-label" for="flexRadioDefault1">
                               Ley de contrato anterior
                             </label>
                           </div>
                           <div class="form-check form-group">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+                            <input value="nuevo" class="form-check-input" type="radio" name="fechaActualiza" id="flexRadioDefault2" >
                             <label class="form-check-label" for="flexRadioDefault2">
                               Ley de contrato actual
                             </label>
                           </div>
 
                         <label class="form-label" for="customFile">Fecha finalización de contrato</label> 
-                        <input  class="form-control form-group" type="date" value="${fechaFinalizacción}" name="fechaFinalización" >
+                        <input  class="form-control form-group" type="date" value="${fechaFin}" name="fechaFin" >
                         
                         
 
@@ -326,7 +324,7 @@
                         <label class="form-label " for="customFile">Contrato formato Word</label>  
                         <div class="file-select" id="src-file1" style="width: 80%;" > 
                            
-                        <input id="word" style="width: 100%;" class="form-control form-group" type="file" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" value="${word}"  name="src-file1">
+                        <input id="word" style="width: 100%;" class="form-control form-group" type="file" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" value="${word}"  name="archivos">
                         </div>
                              <ul id="previewWord"></ul>
                         </div>
@@ -334,7 +332,7 @@
                         <div style="display: flex; flex-direction: column;">
                         <label class="form-label" for="customFile">Contrato formato Pdf</label> 
                         <div class="file-select" id="src-file2" style="width: 80%;" >       
-                        <input multiple style="width: 100%;" required id="pdf" class="form-control form-group archivo" type="file" accept=".pdf" value="${pdf}" name="pdf">
+                        <input multiple style="width: 100%;" required id="pdf" class="form-control form-group archivo" type="file" accept=".pdf" value="${pdf}" name="archivos">
                         
                         </div>
                         <ul id="previewPdf"></ul>
@@ -359,7 +357,7 @@
                                
                                 <p class="drop-text">Arrastra y suelta tus archivos aquí o haz clic para seleccionar.</p>
                             </div>
-                            <input multiple id="files" class="form-control form-group archivo" type="file" >
+                            <input multiple id="files" class="form-control form-group archivo" type="file" name="archivos">
                         </div>
                             <ul id="preview"></ul>     
                         </section>

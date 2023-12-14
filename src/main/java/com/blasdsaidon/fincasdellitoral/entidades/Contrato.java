@@ -4,10 +4,14 @@
  */
 package com.blasdsaidon.fincasdellitoral.entidades;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import org.hibernate.annotations.GenericGenerator;
@@ -25,27 +29,30 @@ public class Contrato {
     @OneToOne
     private Inquilino inquilino;
     @OneToOne
+    private Propietario propietario;
+    @OneToOne
     private Inmueble inmueble;
-    @OneToMany
-    private List<Codeudor> codeudores;
-    @OneToMany
-    private List<Archivo> archivos;
+    @ManyToMany 
+    private Collection<Codeudor> codeudores;
+    @OneToMany  
+    private Collection<Archivo> archivos   ;
     private String fechaInicio;
     private String fechaFinaliz;
     private boolean fechaActualiza;
-    @OneToMany
-    private List<Pago> honorarios;
-    @OneToMany
-    private List<Pago> locaciones;
+    @OneToMany  
+    private Collection<Pago> honorarios ;
+    @OneToMany  
+    private Collection<Pago> locaciones  ;
     @OneToOne
     private Seguro seguro;
 
     public Contrato() {
     }
 
-    public Contrato(String idContrato, Inquilino inquilino, Inmueble inmueble, List<Codeudor> codeudores, List<Archivo> archivos, String fechaInicio, String fechaFinaliz, boolean fechaActualiza, List<Pago> honorarios, List<Pago> locaciones, Seguro seguro) {
+    public Contrato(String idContrato, Inquilino inquilino, Propietario propietario, Inmueble inmueble, Collection<Codeudor> codeudores, Collection<Archivo> archivos, String fechaInicio, String fechaFinaliz, boolean fechaActualiza, Collection<Pago> honorarios, Collection<Pago> locaciones, Seguro seguro) {
         this.idContrato = idContrato;
         this.inquilino = inquilino;
+        this.propietario = propietario;
         this.inmueble = inmueble;
         this.codeudores = codeudores;
         this.archivos = archivos;
@@ -65,15 +72,19 @@ public class Contrato {
         return inquilino;
     }
 
+    public Propietario getPropietario() {
+        return propietario;
+    }
+
     public Inmueble getInmueble() {
         return inmueble;
     }
 
-    public List<Codeudor> getCodeudores() {
+    public Collection<Codeudor> getCodeudores() {
         return codeudores;
     }
 
-    public List<Archivo> getArchivos() {
+    public Collection<Archivo> getArchivos() {
         return archivos;
     }
 
@@ -89,11 +100,11 @@ public class Contrato {
         return fechaActualiza;
     }
 
-    public List<Pago> getHonorarios() {
+    public Collection<Pago> getHonorarios() {
         return honorarios;
     }
 
-    public List<Pago> getLocaciones() {
+    public Collection<Pago> getLocaciones() {
         return locaciones;
     }
 
@@ -109,15 +120,19 @@ public class Contrato {
         this.inquilino = inquilino;
     }
 
+    public void setPropietario(Propietario propietario) {
+        this.propietario = propietario;
+    }
+
     public void setInmueble(Inmueble inmueble) {
         this.inmueble = inmueble;
     }
 
-    public void setCodeudores(List<Codeudor> codeudores) {
+    public void setCodeudores(Collection<Codeudor> codeudores) {
         this.codeudores = codeudores;
     }
 
-    public void setArchivos(List<Archivo> archivos) {
+    public void setArchivos(Collection<Archivo> archivos) {
         this.archivos = archivos;
     }
 
@@ -133,17 +148,19 @@ public class Contrato {
         this.fechaActualiza = fechaActualiza;
     }
 
-    public void setHonorarios(List<Pago> honorarios) {
+    public void setHonorarios(Collection<Pago> honorarios) {
         this.honorarios = honorarios;
     }
 
-    public void setLocaciones(List<Pago> locaciones) {
+    public void setLocaciones(Collection<Pago> locaciones) {
         this.locaciones = locaciones;
     }
 
     public void setSeguro(Seguro seguro) {
         this.seguro = seguro;
     }
+
+    
 
 
     

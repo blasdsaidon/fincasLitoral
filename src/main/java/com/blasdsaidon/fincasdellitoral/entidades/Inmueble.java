@@ -4,9 +4,12 @@
  */
 package com.blasdsaidon.fincasdellitoral.entidades;
 
+import java.util.Collection;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -25,8 +28,7 @@ public class Inmueble {
     private String numPartida;
     private String numTGI;
     private String numTOS;
-    @OneToOne
-    private Propietario propietario;
+    private String titulares;
     private String numRegPropiedad;
     private String tomo;
     private String folio;
@@ -36,61 +38,17 @@ public class Inmueble {
     public Inmueble() {
     }
 
-    public Inmueble(String idInm, Domicilio domicilio, String numPartida, String numTGI, String numTOS, Propietario propietario, String numRegPropiedad, String tomo, String folio, String fechaRegProp, String notas) {
+    public Inmueble(String idInm, Domicilio domicilio, String numPartida, String numTGI, String numTOS, String titulares, String numRegPropiedad, String tomo, String folio, String fechaRegProp, String notas) {
         this.idInm = idInm;
         this.domicilio = domicilio;
         this.numPartida = numPartida;
         this.numTGI = numTGI;
         this.numTOS = numTOS;
-        this.propietario = propietario;
+        this.titulares = titulares;
         this.numRegPropiedad = numRegPropiedad;
         this.tomo = tomo;
         this.folio = folio;
         this.fechaRegProp = fechaRegProp;
-        this.notas = notas;
-    }
-
-    public void setIdInm(String idInm) {
-        this.idInm = idInm;
-    }
-
-    public void setDomicilio(Domicilio domicilio) {
-        this.domicilio = domicilio;
-    }
-
-    public void setNumPartida(String numPartida) {
-        this.numPartida = numPartida;
-    }
-
-    public void setNumTGI(String numTGI) {
-        this.numTGI = numTGI;
-    }
-
-    public void setNumTOS(String numTOS) {
-        this.numTOS = numTOS;
-    }
-
-    public void setPropietario(Propietario propietario) {
-        this.propietario = propietario;
-    }
-
-    public void setNumRegPropiedad(String numRegPropiedad) {
-        this.numRegPropiedad = numRegPropiedad;
-    }
-
-    public void setTomo(String tomo) {
-        this.tomo = tomo;
-    }
-
-    public void setFolio(String folio) {
-        this.folio = folio;
-    }
-
-    public void setFechaRegProp(String fechaRegProp) {
-        this.fechaRegProp = fechaRegProp;
-    }
-
-    public void setNotas(String notas) {
         this.notas = notas;
     }
 
@@ -114,8 +72,8 @@ public class Inmueble {
         return numTOS;
     }
 
-    public Propietario getPropietario() {
-        return propietario;
+    public String getTitulares() {
+        return titulares;
     }
 
     public String getNumRegPropiedad() {
@@ -138,11 +96,56 @@ public class Inmueble {
         return notas;
     }
 
+    public void setIdInm(String idInm) {
+        this.idInm = idInm;
+    }
+
+    public void setDomicilio(Domicilio domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public void setNumPartida(String numPartida) {
+        this.numPartida = numPartida;
+    }
+
+    public void setNumTGI(String numTGI) {
+        this.numTGI = numTGI;
+    }
+
+    public void setNumTOS(String numTOS) {
+        this.numTOS = numTOS;
+    }
+
+    public void setTitulares(String titulares) {
+        this.titulares = titulares;
+    }
+
+    public void setNumRegPropiedad(String numRegPropiedad) {
+        this.numRegPropiedad = numRegPropiedad;
+    }
+
+    public void setTomo(String tomo) {
+        this.tomo = tomo;
+    }
+
+    public void setFolio(String folio) {
+        this.folio = folio;
+    }
+
+    public void setFechaRegProp(String fechaRegProp) {
+        this.fechaRegProp = fechaRegProp;
+    }
+
+    public void setNotas(String notas) {
+        this.notas = notas;
+    }
+
     @Override
     public String toString() {
-        return "Inmueble{" + "idInm=" + idInm + ", domicilio=" + domicilio + ", numPartida=" + numPartida + ", numTGI=" + numTGI + ", numTOS=" + numTOS + ", propietario=" + propietario + ", numRegPropiedad=" + numRegPropiedad + ", tomo=" + tomo + ", folio=" + folio + ", fechaRegProp=" + fechaRegProp + ", notas=" + notas + '}';
+        return "Inmueble{" + "idInm=" + idInm + ", domicilio=" + domicilio + ", numPartida=" + numPartida + ", numTGI=" + numTGI + ", numTOS=" + numTOS + ", titulares=" + titulares + ", numRegPropiedad=" + numRegPropiedad + ", tomo=" + tomo + ", folio=" + folio + ", fechaRegProp=" + fechaRegProp + ", notas=" + notas + '}';
     }
-    
+
+   
     
     
     

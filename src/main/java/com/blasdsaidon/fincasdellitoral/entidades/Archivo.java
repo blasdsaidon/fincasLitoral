@@ -22,7 +22,7 @@ public class Archivo {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name="uuid", strategy = "uuid2")
     private String id; 
-    private String extensión;
+    
     private String mime;
     
     private String nombre;
@@ -33,21 +33,17 @@ public class Archivo {
     public Archivo() {
     }
 
-    public Archivo(String id, String extensión, String mime, String nombre, byte[] contenido) {
+    public Archivo(String id,  String mime, String nombre, byte[] contenido) {
         this.id = id;
-        this.extensión = extensión;
+        
         this.mime = mime;
         this.nombre = nombre;
         this.contenido = contenido;
     }
 
-    public String getExtensión() {
-        return extensión;
-    }
+  
 
-    public void setExtensión(String extensión) {
-        this.extensión = extensión;
-    }
+  
 
    
 

@@ -229,3 +229,24 @@ div.divider{
 .dropdown-toggle::after {
     color: white;
   }
+
+  .resaltar {
+    background-color: yellow; 
+}
+
+.titular-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.titular-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.delete-button {
+    margin-left: 10px;
+    cursor: pointer;
+}

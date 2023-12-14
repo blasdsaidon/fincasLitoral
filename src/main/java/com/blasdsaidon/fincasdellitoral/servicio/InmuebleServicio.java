@@ -9,6 +9,7 @@ import com.blasdsaidon.fincasdellitoral.entidades.Inmueble;
 import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
 import com.blasdsaidon.fincasdellitoral.repositorios.InmuebleRepositorio;
 import com.blasdsaidon.fincasdellitoral.repositorios.PropietarioRepositorio;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -48,20 +49,19 @@ public class InmuebleServicio {
     @Transactional
     public void crearInmueble(String calle, String numero, String piso, String departamento, 
             String provincia, String localidad, String numPartida, String numTGI, String numTOS,
-            String idProp, String numRegPropiedad, String tomo,String folio, String fechaRegProp,
+            String titulares, String numRegPropiedad, String tomo,String folio, String fechaRegProp,
             String notas){
         
         Inmueble inmueble= new Inmueble();
         
         Domicilio domicilio = domicilioServicio.crearDomicilio(calle, numero, piso, departamento, provincia, localidad );
         
-        Optional<Propietario> respuesta = propietarioRepo.findById(idProp);
+       
             
-        if(respuesta.isPresent()){
-            Propietario propietario = respuesta.get();
+        
             
             inmueble.setDomicilio(domicilio);
-            inmueble.setPropietario(propietario);
+            inmueble.setTitulares(titulares);
             inmueble.setFechaRegProp(fechaRegProp);
             inmueble.setFolio(folio);
             inmueble.setNotas(notas);
@@ -73,7 +73,7 @@ public class InmuebleServicio {
             
             inmuebleRepo.save(inmueble);        }
         
-    }
+    
     
     @Transactional
     public List<Inmueble> mostraInmueble(){

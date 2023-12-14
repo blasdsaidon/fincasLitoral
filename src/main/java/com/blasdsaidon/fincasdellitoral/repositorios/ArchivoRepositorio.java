@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author blasd
  */
 @Repository 
-public interface ArchivoRepository extends JpaRepository<Archivo, String> {
+public interface ArchivoRepositorio extends JpaRepository<Archivo, String> {
     
 }

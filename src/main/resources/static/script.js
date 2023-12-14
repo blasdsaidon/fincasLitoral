@@ -130,8 +130,13 @@ const otroFile = document.getElementById("pdf");
 const previewOtro = document.getElementById("previewPdf");
 
 // Aplica la funcionalidad a los inputs específicos
-agregarFuncionInput(wordFile, previewWord);
-agregarFuncionInput(otroFile, previewOtro);
+if (wordFile) {
+    agregarFuncionInput(wordFile, previewWord);
+}
+if (otroFile) {
+    agregarFuncionInput(otroFile, previewOtro);
+}
+
 
 /*seleccionar varios archivos*/
 
@@ -288,16 +293,19 @@ agregarFuncionInput(otroFile, previewOtro);
   */
 
  // Input file
- fileInputMulti.addEventListener("input", async () => {
-   //   Get files list from <input>
-     const newFilesList = Array.from(fileInputMulti.files);
-    //  Update list files
-     filesList = await getUniqFiles(newFilesList, filesList);
-     // Only DEMO. Redraw
-     renderPreviews(filesList, multiSelectorUniqPreview, fileInputMulti);
-     // Set data to input
-     fileInputMulti.files = arrayFilesToFileList(filesList);
- });
+ if (fileInputMulti) {
+    fileInputMulti.addEventListener("input", async () => {
+        //   Get files list from <input>
+          const newFilesList = Array.from(fileInputMulti.files);
+         //  Update list files
+          filesList = await getUniqFiles(newFilesList, filesList);
+          // Only DEMO. Redraw
+          renderPreviews(filesList, multiSelectorUniqPreview, fileInputMulti);
+          // Set data to input
+          fileInputMulti.files = arrayFilesToFileList(filesList);
+      });
+ }
+ 
 
 
 
@@ -429,10 +437,12 @@ if(!(/^[A-Z]+$/i).test(nameCodeu) || nameCodeu == null || nameCodeu.length == 0 
     
 
     
-
-    document.getElementById("opciones").addEventListener("change", function () {
-        mostrarOpcionesSeleccionadas();
-    });
+    if (document.getElementById("opciones")) {
+        document.getElementById("opciones").addEventListener("change", function () {
+            mostrarOpcionesSeleccionadas();
+        });
+    }
+    
 
     function agregarOpcion() {
         var select = document.getElementById("opciones");
@@ -497,7 +507,7 @@ if(!(/^[A-Z]+$/i).test(nameCodeu) || nameCodeu == null || nameCodeu.length == 0 
         } else {
             inputOpciones = document.createElement("input");
             inputOpciones.type = "hidden";
-            inputOpciones.name = "opcionesSeleccionadas";
+            inputOpciones.name = "codeudores";
             inputOpciones.id = "opcionesSeleccionadasInput";
             inputOpciones.value = JSON.stringify(opcionesArray);
             document.getElementById("formContrato").appendChild(inputOpciones);
@@ -518,8 +528,42 @@ if(!(/^[A-Z]+$/i).test(nameCodeu) || nameCodeu == null || nameCodeu.length == 0 
         // Puedes implementar esto si deseas mostrar las opciones seleccionadas al cambiar la selección
     }
 
+    
+    function agregarTitular() {
+        var titularInput = document.getElementById("titularInput");
+        var nuevoTitular = titularInput.value;
 
+        if (nuevoTitular.trim() !== "") {
+            // Crea un nuevo elemento de lista (li) para el titular
+            var nuevoElementoLista = document.createElement("li");
+            nuevoElementoLista.className = "titular-item";
 
+            var nombreTitular = document.createElement("span");
+            nombreTitular.textContent = nuevoTitular;
+
+            var deleteButton = document.createElement("button");
+            deleteButton.className = "delete-button";
+            deleteButton.textContent = "Eliminar";
+            deleteButton.onclick = function() {
+                eliminarTitular(nuevoElementoLista);
+            };
+
+            nuevoElementoLista.appendChild(nombreTitular);
+            nuevoElementoLista.appendChild(deleteButton);
+
+            // Agrega el nuevo titular a la lista
+            document.getElementById("titulares").appendChild(nuevoElementoLista);
+
+            // Borra el contenido del campo de entrada
+            titularInput.value = "";
+        }
+    }
+
+    function eliminarTitular(elementoLista) {
+        // Elimina el elemento de la lista
+        elementoLista.remove();
+    }
+   
 
 
 

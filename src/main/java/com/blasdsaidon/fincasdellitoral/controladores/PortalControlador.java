@@ -5,16 +5,22 @@
 package com.blasdsaidon.fincasdellitoral.controladores;
 
 import com.blasdsaidon.fincasdellitoral.entidades.Codeudor;
+import com.blasdsaidon.fincasdellitoral.entidades.Contrato;
 import com.blasdsaidon.fincasdellitoral.entidades.Inmueble;
 import com.blasdsaidon.fincasdellitoral.entidades.Inquilino;
+import com.blasdsaidon.fincasdellitoral.entidades.Pago;
 import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
+import com.blasdsaidon.fincasdellitoral.entidades.Seguro;
 import com.blasdsaidon.fincasdellitoral.entidades.Usuario;
 import com.blasdsaidon.fincasdellitoral.repositorios.UsuarioRepositorio;
 import com.blasdsaidon.fincasdellitoral.servicio.CodeudorServicio;
+import com.blasdsaidon.fincasdellitoral.servicio.ContratoServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.PropietarioServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.UsuarioServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.InmuebleServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.InquilinoServicio;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -51,6 +58,9 @@ public class PortalControlador {
      
      @Autowired
      private InquilinoServicio inquilinoServicio;
+     
+     @Autowired
+     private ContratoServicio contratoServicio;
      
      
     /*
@@ -178,11 +188,11 @@ public class PortalControlador {
     @PostMapping("/inmueble/crear")
     public String crearInmueble (String calle, String numero, @RequestParam(required=false) String piso, @RequestParam(required=false) String departamento, 
             String provincia, String localidad, String numPartida, String numTGI, String numTOS,
-            String idProp, String numRegPropiedad, String tomo,String folio, String fechaRegProp,
+            String titulares, String numRegPropiedad, String tomo,String folio, String fechaRegProp,
             @RequestParam(required=false) String notas){
         
         try {
-            inmuebleServicio.crearInmueble(calle, numero, piso, departamento, provincia, localidad, numPartida, numTGI, numTOS, idProp, numRegPropiedad, tomo, folio, fechaRegProp, notas);
+            inmuebleServicio.crearInmueble(calle, numero, piso, departamento, provincia, localidad, numPartida, numTGI, numTOS, titulares, numRegPropiedad, tomo, folio, fechaRegProp, notas);
         } catch (Exception e) {
              e.printStackTrace();
         }
@@ -213,6 +223,28 @@ public class PortalControlador {
         }
                 return "redirect:/";
             }
+        
+        @PostMapping("/contrato/crear")
+        public String crearContrato (String fechaActualiza, /*@RequestParam(required=false)List<Pago> honorarios,@RequestParam(required=false) List<Pago> locaciones, @RequestParam(required=false)Seguro seguro,*/ String fechaInicio,@RequestParam ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos){
+            try {
+                System.out.println("entro a controlador");
+                contratoServicio.crearContrato(fechaActualiza, /*honorarios, locaciones, seguro,*/ fechaInicio, codeudores, fechaFin, idInq, idProp, idInm, archivos);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            return "redirect:/";
+        }
+        
+        @GetMapping("/contratos")
+        public String listado_contratos (ModelMap modelo, HttpSession session ){
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            List<Contrato> contratos = contratoServicio.mostraContrato();
+             modelo.addAttribute("listaContratos", contratos);  
+            
+            return "lista_contratos.html";
+        }
+        
     
 
 }
