@@ -63,15 +63,21 @@ public class ContratoServicio {
     private CodeudorRepositorio codeudorRepo;
     @Autowired
     private ArchivoServicio archivoServicio;
+    @Autowired
+    private PagoServicio pagoServicio;
+    
     
     
     @Transactional
-    public void crearContrato (String fechaActualiza, /*List<Pago> honorarios, List<Pago> locaciones, Seguro seguro,*/ String fechaInicio, ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos) throws Exception{
+    public void crearContrato (String fechaActualiza, /* Seguro seguro,*/ String fechaInicio, ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos) throws Exception{
        
         //modificar el array de codeudores recibidos
           List<String> codeudoress = codeudores.stream()
                 .map(s -> s.replaceAll("[\\[\\]\"]", ""))
                 .toList();
+       /*List<Pago> honorarios, List<Pago> locaciones,*/
+       List<Pago> honorarios=pagoServicio.crearPagos(fechaInicio);
+       List<Pago> locaciones=pagoServicio.crearPagos(fechaInicio);
        
         
         
@@ -131,8 +137,8 @@ public class ContratoServicio {
         contrato.setPropietario(propietario);
         contrato.setCodeudores(codeudoresNueva);
         contrato.setArchivos(archivosNueva);
-        //contrato.setHonorarios(honorarios);
-        //contrato.setLocaciones(locaciones);
+        contrato.setHonorarios(honorarios);
+        contrato.setLocaciones(locaciones);
         //contrato.setSeguro(seguro);
         contrato.setFechaInicio(fechaInicio);
         contrato.setFechaFinaliz(fechaFin);
@@ -149,5 +155,15 @@ public class ContratoServicio {
         List<Contrato> contratoLista = contratoRepositorio.findAll();
         
         return contratoLista;
+    }
+    
+    @Transactional
+    public Contrato getOne(String idContrato){
+        Contrato contrato = new Contrato();
+        Optional<Contrato> respuesta = contratoRepositorio.findById(idContrato);
+        if (respuesta.isPresent()) {
+            contrato = respuesta.get();
+        }
+        return contrato;
     }
 }

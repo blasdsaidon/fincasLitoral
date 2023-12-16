@@ -4,6 +4,7 @@
  */
 package com.blasdsaidon.fincasdellitoral.controladores;
 
+import com.blasdsaidon.fincasdellitoral.entidades.Archivo;
 import com.blasdsaidon.fincasdellitoral.entidades.Codeudor;
 import com.blasdsaidon.fincasdellitoral.entidades.Contrato;
 import com.blasdsaidon.fincasdellitoral.entidades.Inmueble;
@@ -12,6 +13,7 @@ import com.blasdsaidon.fincasdellitoral.entidades.Pago;
 import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
 import com.blasdsaidon.fincasdellitoral.entidades.Seguro;
 import com.blasdsaidon.fincasdellitoral.entidades.Usuario;
+import com.blasdsaidon.fincasdellitoral.repositorios.ArchivoRepositorio;
 import com.blasdsaidon.fincasdellitoral.repositorios.UsuarioRepositorio;
 import com.blasdsaidon.fincasdellitoral.servicio.CodeudorServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.ContratoServicio;
@@ -24,6 +26,11 @@ import java.util.Collection;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,7 +68,8 @@ public class PortalControlador {
      
      @Autowired
      private ContratoServicio contratoServicio;
-     
+     @Autowired
+     private ArchivoRepositorio archivoRepo;
      
     /*
      @GetMapping("/")
@@ -245,6 +253,45 @@ public class PortalControlador {
             return "lista_contratos.html";
         }
         
+        @GetMapping("/contratos/{idContrato}")
+        public String detalleContrato(@PathVariable String idContrato, ModelMap modelo, HttpSession session){
+            Contrato contrato = contratoServicio.getOne(idContrato);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.addAttribute("contrato", contrato);
+            
+            return "contrato_detalle.html";
+        }
+        
+        @GetMapping("/archivo/{idArchivo}")
+        public ResponseEntity<byte[]> mostrarArchivo(@PathVariable String idArchivo){
+            
+   
+        Archivo archivo = archivoRepo.getOne(idArchivo);
+
+        byte[] archivoContenido = archivo.getContenido();
+
+        HttpHeaders headers = new HttpHeaders();
+    
+    // Aquí puedes detectar el tipo de archivo y establecer el Content-Type en consecuencia
+        if (archivo.getMime().startsWith("image/")) {
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        } else if (archivo.getMime().equals("application/pdf")) {
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        //}else if (archivo.getMime().equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")){
+            //headers.setContentType(MediaType.);
+        
+        } else {
+        // Tipo predeterminado si no se detecta un tipo específico
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        }   
+        headers.setContentDisposition(ContentDisposition.builder("attachment").filename(archivo.getNombre()).build());
+
+       
+        
+        return new ResponseEntity<>(archivoContenido, headers, HttpStatus.OK);
+}
+}
+        
     
 
-}
+

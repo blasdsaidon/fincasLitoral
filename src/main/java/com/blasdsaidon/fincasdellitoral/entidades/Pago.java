@@ -49,7 +49,7 @@ public class Pago {
 
     @Override
     public String toString() {
-        return "Pago{" + "mesAno=" + mesAno + ", realizado=" + realizado + '}';
+        return  "{ \"mesAno\": \"" + mesAno +"\", \"realizado\": " + realizado + " }";
     }
     
     

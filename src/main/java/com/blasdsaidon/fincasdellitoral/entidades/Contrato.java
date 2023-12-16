@@ -160,6 +160,11 @@ public class Contrato {
         this.seguro = seguro;
     }
 
+    @Override
+    public String toString() {
+        return "Contrato{" + "idContrato=" + idContrato + ", inquilino=" + inquilino + ", propietario=" + propietario + ", inmueble=" + inmueble + ", codeudores=" + codeudores + ", archivos=" + archivos + ", fechaInicio=" + fechaInicio + ", fechaFinaliz=" + fechaFinaliz + ", fechaActualiza=" + fechaActualiza + ", honorarios=" + honorarios + ", locaciones=" + locaciones + ", seguro=" + seguro + '}';
+    }
+
     
 
 
