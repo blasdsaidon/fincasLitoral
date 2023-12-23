@@ -89,6 +89,7 @@
                                     <tr>
                                         <th>Mes/Año</th>
                                         <th>Realizado</th>
+                                        <th>Recibo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -97,6 +98,9 @@
                                         <td>
                                             <span th:if="${pago.realizado}">Pagado</span>
                                             <span class="destacar" th:unless="${pago.realizado}">Adeuda</span>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/recibo/__${contrato.idContrato}__/__${pago.idPago}__}">Generar  recibo</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -112,6 +116,7 @@
                                     <tr>
                                         <th>Mes/Año</th>
                                         <th>Realizado</th>
+                                        <th>Recibo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -120,6 +125,8 @@
                                         <td>
                                             <span th:if="${pago.realizado}">Pagado</span>
                                             <span class="destacar" th:unless="${pago.realizado}">Adeuda</span>
+                                        </td>
+                                        <td> <a th:href="@{/recibo/__${contrato.idContrato}__/__${pago.idPago}__}">Generar recibo</a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -134,7 +141,8 @@
             <li th:text="${contrato.seguro.nombre}"></li>
         </ul>
     </div> -->
-        
+   
+
     </div>
         
 

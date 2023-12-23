@@ -45,11 +45,14 @@ public class Contrato {
     private Collection<Pago> locaciones  ;
     @OneToOne
     private Seguro seguro;
+    private Double importe;
+    private Double importeAgua;
+    private Double importeTasa;
 
     public Contrato() {
     }
 
-    public Contrato(String idContrato, Inquilino inquilino, Propietario propietario, Inmueble inmueble, Collection<Codeudor> codeudores, Collection<Archivo> archivos, String fechaInicio, String fechaFinaliz, boolean fechaActualiza, Collection<Pago> honorarios, Collection<Pago> locaciones, Seguro seguro) {
+    public Contrato(String idContrato, Inquilino inquilino, Propietario propietario, Inmueble inmueble, Collection<Codeudor> codeudores, Collection<Archivo> archivos, String fechaInicio, String fechaFinaliz, boolean fechaActualiza, Collection<Pago> honorarios, Collection<Pago> locaciones, Seguro seguro, Double importe, Double importeAgua, Double importeTasa) {
         this.idContrato = idContrato;
         this.inquilino = inquilino;
         this.propietario = propietario;
@@ -62,6 +65,9 @@ public class Contrato {
         this.honorarios = honorarios;
         this.locaciones = locaciones;
         this.seguro = seguro;
+        this.importe = importe;
+        this.importeAgua = importeAgua;
+        this.importeTasa = importeTasa;
     }
 
     public String getIdContrato() {
@@ -112,6 +118,18 @@ public class Contrato {
         return seguro;
     }
 
+    public Double getImporte() {
+        return importe;
+    }
+
+    public Double getImporteAgua() {
+        return importeAgua;
+    }
+
+    public Double getImporteTasa() {
+        return importeTasa;
+    }
+
     public void setIdContrato(String idContrato) {
         this.idContrato = idContrato;
     }
@@ -160,13 +178,23 @@ public class Contrato {
         this.seguro = seguro;
     }
 
-    @Override
-    public String toString() {
-        return "Contrato{" + "idContrato=" + idContrato + ", inquilino=" + inquilino + ", propietario=" + propietario + ", inmueble=" + inmueble + ", codeudores=" + codeudores + ", archivos=" + archivos + ", fechaInicio=" + fechaInicio + ", fechaFinaliz=" + fechaFinaliz + ", fechaActualiza=" + fechaActualiza + ", honorarios=" + honorarios + ", locaciones=" + locaciones + ", seguro=" + seguro + '}';
+    public void setImporte(Double importe) {
+        this.importe = importe;
     }
 
+    public void setImporteAgua(Double importeAgua) {
+        this.importeAgua = importeAgua;
+    }
+
+    public void setImporteTasa(Double importeTasa) {
+        this.importeTasa = importeTasa;
+    }
+
+    @Override
+    public String toString() {
+        return "Contrato{" + "idContrato=" + idContrato + ", inquilino=" + inquilino + ", propietario=" + propietario + ", inmueble=" + inmueble + ", codeudores=" + codeudores + ", archivos=" + archivos + ", fechaInicio=" + fechaInicio + ", fechaFinaliz=" + fechaFinaliz + ", fechaActualiza=" + fechaActualiza + ", honorarios=" + honorarios + ", locaciones=" + locaciones + ", seguro=" + seguro + ", importe=" + importe + ", importeAgua=" + importeAgua + ", importeTasa=" + importeTasa + '}';
+    }
+    
     
 
-
-    
 }

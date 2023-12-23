@@ -22,7 +22,7 @@ async function obtenerProvincia(){
             
             
             let nuevaOpcion = document.createElement("option");
-            nuevaOpcion.value = provincia.id;
+            nuevaOpcion.value = provincia.nombre;
             nuevaOpcion.text = provincia.nombre;
             select.add(nuevaOpcion)
             } 
@@ -58,7 +58,7 @@ async function obtenerProvincia(){
             // Agrega las ciudades obtenidas de la API al select de ciudades
             data.localidades.forEach(ciudad => {
                 let nuevaOpcion = document.createElement("option");
-                nuevaOpcion.value = ciudad.id;
+                nuevaOpcion.value = ciudad.nombre;
                 nuevaOpcion.text = ciudad.nombre;
                 ciudadSelect.add(nuevaOpcion)}   )
           })

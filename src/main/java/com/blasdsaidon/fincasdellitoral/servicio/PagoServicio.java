@@ -52,6 +52,7 @@ public class PagoServicio {
             Pago pago = new Pago();
             pago.setMesAno(formatter.format(nuevaFecha));
             pago.setRealizado(Boolean.FALSE);
+            pago.setNumeroCuota(i+1);
             pagoRepo.save(pago);
             listaPago.add(pago);
         }

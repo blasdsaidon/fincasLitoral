@@ -2,7 +2,7 @@
 function compararFechas() {
     // Obtener la fecha actual
      // Obtener la fecha actual
-     var fechaActual = moment().format["YYYY/MM/DD"];
+     var fechaActual = moment().format["DD/MM/YYYY"];
 
      // Obtener la fecha de la tabla
      var elementosFecha = document.querySelectorAll('.fechaTabla');

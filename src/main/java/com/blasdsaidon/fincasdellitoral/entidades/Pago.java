@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -22,8 +23,15 @@ public class Pago {
     private String idPago;
     private String mesAno;
     private Boolean realizado;
+    @OneToOne
+    private Recibo recibo;
+    private int numeroCuota;
 
     public Pago() {
+    }
+
+    public String getIdPago() {
+        return idPago;
     }
 
     public String getMesAno() {
@@ -34,9 +42,16 @@ public class Pago {
         return realizado;
     }
 
-    public Pago(String mesAno, Boolean realizado) {
-        this.mesAno = mesAno;
-        this.realizado = realizado;
+    public Recibo getRecibo() {
+        return recibo;
+    }
+
+    public int getNumeroCuota() {
+        return numeroCuota;
+    }
+
+    public void setIdPago(String idPago) {
+        this.idPago = idPago;
     }
 
     public void setMesAno(String mesAno) {
@@ -47,11 +62,20 @@ public class Pago {
         this.realizado = realizado;
     }
 
+    public void setRecibo(Recibo recibo) {
+        this.recibo = recibo;
+    }
+
+    public void setNumeroCuota(int numeroCuota) {
+        this.numeroCuota = numeroCuota;
+    }
+
     @Override
     public String toString() {
-        return  "{ \"mesAno\": \"" + mesAno +"\", \"realizado\": " + realizado + " }";
+        return "Pago{" + "idPago=" + idPago + ", mesAno=" + mesAno + ", realizado=" + realizado + ", recibo=" + recibo + ", numeroCuota=" + numeroCuota + '}';
     }
-    
+
+   
     
     
 }

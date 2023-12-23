@@ -14,6 +14,7 @@ import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
 import com.blasdsaidon.fincasdellitoral.entidades.Seguro;
 import com.blasdsaidon.fincasdellitoral.entidades.Usuario;
 import com.blasdsaidon.fincasdellitoral.repositorios.ArchivoRepositorio;
+import com.blasdsaidon.fincasdellitoral.repositorios.PagoRepositorio;
 import com.blasdsaidon.fincasdellitoral.repositorios.UsuarioRepositorio;
 import com.blasdsaidon.fincasdellitoral.servicio.CodeudorServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.ContratoServicio;
@@ -24,6 +25,7 @@ import com.blasdsaidon.fincasdellitoral.servicio.InquilinoServicio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
@@ -70,7 +72,8 @@ public class PortalControlador {
      private ContratoServicio contratoServicio;
      @Autowired
      private ArchivoRepositorio archivoRepo;
-     
+     @Autowired
+     private PagoRepositorio pagoRepo;
     /*
      @GetMapping("/")
     public String index(ModelMap modelo){
@@ -290,6 +293,24 @@ public class PortalControlador {
         
         return new ResponseEntity<>(archivoContenido, headers, HttpStatus.OK);
 }
+        
+        @GetMapping("/recibo/{idContrato}/{idPago}")
+        public String recibo(@PathVariable String idContrato, @PathVariable String idPago, ModelMap modelo){
+            System.out.println("idPago" + idPago);
+            Optional<Pago> respuesta = pagoRepo.findById(idPago);
+            Pago pago=new Pago();
+            if (respuesta.isPresent()) {
+                pago = respuesta.get();
+                
+            }
+            System.out.println("!pago" +pago);
+            Contrato contrato = contratoServicio.getOne(idContrato);
+            
+            modelo.addAttribute("contrato", contrato);
+            modelo.addAttribute("pago", pago);
+            
+            return "recibo.html";
+        }
 }
         
     
