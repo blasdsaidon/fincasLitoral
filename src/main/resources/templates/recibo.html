@@ -11,7 +11,7 @@
      <title>Factura</title>
     
     </head>
-    <page backtop="0" backbottom="0" backleft="0" backright="0">
+    <page backtop="0" backbottom="0" backleft="0" backright="0" style="display: flex; justify-content: center; flex-direction: column;">
     
         <div  >
             <div id="contenido" class="row factura">
@@ -33,7 +33,7 @@
                     <div style="margin: auto;">
                         <h6 style="font-weight: bold; margin: 0;">RECIBO</h6>
                         <p style="font-size: 11px; margin: 0;">DOCUMENTO NO VALIDO COMO FACTURA</p>
-                        <p>N°: 00002-00000800</p>
+                        <p>N°: 00004-00000001</p>
                         <div class="d-flex"><p style="margin-right: 4px;">Fecha:</p><p id="fecha"></p></div>
                         <p style="font-size: 10px; margin: 0;" >CUIT: 27-31103339-0</p>
                         <p style="font-size: 10px; margin: 0;" >Ing. Brutos: 011-181581-4</p>
@@ -68,7 +68,7 @@
                     
                     <div class="d-flex justify-content-between">
                        <div class="d-flex"> <p class="me-2">Contrato:</p>
-                        <p  class="capitalizar" th:text="${contrato.idContrato}"></p>
+                        <p  class="capitalizar" th:text="${contrato.numContrato}"></p>
                     </div>
                     <div class="d-flex">
                         <p class="me-2">Inicio:</p>
@@ -113,7 +113,7 @@
                             <td th:text="${pago.numeroCuota}"></td>
                             <td class="fechaIso" th:text="${pago.mesAno}"></td>
                             <td class="añoIso"></td>
-                            <td class="d-flex">  <p class="me-2">$</p><input onchange="sumaTotal()" class="sumando" type="number"></td>
+                            <td class="d-flex">  <p class="me-2">$</p><input onchange="sumaHono()" class="sumandoHono" type="number" th:value="${pago.importe}" ></td>
                         </tr>
                         <tr>
                             <td>Tasa General de Inmuebles</td>
@@ -121,7 +121,7 @@
                             <td class="fechaIso" th:text="${pago.mesAno}"></td>
                             <td class="añoIso"></td>
                             
-                            <td class="d-flex"> <p class="me-2">$</p><input onchange="sumaTotal()" class="sumando" type="number"></td>
+                            <td class="d-flex"> <p class="me-2">$</p><input onchange="sumaHono()" th:text="${pago.importeTasa}" class="sumandoHono" type="number" ></td>
                         
                         </tr>
                         
@@ -132,12 +132,41 @@
                              <td class="añoIso"></td> 
                              
                                
-                            <td class="d-flex"> <p class="me-2">$</p><input onchange="sumaTotal()" class="sumando" type="number"></td>
+                            <td class="d-flex"> <p class="me-2">$</p><input onchange="sumaHono()" th:value="${pago.importeAgua}" class="sumandoHono" type="number"   ></td>
                         
                         </tr>           
-                        <tr></tr>
-                        <tr></tr>
-                        <tr></tr>     
+                        <tr><td><input th:value="${pago.otros[__${0}__].concepto}"  type="text"   ></td>
+                            <td th:text="${pago.numeroCuota}"></td>
+                             <td class="fechaIso" th:text="${pago.mesAno}"></td>
+                             <td class="añoIso"></td> 
+                             
+                               
+                            <td class="d-flex"> <p class="me-2">$</p><input onchange="sumaHono()" class="sumandoHono" type="number" th:value="${pago.otros[__${0}__].monto}" ></td>
+                        </tr>
+                        <tr><td><input type="text" th:value="${pago.otros[__${1}__].concepto}"   ></td>
+                            <td th:text="${pago.numeroCuota}"></td>
+                             <td class="fechaIso" th:text="${pago.mesAno}"></td>
+                             <td class="añoIso"></td> 
+                             
+                               
+                            <td class="d-flex"> <p class="me-2">$</p><input onchange="sumaHono()" class="sumandoHono" type="number" th:value="${pago.otros[__${1}__].monto}"  ></td>
+                        </tr>
+                        <tr><td><input type="text" th:value="${pago.otros[__${2}__].concepto}"  ></td>
+                            <td th:text="${pago.numeroCuota}"></td>
+                             <td class="fechaIso" th:text="${pago.mesAno}"></td>
+                             <td class="añoIso"></td> 
+                             
+                               
+                            <td class="d-flex"> <p class="me-2">$</p><input onchange="sumaHono()" class="sumandoHono" type="number" th:value="${pago.otros[__${2}__].monto}"  ></td>
+                        </tr>
+                        <tr><td><input  type="text"   ></td>
+                            <td th:text="${pago.numeroCuota}"></td>
+                             <td class="fechaIso" th:text="${pago.mesAno}"></td>
+                             <td class="añoIso"></td> 
+                             
+                               
+                            <td class="d-flex"> <p class="me-2">$</p><input onchange="sumaHono()" class="sumandoHono" type="number"   ></td>
+                        </tr>     
                         <tr style="border-bottom: 2px solid black;">
                             <td>Descuento Honorarios</td>
                             <td th:text="${pago.numeroCuota}"></td>
@@ -145,7 +174,7 @@
                             <td class="añoIso"></td>
                             
                                 
-                            <td class="d-flex"><p class="me-2">$</p><input onchange="sumaTotal()" class="sumando" type="number"></td>
+                            <td class="d-flex"><p class="me-2">$</p><input onchange="sumaHono()" id="restandoHono" type="number" th:value="${pago.descuentoHono}" ></td>
                         
                         </tr>
                     </tbody>
@@ -159,7 +188,7 @@
                     </div>
             <div class="total d-flex ">
                 <p class="me-2" >Total a Pagar: $ </p>
-                <p id="suma"></p>
+                <p id="sumaHono"></p>
             </div>
         </div>
         <div class="d-flex" style="width: 100%;">
@@ -167,6 +196,11 @@
             <textarea style="display: flex; flex: 1; background-color: #c3bbbb;" type="text"></textarea>
         </div>
         <div style="text-align: center; margin-top: 30px ; font-weight: bold; ">
+            <p style="font-size: 11px;">Hemilse Ivana Salari</p>
+
+               <p style="font-size: 11px;"> Corredor Inmobiliario</p>
+                
+                <P style="font-size: 11px;">MP CCI 441</p>
             <p>----------------------------</p>
             <p  >Firma</p>
         </div>
@@ -174,7 +208,7 @@
         </div>
         </div>
     
-    <button onclick="generarPDF()">Generar PDF</button>
+    <button id="boton" class="btn-primary align-self-center m-2" onclick="generarPDF()">Generar PDF</button>
     
     
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

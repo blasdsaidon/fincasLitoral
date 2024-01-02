@@ -5,9 +5,14 @@
         console.log(fechaActual);
         inserteFecha.innerText = fechaActual;
 
-        function generarPDF() {
+        async function generarPDF() {
             const elementoParaConvertir = document.getElementById("contenido"); // <-- Aquí puedes elegir cualquier elemento del DOM
-       
+            let boton = document.getElementById("boton");
+
+            boton.classList.add("btn-secondary");
+            boton.setAttribute("disabled", true);
+            boton.innerText = "Cargando..."
+
             html2pdf()
             .set({
                 margin: 0,
@@ -35,7 +40,15 @@
             })
             .from(elementoParaConvertir)
             .save()
+            .then(()=>{
+                boton.classList.remove("btn-secondary");
+                boton.removeAttribute("disabled");
+                boton.innerText = "Generar PDF"
+            })
             .catch(err => console.log(err));
+
+            
+
         };
         
         function formatFecha() {
@@ -67,19 +80,32 @@
     })
     }
 
-    function sumaTotal(){
-        console.log("se llama");
-        let sumandos = document.getElementsByClassName('sumando');
+    function sumaTotal(sumandos, restando, total){
+        console.log(sumandos)
+        console.log(restando)
+        console.log(total)
         let sumatoria = 0;
         Array.from(sumandos).forEach((sumando)=>{
-            sumatoria += Number(sumando.value);
+          if(sumando.value)  sumatoria += Number(sumando.value);
         })
-
-        let sumaTotal = document.getElementById('suma');
-        sumaTotal.innerText = sumatoria;
-
+        if(restando && restando.value) sumatoria=sumatoria-Number(restando.value);
+        
+        total.innerText = sumatoria;
+    
     }
 
-    window.addEventListener("load", formatFecha);
+    function sumaHono(){
+        let sumandos = document.getElementsByClassName('sumandoHono');
+        let restando = document.getElementById('restandoHono')
+        let totalSuma = document.getElementById('sumaHono');
+        sumaTotal(sumandos, restando, totalSuma);
+    }
+
+    
+
+    window.addEventListener("load", function() {
+    formatFecha();
+    sumaHono();
+});
     
        

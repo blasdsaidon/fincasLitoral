@@ -9,6 +9,8 @@ import com.blasdsaidon.fincasdellitoral.entidades.Codeudor;
 import com.blasdsaidon.fincasdellitoral.entidades.Contrato;
 import com.blasdsaidon.fincasdellitoral.entidades.Inmueble;
 import com.blasdsaidon.fincasdellitoral.entidades.Inquilino;
+import com.blasdsaidon.fincasdellitoral.entidades.Otros;
+import com.blasdsaidon.fincasdellitoral.entidades.OtrosDTO;
 import com.blasdsaidon.fincasdellitoral.entidades.Pago;
 import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
 import com.blasdsaidon.fincasdellitoral.entidades.Seguro;
@@ -22,8 +24,12 @@ import com.blasdsaidon.fincasdellitoral.servicio.PropietarioServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.UsuarioServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.InmuebleServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.InquilinoServicio;
+import com.blasdsaidon.fincasdellitoral.servicio.OtrosServicio;
+import com.blasdsaidon.fincasdellitoral.servicio.PagoServicio;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
@@ -36,6 +42,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,6 +81,11 @@ public class PortalControlador {
      private ArchivoRepositorio archivoRepo;
      @Autowired
      private PagoRepositorio pagoRepo;
+     @Autowired
+     private PagoServicio pagoServicio;
+     
+     @Autowired
+     private OtrosServicio otrosServicio;
     /*
      @GetMapping("/")
     public String index(ModelMap modelo){
@@ -234,12 +246,12 @@ public class PortalControlador {
         }
                 return "redirect:/";
             }
-        
+        /*(String esComercial, Integer periodoActualiza, String indice, String fechaInicio, ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos,Integer numContrato, String numeroCuenta, String poliza, String fechaVenceSeguro)*/
         @PostMapping("/contrato/crear")
-        public String crearContrato (String fechaActualiza, /*@RequestParam(required=false)List<Pago> honorarios,@RequestParam(required=false) List<Pago> locaciones, @RequestParam(required=false)Seguro seguro,*/ String fechaInicio,@RequestParam ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos){
+        public String crearContrato (String esComercial, String periodoActualiza, String indice, String poliza, String numeroCuenta, String fechaVenceSeguro, String fechaInicio,@RequestParam ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos, Integer numContrato){
             try {
                 System.out.println("entro a controlador");
-                contratoServicio.crearContrato(fechaActualiza, /*honorarios, locaciones, seguro,*/ fechaInicio, codeudores, fechaFin, idInq, idProp, idInm, archivos);
+                contratoServicio.crearContrato(esComercial, periodoActualiza, indice, fechaInicio, codeudores, fechaFin, idInq, idProp, idInm, archivos, numContrato, numeroCuenta, poliza, fechaVenceSeguro);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -252,15 +264,52 @@ public class PortalControlador {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             List<Contrato> contratos = contratoServicio.mostraContrato();
              modelo.addAttribute("listaContratos", contratos);  
+             if (logueado == null) {
+           return "redirect:/login";
+       }
             
             return "lista_contratos.html";
         }
         
         @GetMapping("/contratos/{idContrato}")
         public String detalleContrato(@PathVariable String idContrato, ModelMap modelo, HttpSession session){
+            Pago[] ultimosHonos = contratoServicio.ultimasCuotas(idContrato, "honorario");
+            
+            Pago[] ultimasLocas = contratoServicio.ultimasCuotas(idContrato, "locacion");
+            Pago ultimoHono=ultimosHonos[0];
+            
+            if (ultimoHono.getOtros()!=null) {
+                
+            
+            ArrayList<Otros> ordenOtrosHono = new ArrayList<>(ultimoHono.getOtros());
+            Collections.sort(ordenOtrosHono, Comparator
+    .comparing(Otros::getMonto, Comparator.nullsLast(Comparator.naturalOrder()))
+    .thenComparing(Otros::getConcepto, Comparator.nullsLast(Comparator.naturalOrder())));
+                    
+            ultimoHono.setOtros(ordenOtrosHono);
+            }
+            
+            Pago siguienteHono=ultimosHonos[1];
+            Pago ultimaLoca=ultimasLocas[0];
+            if(ultimaLoca.getOtros()!=null){
+            ArrayList<Otros> ordenOtrosLoca = new ArrayList<>(ultimaLoca.getOtros());
+Collections.sort(ordenOtrosLoca, Comparator
+    .comparing(Otros::getMonto, Comparator.nullsLast(Comparator.naturalOrder()))
+    .thenComparing(Otros::getConcepto, Comparator.nullsLast(Comparator.naturalOrder())));
+            ultimaLoca.setOtros(ordenOtrosLoca);
+            }
+            Pago siguienteLoca=ultimasLocas[1];
             Contrato contrato = contratoServicio.getOne(idContrato);
+            
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             modelo.addAttribute("contrato", contrato);
+            modelo.addAttribute("ultimoHono", ultimoHono);
+            modelo.addAttribute("ultimaLoca", ultimaLoca);
+            modelo.addAttribute("siguienteHono", siguienteHono);
+            modelo.addAttribute("siguienteLoca", siguienteLoca);
+            if (logueado == null) {
+           return "redirect:/login";
+       }
             
             return "contrato_detalle.html";
         }
@@ -310,6 +359,30 @@ public class PortalControlador {
             modelo.addAttribute("pago", pago);
             
             return "recibo.html";
+        }
+        
+        @PostMapping("/datosReciboHono/{idContrato}")
+        public String cargarMontosHono(@PathVariable String idContrato, String idPago, String idPagoSgte,  Double monto, Double montoAgua, Double montoTasa, String concepto1, String concepto2, String concepto3, Integer monto1, Integer monto2, Integer monto3, Double interesesPuni, Double descuentoHono){
+            
+            ArrayList<Otros> otros = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
+            ArrayList<Otros> otrosSgte = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
+            
+            pagoServicio.guardarMontos(monto, montoAgua, montoTasa, idPago, otros, interesesPuni, descuentoHono);
+            pagoServicio.guardarMontos(monto, montoAgua, montoTasa, idPagoSgte, otrosSgte, interesesPuni, descuentoHono);
+            System.out.println("despues de guardar");
+            return "redirect:/contratos/"+idContrato;
+        }
+        
+         @PostMapping("/datosReciboLoca/{idContrato}")
+        public String cargarMontosLoca(@PathVariable String idContrato, String idPagoLoca, String idPagoSgteLoca,  Double montoLoca, Double montoAguaLoca, Double montoTasaLoca ,Double seguroImporte,String concepto1, String concepto2, String concepto3, Integer monto1, Integer monto2, Integer monto3,Double interesesPuni, Double descuentoHono){
+            ArrayList<Otros> otros = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
+            ArrayList<Otros> otrosSgte = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
+
+            contratoServicio.montoSeguro(idContrato, seguroImporte);
+            pagoServicio.guardarMontos(montoLoca, montoAguaLoca, montoTasaLoca, idPagoLoca, otros, interesesPuni, descuentoHono );
+            pagoServicio.guardarMontos(montoLoca, montoAguaLoca, montoTasaLoca, idPagoSgteLoca, otrosSgte, interesesPuni, descuentoHono);
+            System.out.println("despues de guardar");
+            return "redirect:/contratos/"+idContrato;
         }
 }
         

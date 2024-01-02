@@ -41,7 +41,11 @@ body{
     color: white;
     font-weight: 500;
 }
-
+.nav-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .boton {
     display: flex;
     justify-content: center;
@@ -257,9 +261,18 @@ div.divider{
     cursor: pointer;
 }
 
-table p {
+table p, table a {
     font-size: medium;
-    margin: auto;
+    padding: 0;
+    margin: 0;
+}
+input.sumandoHono, input.sumandoLoca, input.restandoHono, input.restandoLoca {
+    width: 110px;
+}
+
+table.montos td {
+    font-size: 13px;
+    width: fit-content;
 }
 
 .detalle-body h1 {

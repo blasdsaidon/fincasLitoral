@@ -4,10 +4,12 @@
  */
 package com.blasdsaidon.fincasdellitoral.entidades;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -26,6 +28,93 @@ public class Pago {
     @OneToOne
     private Recibo recibo;
     private int numeroCuota;
+    private Double interesesPuni;
+    private Double descuentoHono;
+
+    public Pago(String idPago, String mesAno, Boolean realizado, Recibo recibo, int numeroCuota, Double interesesPuni, Double descuentoHono, Double importe, Double importeAgua, Double importeTasa, Collection<Otros> otros) {
+        this.idPago = idPago;
+        this.mesAno = mesAno;
+        this.realizado = realizado;
+        this.recibo = recibo;
+        this.numeroCuota = numeroCuota;
+        this.interesesPuni = interesesPuni;
+        this.descuentoHono = descuentoHono;
+        this.importe = importe;
+        this.importeAgua = importeAgua;
+        this.importeTasa = importeTasa;
+        this.otros = otros;
+    }
+    
+    private Double importe;
+    private Double importeAgua;
+    private Double importeTasa;
+    @OneToMany
+    private Collection<Otros> otros;
+
+    
+    public void setImporte(Double importe) {
+        this.importe = importe;
+    }
+
+    public void setImporteAgua(Double importeAgua) {
+        this.importeAgua = importeAgua;
+    }
+
+    public void setImporteTasa(Double importeTasa) {
+        this.importeTasa = importeTasa;
+    }
+
+    public Double getInteresesPuni() {
+        return interesesPuni;
+    }
+
+    public void setInteresesPuni(Double interesesPuni) {
+        this.interesesPuni = interesesPuni;
+    }
+
+    public Double getDescuentoHono() {
+        return descuentoHono;
+    }
+
+    public void setDescuentoHono(Double descuentoHono) {
+        this.descuentoHono = descuentoHono;
+    }
+
+    
+
+    public Double getImporte() {
+        return importe;
+    }
+
+    public Double getImporteAgua() {
+        return importeAgua;
+    }
+
+    public Double getImporteTasa() {
+        return importeTasa;
+    }
+
+    public Pago(String idPago, String mesAno, Boolean realizado, Recibo recibo, int numeroCuota,  Double importe, Double importeAgua, Double importeTasa, Collection<Otros> otros) {
+        this.idPago = idPago;
+        this.mesAno = mesAno;
+        this.realizado = realizado;
+        this.recibo = recibo;
+        this.numeroCuota = numeroCuota;
+        
+        this.importe = importe;
+        this.importeAgua = importeAgua;
+        this.importeTasa = importeTasa;
+        this.otros = otros;
+    }
+
+    public void setOtros(Collection<Otros> otros) {
+        this.otros = otros;
+    }
+
+    public Collection<Otros> getOtros() {
+        return otros;
+    }
+
 
     public Pago() {
     }
@@ -72,7 +161,14 @@ public class Pago {
 
     @Override
     public String toString() {
-        return "Pago{" + "idPago=" + idPago + ", mesAno=" + mesAno + ", realizado=" + realizado + ", recibo=" + recibo + ", numeroCuota=" + numeroCuota + '}';
+        
+                return  "{"
+            + "\"mesAno\": \"" + mesAno + "\", "
+            + "\"realizado\": " + realizado + ", "
+            + "\"importe\": " + importe + ", "
+            + "\"importeAgua\": " + importeAgua + ", "
+            + "\"importeTasa\": " + importeTasa       
+            + "}";
     }
 
    

@@ -23,12 +23,12 @@ public class Seguro {
   private String poliza;
   private String fechaVencSeguro;
   private int cuota;
-  private Long importe;
+  private Double importe;
 
     public Seguro() {
     }
 
-    public Seguro(String numeroCuenta, String poliza, String fechaVencSeguro, int cuota, Long importe) {
+    public Seguro(String numeroCuenta, String poliza, String fechaVencSeguro, int cuota, Double importe) {
         this.numeroCuenta = numeroCuenta;
         this.poliza = poliza;
         this.fechaVencSeguro = fechaVencSeguro;
@@ -54,7 +54,7 @@ public class Seguro {
         return cuota;
     }
 
-    public Long getImporte() {
+    public Double getImporte() {
         return importe;
     }
 
@@ -74,7 +74,7 @@ public class Seguro {
         this.cuota = cuota;
     }
 
-    public void setImporte(Long importe) {
+    public void setImporte(Double importe) {
         this.importe = importe;
     }
 

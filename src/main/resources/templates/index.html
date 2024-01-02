@@ -86,11 +86,11 @@
                     <input maxlength="3" class="form-control form-group" type="text" th:value="${piso}" name="piso" placeholder="Piso"> 
                     <input  class="form-control form-group" type="text" th:value="${departamento}"  name="departamento" placeholder="Departamento"> 
                     <select id="provinciasLocad" required class="form-control form-select form-group selectProvincia"  name="provincia">
-                        <option th:value="${provincia}" selected>Seleccione provincia</option>
+                        <option th:value="${provincia}" disabled selected>Seleccione provincia</option>
                         </select>
                         
                         <select id="ciudadesLocad" required class="form-control form-select form-group" name="localidad" >
-                            <option th:value="${localidad}" selected>Seleccione ciudad</option>
+                            <option th:value="${localidad}" disabled selected>Seleccione ciudad</option>
                     </select>
                 </div>
             </div>  
@@ -247,9 +247,26 @@
                 <div class="col-form" >
                     <div  class="col-6 ">
                     <legend>Datos</legend>
+
+                    <label class="form-label" for="customFile">Tipo de Contrato</label> 
+                    <div class="d-flex">
+                    <div class="form-check form-group">
+                        <input value="comercial" checked class="form-check-input" type="radio" name="esComercial" id="flexRadioDefault1">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                          Comercial
+                        </label>
+                      </div>
+                      <div class="form-check form-group">
+                        <input value="vivienda" class="form-check-input" type="radio" name="esComercial" id="flexRadioDefault2" >
+                        <label class="form-check-label" for="flexRadioDefault2">
+                          Vivienda
+                        </label>
+                      </div>
+                    </div>
+                        <input class="form-control form-group" type="number" placeholder="Numero de contrato" th:value="${numContrato}" name="numContrato">
                         
                         <select id="Locatario" required class="form-control form-select form-group capitalizar" name="idInq">
-                            <option value="" selected>Seleccione Locatario</option>
+                            <option value="" disabled selected>Seleccione Locatario</option>
                             <option
                                 th:each="inquilino:${listaInquilino}"
                                 th:value="${inquilino.idPersona}"
@@ -258,7 +275,7 @@
                         </select> 
 
                         <select id="Locador" required class="form-control form-select form-group capitalizar" name="idProp">
-                            <option value="" selected>Seleccione Locador</option>
+                            <option value="" disabled selected>Seleccione Locador</option>
                             <option
                                 th:each="propietario:${listaPropietario}"
                                 th:value="${propietario.idPersona}"
@@ -266,7 +283,7 @@
                         </select> 
 
                         <select id="Inmueble" required class="form-control form-select form-group capitalizar" name="idInm">
-                                <option value="" selected>Seleccione Inmueble </option>
+                                <option value="" disabled selected>Seleccione Inmueble </option>
                                 <option
                                 th:each="inmueble:${listaInmueble}"
                                 th:value="${inmueble.idInm}"
@@ -274,6 +291,7 @@
                         </select>
 
                         <select   id="opciones" class="form-control form-select form-group capitalizar" >
+                            <option disabled  selected >Seleccione Codeudor</option>
                             <option
                                 th:each="codeudor:${listaCodeudor}"
                                 th:value="${codeudor.idPersona}"
@@ -291,25 +309,15 @@
                     </div>
                         </div>
                         
-                        <label class="form-label" for="customFile">Fecha inicio contrato</label> 
-                        <input  class="form-control form-group" type="date" value="${fechaInicio}" name="fechaInicio" >  
+                        <legend>Seguro</legend>
 
-                        <label class="form-label" for="customFile">Fecha Actualización de contrato</label> 
-                        <div class="form-check form-group">
-                            <input value="viejo" checked class="form-check-input" type="radio" name="fechaActualiza" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
-                              Ley de contrato anterior
-                            </label>
-                          </div>
-                          <div class="form-check form-group">
-                            <input value="nuevo" class="form-check-input" type="radio" name="fechaActualiza" id="flexRadioDefault2" >
-                            <label class="form-check-label" for="flexRadioDefault2">
-                              Ley de contrato actual
-                            </label>
-                          </div>
-
-                        <label class="form-label" for="customFile">Fecha finalización de contrato</label> 
-                        <input  class="form-control form-group" type="date" value="${fechaFin}" name="fechaFin" >
+                        <label class="form-label" for="customFile">Poliza </label> 
+                        <input    class="form-control form-group" type="text" name="poliza" placeholder="000000000/00">  
+                        <label class="form-label" for="customFile">Número de Cuenta </label> 
+                        <input    class="form-control form-group" type="text" name="numeroCuenta" placeholder="000000" >  
+                        <label class="form-label" for="customFile">Fecha Vencimiento </label> 
+                        <input    class="form-control form-group" type="date" name="fechaVenceSeguro" >  
+                        
                         
                         
 
@@ -318,6 +326,51 @@
                     
                     </div>
                     <div class="col-6">
+                        <legend>Fechas y Actualización</legend>
+                        <div class="d-flex justify-content-between" style="max-width: 80%;">
+                            <div>
+                        <label class="form-label" for="customFile">Fecha inicio </label> 
+                        <input   style="width: 180px;" class="form-control form-group" type="date" value="${fechaInicio}" name="fechaInicio" >  
+                    </div>
+                    <div >
+                        <label class="form-label" for="customFile">Fecha finalización</label> 
+                        <input style="width: 180px;"  class="form-control form-group " type="date" value="${fechaFin}" name="fechaFin" >
+                    </div>
+                    </div>
+                        <div class="d-flex justify-content-between" style="max-width: 80%;">
+                            <div>
+                        <label class="form-label" for="customFile">Periodo Actualización</label> 
+                        <select  style="width: 180px;"   id="opciones" class="form-control form-select form-group capitalizar" name="periodoActualiza"  >
+                            
+                            <option value="3">3 Meses</option>
+                            <option value="4">4 Meses</option>
+                            <option value="5">5 Meses</option>
+                            <option value="6">6 Meses</option>
+                            <option value="7">7 Meses</option>
+                            <option value="8">8 Meses</option>
+                            <option value="9">9 Meses</option>
+                            <option value="10">10 Meses</option>
+                            <option value="11">11 Meses</option>
+                            <option value="12">12 Meses</option>
+    
+                        </select>
+                        </div>
+                        <div>
+                        <label class="form-label" for="customFile">Indice actualización</label> 
+                        <select   style="width: 180px;" id="opciones" class="form-control form-select form-group capitalizar" name="indice"  >
+                            
+                            <option value="ICL">ICL</option>
+                            <option value="IPC">IPC</option>
+                            <option value="CASA PROPIA">CASA PROPIA</option>
+                            <option value="IS">IS</option>
+                            <option value="IPIM">IPIM</option>
+                            <option value="OTRO">OTRO</option>
+                            
+    
+                        </select>
+                         </div>
+                        </div>
+
                         <legend>Archivos</legend>
                         
                         <div style="display: flex; flex-direction: column;">

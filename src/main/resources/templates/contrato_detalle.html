@@ -44,23 +44,177 @@
             </header>
           </div>
         </nav>
+
         <body class="body-index detalle-body">
-            <div class="container mt-5">
+            <div class=container> 
+            <div class= "row mt-5">
                 <h1 class="section-title">Detalle de Contrato</h1>
-            
-                <div class="detalle">
+                <div class="col-md-4">
+                <div class="detalle ">
                     <div class="section-title">Información General</div>
                     <ul class="list-group">
-                        <li class="list-group-item">ID Contrato: <span th:text="${contrato.idContrato}"></span></li>
+                        <li class="list-group-item">Numero Contrato: <span th:text="${contrato.numContrato}"></span></li>
                         <li class="list-group-item capitalizar">Inquilino: <span th:text="${contrato.inquilino.nombre + ' ' + contrato.inquilino.apellido}"></span></li>
                         <li class="list-group-item capitalizar">Propietario: <span th:text="${contrato.propietario.nombre + ' ' + contrato.propietario.apellido}"></span></li>
                         <li class="list-group-item capitalizar">Inmueble: <span th:text="${contrato.inmueble.domicilio.calle + ' ' + contrato.inmueble.domicilio.numero}"></span></li>
                         <li class="list-group-item ">Fecha Inicio: <span th:text="${contrato.fechaInicio}"></span></li>
                         <li class="list-group-item">Fecha Finalización: <span th:text="${contrato.fechaFinaliz}"></span></li>
-                        <li class="list-group-item"><span th:if="${contrato.fechaActualiza}">
-                         Ley de contrato nueva</span>
-                        <span th:unless="${contrato.fechaActualiza}">Ley de contrato anterior</span></li>
+                        <li class="list-group-item">Tipo de Contrato:<span th:if="${contrato.esComercial}">
+                         Comercial</span>
+                        <span th:unless="${contrato.esComercial}">Vivienda</span></li>
+                        <li class="list-group-item">Indice de Actualización: <span th:text="${contrato.indice}"></span></li>
+                            <li class="list-group-item">Período de  Actualización: <span th:text="${contrato.periodoActualiza}"> </span> Meses</li>
+                            
+                           
                     </ul>
+                </div>
+            </div>
+                    <div class="col-md-4" >
+                        <div class="detalle">
+                            <div class="section-title d-flex">Locacion<p th:text="${ultimaLoca.mesAno + ' | Cuota N° ' + ultimaLoca.numeroCuota}" class="fechaCuota m-0 ps-2"></p></div>
+                            
+                             <form method="POST" th:action="@{/datosReciboLoca/__${contrato.idContrato}__}">
+
+                           <input type="hidden" th:value="${ultimaLoca.idPago}" name="idPagoLoca">
+                           <input type="hidden" th:value="${siguienteLoca.idPago}" name="idPagoSgteLoca">
+                            
+                            <table class="table montos">
+                                <thead>
+                                    <tr>
+                                        <th>Concepto</th>
+                                        <th>Importe</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Locacion</td>
+                                        <td class="d-flex justify-content-end"><p class="me-2 ">$</p><input  th:value="${ultimaLoca.importe}" id="montoLocararios" onchange="sumaLoca()" class="sumandoLoca" type="number" name="montoLoca" placeholder="Ingrese Importe"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tasa General de Inmuebles</td>
+                                        <td class="d-flex justify-content-end"><p class="me-2 ">$</p><input th:value="${ultimaLoca.importeTasa}" id="montoTasa" onchange="sumaLoca()" class="sumandoLoca" type="number" placeholder="Ingrese Importe" name="montoTasaLoca"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Agua Corriente y Cloacas</td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimaLoca.importeAgua}" id="montoAgua" onchange="sumaLoca()" class="sumandoLoca" name="montoAguaLoca" type="number" placeholder="Ingrese Importe"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Seguro</td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${contrato.seguro.importe}"  id="montoAgua" onchange="sumaLoca()" class="sumandoLoca" name="seguroImporte"  type="number" placeholder="Ingrese Importe"></td>
+
+                                    </tr>
+                                     <tr>
+                                        <td><input class="capitalizar" th:value="${ultimaLoca.otros[__${0}__].concepto}" id="montoAgua" type="text" placeholder="Ingrese Concepto" name="concepto1"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input id="montoAgua" th:value="${ultimaLoca.otros[__${0}__].monto}"  onchange="sumaLoca()" class="sumandoLoca"  type="number" placeholder="Ingrese Importe" name="monto1" /></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><input th:value="${ultimaLoca.otros[__${1}__].concepto}" id="montoAgua" class="capitalizar"  type="text" placeholder="Ingrese Concepto" name="concepto2"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimaLoca.otros[__${1}__].monto}"  id="montoAgua" onchange="sumaLoca()" class="sumandoLoca"  type="number" placeholder="Ingrese Importe" name="monto2"/></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><input th:value="${ultimaLoca.otros[__${2}__].concepto}" id="montoAgua" class="capitalizar"  type="text" placeholder="Ingrese Concepto" name="concepto3"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimaLoca.otros[__${2}__].monto}"  id="montoAgua" onchange="sumaLoca()" class="sumandoLoca"  type="number"  placeholder="Ingrese Importe" name="monto3"/></td>
+
+                             
+                                    </tr>
+                                   
+                                    <tr>
+                                        <td>Intereses y punitorios en mora</td>
+                                        <td class="d-flex"><p class="me-2 ">$</p><input onchange="sumaLoca()" id="restandoHon" th:value="${ultimaLoca.interesesPuni}" name="interesesPuni" class="sumandoLoca" type="number" placeholder="Ingrese Importe"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total a pagar:</td>
+                                        <td class="d-flex"><p  class="me-2 ">$</p><p id="sumaLoca"></p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="boton" >   
+                                <button type="submit" class="btn btn-primary"  >Actualizar montos</button> 
+                                </div> 
+                        </form> 
+                        </div>
+                    </div>
+                   
+                        <div class="col-md-4" >
+                           
+                        <div class="detalle">
+                            <div class="section-title d-flex">Honorarios<p th:text="${ultimoHono.mesAno +' | Cuota N° ' +  ultimoHono.numeroCuota }" class="fechaCuota m-0 ps-2"></p></div>
+                            
+                            <form method="POST" th:action="@{/datosReciboHono/__${contrato.idContrato}__}">
+
+                           <input type="hidden" th:value="${ultimoHono.idPago}" name="idPago">
+                           <input type="hidden" th:value="${siguienteHono.idPago}" name="idPagoSgte">
+
+                            <table class="table montos">
+                                <thead>
+                                    <tr>
+                                        <th>Concepto</th>
+                                        <th>Importe</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Locacion</td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input   th:value="${ultimoHono.importe}" id="montoHonorarios" onchange="sumaHono()" class="sumandoHono" type="number" name="monto" placeholder="Ingrese Importe"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tasa General de Inmuebles</td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimoHono.importeTasa}" id="montoTasa" onchange="sumaHono()" class="sumandoHono" type="number" placeholder="Ingrese Importe" name="montoTasa"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Agua Corriente y Cloacas</td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimoHono.importeAgua}" id="montoAgua" onchange="sumaHono()" class="sumandoHono" name="montoAgua" type="number" placeholder="Ingrese Importe"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><input class="capitalizar" th:value="${ultimoHono.otros[__${0}__].concepto}" id="montoAgua" type="text" placeholder="Ingrese Concepto" name="concepto1"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input id="montoAgua"  th:value="${ultimoHono.otros[__${0}__].monto}"  onchange="sumaHono()" class="sumandoHono"  type="number" placeholder="Ingrese Importe" name="monto1" /></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><input class="capitalizar" th:value="${ultimoHono.otros[__${1}__].concepto}" id="montoAgua"  type="text" placeholder="Ingrese Concepto" name="concepto2"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimoHono.otros[__${1}__].monto}"  id="montoAgua" onchange="sumaHono()" class="sumandoHono"  type="number" placeholder="Ingrese Importe" name="monto2"/></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><input class="capitalizar" th:value="${ultimoHono.otros[__${2}__].concepto}" id="montoAgua"  type="text" placeholder="Ingrese Concepto" name="concepto3"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimoHono.otros[__${2}__].monto}"  id="montoAgua" onchange="sumaHono()" class="sumandoHono"  type="number"  placeholder="Ingrese Importe" name="monto3"/></td>
+
+                             
+                                    </tr>
+
+                                    
+                                    <tr>
+                                        <td>Descuento Honorarios</td>
+                                        <td class="d-flex"><p class="me-2 ">$</p><input onchange="sumaHono()" id="restandoHono" th:value="${ultimoHono.descuentoHono}" name="descuentoHono" type="number" class="restandoHono" placeholder="Ingrese Importe"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total a pagar:</td>
+                                        <td class="d-flex"><p  class="me-2 ">$</p><p id="sumaHono"></p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="boton" >   
+                                <button type="submit" class="btn btn-primary"  >Actualizar montos</button> 
+                            </div> 
+                            <div class="d-flex justify-content-center">
+                            <a th:href="@{/recibo/__${contrato.idContrato}__/__${ultimoHono.idPago}__}">Generar recibo</a>
+                        </div>
+                        </form>
+                        </div>
+                        
+                    </div>
+                    
                 </div>
             
                 <div class="detalle">
@@ -84,6 +238,7 @@
                     <div class="col-md-6">
                         <div class="detalle">
                             <div class="section-title">Honorarios</div>
+                            <p hidden class="listaFechas" th:data-mi-objeto="${contrato.honorarios}"></p>
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -143,8 +298,9 @@
     </div> -->
    
 
-    </div>
-        
+    
+        </div>
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>

@@ -56,13 +56,67 @@ function cuotaActual() {
     });
 }
 
+// function setearMontos() {
+    
+//         let element = document.getElementById('listaHonorarios')
+//         console.log(element.dataset);
+//       if(element) { 
+//         let arrayHonorarios = JSON.parse(element.dataset.listaHonorarios);
+//         let fechaActual = moment().format("YYYY-MM-DD");
+//         let cuotaActual;
+        
+        
+//         for (let i = 0; i < arrayHonorarios.length; i++) {
+//             if (moment(arrayHonorarios[i].mesAno, "YYYY-MM-DD").unix() > moment(fechaActual).unix()) {
+//                 cuotaActual = arrayHonorarios[i];
+//                 break;
+//             }
+//         }
+
+//         if(cuotaActual.importe) document.getElementById('montoHonorarios').setAttribute('value', cuotaActual.importe );
+//         // document.getElementById('cuotaFecha').setAttribute('value', cuotaActual.importe );
+//         if(cuotaActual.importeTasa) document.getElementById('montoTasa').setAttribute('value', cuotaActual.importeTasa );
+//         if(cuotaActual.importeAgua) document.getElementById('montoAgua').setAttribute('value', cuotaActual.importeAgua );
+//         if(cuotaActual.mesAno) Array.from(document.getElementsByClassName('fechaCuota')).forEach(item => item.innerText = cuotaActual.mesAno) 
+//        sumaTotal()}
+// }
 
 
 
+function sumaTotal(sumandos, restando, total){
+    console.log(sumandos)
+    console.log(restando)
+    console.log(total)
+    let sumatoria = 0;
+    Array.from(sumandos).forEach((sumando)=>{
+      if(sumando.value)  sumatoria += Number(sumando.value);
+    })
+    if(restando && restando.value) sumatoria=sumatoria-Number(restando.value);
+    
+    total.innerText = sumatoria;
+
+}
+
+function sumaLoca(){
+    let sumandos = document.getElementsByClassName('sumandoLoca');
+    let restando = document.getElementById('restandoLoca')
+    let totalSuma = document.getElementById('sumaLoca');
+    sumaTotal(sumandos, restando, totalSuma);
+}
+
+function sumaHono(){
+    let sumandos = document.getElementsByClassName('sumandoHono');
+    let restando = document.getElementById('restandoHono')
+    let totalSuma = document.getElementById('sumaHono');
+    sumaTotal(sumandos, restando, totalSuma);
+}
 
 
 // Llamar a la función al cargar la página
 window.addEventListener("load", function() {
     compararFechas();
     cuotaActual();
+    sumaHono();
+    sumaLoca();
+    
 });

@@ -4,11 +4,14 @@
  */
 package com.blasdsaidon.fincasdellitoral.entidades;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -38,21 +41,23 @@ public class Contrato {
     private Collection<Archivo> archivos   ;
     private String fechaInicio;
     private String fechaFinaliz;
-    private boolean fechaActualiza;
+    private boolean esComercial;
+    private String periodoActualiza;
+    
+    private String indice;
     @OneToMany  
     private Collection<Pago> honorarios ;
     @OneToMany  
     private Collection<Pago> locaciones  ;
     @OneToOne
     private Seguro seguro;
-    private Double importe;
-    private Double importeAgua;
-    private Double importeTasa;
+    
+    private Integer numContrato;
 
     public Contrato() {
     }
 
-    public Contrato(String idContrato, Inquilino inquilino, Propietario propietario, Inmueble inmueble, Collection<Codeudor> codeudores, Collection<Archivo> archivos, String fechaInicio, String fechaFinaliz, boolean fechaActualiza, Collection<Pago> honorarios, Collection<Pago> locaciones, Seguro seguro, Double importe, Double importeAgua, Double importeTasa) {
+    public Contrato(String idContrato, Inquilino inquilino, Propietario propietario, Inmueble inmueble, Collection<Codeudor> codeudores, Collection<Archivo> archivos, String fechaInicio, String fechaFinaliz, boolean esComercial, String periodoActualiza, String indice, Collection<Pago> honorarios, Collection<Pago> locaciones, Seguro seguro, Integer numContrato) {
         this.idContrato = idContrato;
         this.inquilino = inquilino;
         this.propietario = propietario;
@@ -61,13 +66,13 @@ public class Contrato {
         this.archivos = archivos;
         this.fechaInicio = fechaInicio;
         this.fechaFinaliz = fechaFinaliz;
-        this.fechaActualiza = fechaActualiza;
+        this.esComercial = esComercial;
+        this.periodoActualiza = periodoActualiza;
+        this.indice = indice;
         this.honorarios = honorarios;
         this.locaciones = locaciones;
         this.seguro = seguro;
-        this.importe = importe;
-        this.importeAgua = importeAgua;
-        this.importeTasa = importeTasa;
+        this.numContrato = numContrato;
     }
 
     public String getIdContrato() {
@@ -102,8 +107,16 @@ public class Contrato {
         return fechaFinaliz;
     }
 
-    public boolean isFechaActualiza() {
-        return fechaActualiza;
+    public boolean isEsComercial() {
+        return esComercial;
+    }
+
+    public String getPeriodoActualiza() {
+        return periodoActualiza;
+    }
+
+    public String getIndice() {
+        return indice;
     }
 
     public Collection<Pago> getHonorarios() {
@@ -118,16 +131,8 @@ public class Contrato {
         return seguro;
     }
 
-    public Double getImporte() {
-        return importe;
-    }
-
-    public Double getImporteAgua() {
-        return importeAgua;
-    }
-
-    public Double getImporteTasa() {
-        return importeTasa;
+    public Integer getNumContrato() {
+        return numContrato;
     }
 
     public void setIdContrato(String idContrato) {
@@ -162,8 +167,16 @@ public class Contrato {
         this.fechaFinaliz = fechaFinaliz;
     }
 
-    public void setFechaActualiza(boolean fechaActualiza) {
-        this.fechaActualiza = fechaActualiza;
+    public void setEsComercial(boolean esComercial) {
+        this.esComercial = esComercial;
+    }
+
+    public void setPeriodoActualiza(String periodoActualiza) {
+        this.periodoActualiza = periodoActualiza;
+    }
+
+    public void setIndice(String indice) {
+        this.indice = indice;
     }
 
     public void setHonorarios(Collection<Pago> honorarios) {
@@ -178,23 +191,9 @@ public class Contrato {
         this.seguro = seguro;
     }
 
-    public void setImporte(Double importe) {
-        this.importe = importe;
+    public void setNumContrato(Integer numContrato) {
+        this.numContrato = numContrato;
     }
 
-    public void setImporteAgua(Double importeAgua) {
-        this.importeAgua = importeAgua;
-    }
-
-    public void setImporteTasa(Double importeTasa) {
-        this.importeTasa = importeTasa;
-    }
-
-    @Override
-    public String toString() {
-        return "Contrato{" + "idContrato=" + idContrato + ", inquilino=" + inquilino + ", propietario=" + propietario + ", inmueble=" + inmueble + ", codeudores=" + codeudores + ", archivos=" + archivos + ", fechaInicio=" + fechaInicio + ", fechaFinaliz=" + fechaFinaliz + ", fechaActualiza=" + fechaActualiza + ", honorarios=" + honorarios + ", locaciones=" + locaciones + ", seguro=" + seguro + ", importe=" + importe + ", importeAgua=" + importeAgua + ", importeTasa=" + importeTasa + '}';
-    }
     
-    
-
 }
