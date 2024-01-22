@@ -25,16 +25,20 @@ public interface PagoRepositorio extends JpaRepository<Pago, String> {
     List<Pago> findSortedByMesAno(@Param("pagos") Collection<Pago> pagos);
   
     
-     @Query(nativeQuery = true, value =
+     @Query(nativeQuery = true, value =            
             "SELECT p.mes_ano, p.numero_cuota, c.num_contrato, p.descuento_hono " +
-            "FROM pago p " +
-            "JOIN contrato_honorario ch ON p.id_pago = ch.honorarios_id_pago " +
-            "JOIN contrato c ON ch.contrato_id_contrato = c.id_contrato " +
-            "WHERE ch.honorarios_id_pago IS NOT NULL " +
-            "AND p.descuento_hono > 0 " +
-            "AND p.realizado = true " +
-            "AND YEAR(p.fecha_pago) = YEAR(CURRENT_DATE) " +
-            "AND MONTH(p.fecha_pago) IN (MONTH(CURRENT_DATE), MONTH(CURRENT_DATE) - 1)")
-    List<ContratoHonorariosDTO> obtenerDatosContratoHonorarios();
+        "FROM contrato_honorarios ch " +
+        "JOIN pago p ON ch.honorarios_id_pago = p.id_pago " +
+        "JOIN contrato c ON ch.contrato_id_contrato = c.id_contrato " +
+        "WHERE ch.honorarios_id_pago IS NOT NULL " +
+        "AND p.descuento_hono > 0 " +
+        "AND p.realizado = true " +
+        "AND (" +
+        "(YEAR(p.mes_ano) = YEAR(CURRENT_DATE) AND MONTH(p.mes_ano) = MONTH(CURRENT_DATE)) " +
+        "OR " +
+        "(YEAR(p.mes_ano) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) AND MONTH(p.mes_ano) = 12)" +
+        ") " +
+        "ORDER BY p.mes_ano, p.numero_cuota")
+    List<Object[]> obtenerDatosContratoHonorarios();
    
 }

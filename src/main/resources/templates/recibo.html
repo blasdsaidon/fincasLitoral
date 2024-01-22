@@ -33,7 +33,7 @@
                     <div style="margin: auto;">
                         <h6 style="font-weight: bold; margin: 0;">RECIBO</h6>
                         <p style="font-size: 11px; margin: 0;">DOCUMENTO NO VALIDO COMO FACTURA</p>
-                        <p>N°: 00004-00000001</p>
+                        <div class="d-flex"><p>N°: 00004-</p><p th:text="${stringHonorario}" id="identificador"></p></div>
                         <div class="d-flex"><p style="margin-right: 4px;">Fecha:</p><p id="fecha"></p></div>
                         <p style="font-size: 10px; margin: 0;" >CUIT: 27-31103339-0</p>
                         <p style="font-size: 10px; margin: 0;" >Ing. Brutos: 011-181581-4</p>
@@ -41,7 +41,7 @@
                     </div>
                 </div></div>
         
-                
+                <p type="hidden" th:text="honorario" id="tipoRecibo"></p>
         
                 <div class="segunda-parte">
             <div class="detalles-cliente">

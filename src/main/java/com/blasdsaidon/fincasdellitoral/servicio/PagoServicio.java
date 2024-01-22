@@ -193,14 +193,14 @@ public void esDiferenciaMayorAUnMes(String fechaInicio, String fechaFin) throws 
         
     }
     
-    public List<ContratoHonorariosDTO> honorariosCobrados(){
+   /* public List<ContratoHonorariosDTO> honorariosCobrados(){
         
         List<ContratoHonorariosDTO> cobrados = pagoRepo.obtenerDatosContratoHonorarios();
         
         return cobrados;
         
         
-    }
+    }*/
     
     
 }

@@ -22,26 +22,28 @@ public class Recibo {
    @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String idRecibo; 
-    private int identificador;
+    private int identificadorHonorario;
+    private int identificadorLocacion;
     @OneToOne(cascade={CascadeType.REMOVE}) 
     private Archivo pdf;
 
     public Recibo() {
     }
 
-    public Recibo(String idRecibo, int identificador, Archivo pdf) {
+    public Recibo(String idRecibo, int identificadorHonorario, int identificadorLocacion, Archivo pdf) {
         this.idRecibo = idRecibo;
-        this.identificador = identificador;
+        this.identificadorHonorario = identificadorHonorario;
+        this.identificadorLocacion = identificadorLocacion;
         this.pdf = pdf;
     }
+
+    
 
     public String getIdRecibo() {
         return idRecibo;
     }
 
-    public int getIdentificador() {
-        return identificador;
-    }
+    
 
     public Archivo getPdf() {
         return pdf;
@@ -51,9 +53,23 @@ public class Recibo {
         this.idRecibo = idRecibo;
     }
 
-    public void setIdentificador(int identificador) {
-        this.identificador = identificador;
+    public int getIdentificadorHonorario() {
+        return identificadorHonorario;
     }
+
+    public void setIdentificadorHonorario(int identificadorHonorario) {
+        this.identificadorHonorario = identificadorHonorario;
+    }
+
+    public int getIdentificadorLocacion() {
+        return identificadorLocacion;
+    }
+
+    public void setIdentificadorLocacion(int identificadorLocacion) {
+        this.identificadorLocacion = identificadorLocacion;
+    }
+
+    
 
     public void setPdf(Archivo pdf) {
         this.pdf = pdf;
@@ -61,8 +77,10 @@ public class Recibo {
 
     @Override
     public String toString() {
-        return "Recibo{" + "idRecibo=" + idRecibo + ", identificador=" + identificador + ", pdf=" + pdf + '}';
+        return "Recibo{" + "idRecibo=" + idRecibo + ", identificadorHonorario=" + identificadorHonorario + ", identificadorLocacion=" + identificadorLocacion + ", pdf=" + pdf + '}';
     }
+
+    
     
     
     

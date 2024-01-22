@@ -17,6 +17,7 @@ import com.blasdsaidon.fincasdellitoral.entidades.Seguro;
 import com.blasdsaidon.fincasdellitoral.entidades.Usuario;
 import com.blasdsaidon.fincasdellitoral.repositorios.ArchivoRepositorio;
 import com.blasdsaidon.fincasdellitoral.repositorios.PagoRepositorio;
+import com.blasdsaidon.fincasdellitoral.repositorios.ReciboRepositorio;
 import com.blasdsaidon.fincasdellitoral.repositorios.UsuarioRepositorio;
 import com.blasdsaidon.fincasdellitoral.servicio.ArchivoServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.CodeudorServicio;
@@ -61,7 +62,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/")
 public class PortalControlador {
-    
+    @Autowired
+    private ReciboRepositorio reciboRepo;
+    @Autowired
+    private PagoRepositorio pagoRepo;
     @Autowired
     private ArchivoServicio archivoServicio;
     @Autowired
@@ -86,8 +90,7 @@ public class PortalControlador {
      private ContratoServicio contratoServicio;
      @Autowired
      private ArchivoRepositorio archivoRepo;
-     @Autowired
-     private PagoRepositorio pagoRepo;
+     
      @Autowired
      private PagoServicio pagoServicio;
      
@@ -478,8 +481,15 @@ public class PortalControlador {
             }
             Contrato contrato = contratoServicio.getOne(idContrato);
             
+            int numeroHonorario = reciboRepo.encontrarMaxIdentificadorHonorario();
+            numeroHonorario = numeroHonorario + 1;
+            System.out.println("numerphonorario " + numeroHonorario);    
+            String stringHonorario=String.format("%07d", numeroHonorario);
+            System.out.println("string honorario"+stringHonorario);
             modelo.addAttribute("contrato", contrato);
             modelo.addAttribute("pago", pago);
+            modelo.addAttribute("stringHonorario", stringHonorario);
+            
             
             return "recibo.html";
         }
@@ -502,8 +512,14 @@ public class PortalControlador {
             }
             Contrato contrato = contratoServicio.getOne(idContrato);
             
+            int numeroLocacion = reciboRepo.encontrarMaxIdentificadorLocacion();
+            numeroLocacion = numeroLocacion + 1;
+            
+            String stringLocacion = String.format("%07d", numeroLocacion);
+            
             modelo.addAttribute("contrato", contrato);
             modelo.addAttribute("pago", pago);
+            modelo.addAttribute("stringLocacion",stringLocacion);
             
             return "recibo_locaciones.html";
         }
@@ -513,9 +529,9 @@ public class PortalControlador {
             
             ArrayList<Otros> otros = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
             ArrayList<Otros> otrosSgte = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
-            System.out.println("antes de servissoosoio");
+            
             pagoServicio.guardarMontos(monto, montoAgua, montoTasa, idPago, otros, interesesPuni, descuentoHono,tipo,idContrato);
-            System.out.println("desoues de sercijsijasdasd");
+            
             if(idPagoSgte!=null){
             pagoServicio.guardarMontos(monto, montoAgua, montoTasa, idPagoSgte, otrosSgte, interesesPuni, descuentoHono,tipo,idContrato);
             }
@@ -526,27 +542,44 @@ public class PortalControlador {
         public String cargarMontosLoca(@PathVariable String idContrato, String idPagoLoca, String idPagoSgteLoca,  Double montoLoca, Double montoAguaLoca, Double montoTasaLoca ,Double seguroImporte,String concepto1, String concepto2, String concepto3, Double monto1, Double monto2, Double monto3,Double interesesPuni, Double descuentoHono, String tipo){
             ArrayList<Otros> otros = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
             ArrayList<Otros> otrosSgte = (ArrayList<Otros>) otrosServicio.crearOtros();
-
+     System.out.println("antes de guardar");
+          System.out.println("idContrato" + idContrato);
+          System.out.println("idSgte "+ idPagoSgteLoca);
+           System.out.println("idLoa "+ idPagoLoca);
             contratoServicio.montoSeguro(idContrato, seguroImporte);
             pagoServicio.guardarMontos(montoLoca, montoAguaLoca, montoTasaLoca, idPagoLoca, otros, interesesPuni, descuentoHono, tipo, idContrato );
             Double interesesSgte = 0.0;
             
-                  if(idPagoSgteLoca!=null){
+            if(idPagoSgteLoca!=null){
             pagoServicio.guardarMontos(montoLoca, montoAguaLoca, montoTasaLoca, idPagoSgteLoca, otrosSgte, interesesSgte, descuentoHono,tipo,idContrato);
-                  }
+              }
             System.out.println("despues de guardar");
             return "redirect:/contratos/"+idContrato;
         }
         
         @PostMapping("/api/pdf/guardar")
-    public ResponseEntity<String> guardarPdf(@RequestParam("file") MultipartFile file, @RequestParam("idCuota") String idCuota) throws Exception {
+    public ResponseEntity<String> guardarPdf(@RequestParam("file") MultipartFile file, @RequestParam("idCuota") String idCuota, @RequestParam("identificador") String identificador, @RequestParam("tipoRecibo") String tipoRecibo) throws Exception {
         
-        reciboServicio.guardarRecibo(file, idCuota);
+        reciboServicio.guardarRecibo(file, idCuota, identificador, tipoRecibo);
 
         return ResponseEntity.ok("PDF guardado exitosamente");
     }
+    
+    @GetMapping("/mostrar-datos")
+    public String mostrarDatos(ModelMap model) {
+        List<Object[]> datos = pagoRepo.obtenerDatosContratoHonorarios();
+        model.addAttribute("datos", datos);
+        return "mostrar_datos.html"; // Esto se corresponde con el nombre de tu plantilla Thymeleaf
+    }
+    
+    
+    
+    
 }
-        
+         
+
+    
+
     
 
 

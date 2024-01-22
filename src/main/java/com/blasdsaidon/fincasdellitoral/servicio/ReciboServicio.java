@@ -29,11 +29,20 @@ public class ReciboServicio {
     private PagoServicio pagoServicio;
     
     @Transactional
-    public void guardarRecibo(MultipartFile pdf, String idPago) throws Exception{
+    public void guardarRecibo(MultipartFile pdf, String idPago, String identificador, String tipoRecibo) throws Exception{
         
         Archivo archivo = archivoServicio.guardarUno(pdf);
         
         Recibo recibo = new Recibo();
+        int numeroSinCeros = Integer.parseInt(identificador);
+        System.out.println("transforma string a numero" + numeroSinCeros);
+        
+        if(tipoRecibo.equalsIgnoreCase("honorario")){
+            recibo.setIdentificadorHonorario(numeroSinCeros);
+        }else if(tipoRecibo.equals("locacion")){
+            recibo.setIdentificadorLocacion(numeroSinCeros);
+        }
+        
         
         recibo.setPdf(archivo);
         
@@ -47,5 +56,7 @@ public class ReciboServicio {
         pagoServicio.guardaPago(pago);
         
     }
+    
+   
     
 }

@@ -50,7 +50,11 @@
            
     // Convierte el objeto PDF en un Blob para enviarlo al servidor
     const idCuota = document.getElementById('idCuota').innerText;
+    const tipoRecibo = document.getElementById('tipoRecibo').innerText;
+    const identificador = document.getElementById('identificador').innerText;
     const formData = new FormData();
+    formData.append('tipoRecibo',tipoRecibo);
+    formData.append('identificador',identificador);
     formData.append('file', new File([data], `${nombreCliente}_${fechaActual}.pdf`, { type: 'application/pdf' }));
     formData.append('idCuota', idCuota);
     // Envía el archivo al servidor
@@ -78,7 +82,9 @@
             let esCuota1=document.getElementById('esCuota1')
            let enviarForm=document.getElementById('miFormulario');
             
-           if(esCuota1){enviarForm.submit();
+           if(esCuota1){
+            
+            enviarForm.submit();
         }
 
         };
