@@ -4,6 +4,7 @@
  */
 package com.blasdsaidon.fincasdellitoral.entidades;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ public abstract class Persona {
     private String idPersona;
     private String nombre;
     private String apellido;
-    @OneToOne
+    @OneToOne(cascade={CascadeType.REMOVE})
     private Domicilio domicilio;
     private String fechaNac;
     @Column(unique = true)

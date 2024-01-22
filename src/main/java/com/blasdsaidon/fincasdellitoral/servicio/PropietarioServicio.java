@@ -8,6 +8,7 @@ import com.blasdsaidon.fincasdellitoral.entidades.Domicilio;
 import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
 import com.blasdsaidon.fincasdellitoral.repositorios.PropietarioRepositorio;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,11 +57,54 @@ public class PropietarioServicio {
    
     }
     
+    @Transactional 
+    public void modificarPropietario(String idPersona, String nombre, String apellido, String fechaNac, String dni, String cuit, String email, String telefono,   String calle,   String numero, String piso, String departamento, 
+            String provincia, String localidad){
+        
+        Optional<Propietario> respuesta = propietarioRepo.findById(idPersona);
+        
+        if (respuesta.isPresent()) {
+            
+            Propietario propietario = respuesta.get();
+            
+            Domicilio domicilio = domicilioServicio.modificarDomicilio(propietario.getDomicilio().getIdDom(), 
+            calle,  numero,  piso,  departamento, provincia,  localidad);
+            
+            propietario.setNombre(nombre);
+            propietario.setApellido(apellido);
+            propietario.setTelefono(telefono);
+            propietario.setDni(dni);
+            propietario.setCuit(cuit);
+            propietario.setEmail(email);
+            propietario.setFechaNac(fechaNac);
+            propietario.setDomicilio(domicilio);
+            
+            propietarioRepo.save(propietario);
+            
+        }
+        
+    }
+    
     @Transactional
     public List<Propietario> mostraPropietario(){
         List<Propietario> propietarioLista = propietarioRepo.findAll();
         
         return propietarioLista;
+    }
+    
+      @Transactional
+    public Propietario getOne(String idPropietario){
+        
+        Propietario propietario = null;
+        
+        Optional<Propietario> respuesta = propietarioRepo.findById(idPropietario);
+        
+        if (respuesta.isPresent()) {
+            propietario = respuesta.get();
+        }
+        
+        return propietario;
+        
     }
     
     

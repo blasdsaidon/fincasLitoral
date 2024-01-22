@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>TODO supply a title</title>
+        <title> Rent Receipt Pro</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
          <link
@@ -18,7 +18,7 @@
     <body class="d-flex "  >
         
          <div class="login-box">
-            <div class="brand"><img src="/1574430140clbe3-fincasdellitorallogo.png" alt=""></div>
+            <div class="brand"><a href="/"><img src="/1574430140clbe3-fincasdellitorallogo.png" alt=""></a></div>
             <p class="login-title">Iniciar sesión</p>
             <div class="divider"></div>
             <form class="form-login" th:action="@{/logincheck}" method="POST">
@@ -29,9 +29,9 @@
                            
                <button type="submit" class="btn btn-primary" >Enviar</button> 
             </form>
-            <div th:replace="/fragments/exito:: div"></div>
+            <!-- <div th:replace="fragments/exito:: div"></div>
 
-            <div th:replace= "/fragments/error :: div"></div>
+            <div th:replace= "fragments/error :: div"></div> -->
         </div>
           </body>
 </html>

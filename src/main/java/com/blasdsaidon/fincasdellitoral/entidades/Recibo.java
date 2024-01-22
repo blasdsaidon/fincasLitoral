@@ -4,6 +4,7 @@
  */
 package com.blasdsaidon.fincasdellitoral.entidades;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,22 +19,23 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 public class Recibo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idRecibo; 
+   @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String idRecibo; 
     private int identificador;
-    @OneToOne
+    @OneToOne(cascade={CascadeType.REMOVE}) 
     private Archivo pdf;
 
     public Recibo() {
     }
 
-    public Recibo(Long idRecibo, int identificador, Archivo pdf) {
+    public Recibo(String idRecibo, int identificador, Archivo pdf) {
         this.idRecibo = idRecibo;
         this.identificador = identificador;
         this.pdf = pdf;
     }
 
-    public Long getIdRecibo() {
+    public String getIdRecibo() {
         return idRecibo;
     }
 
@@ -45,7 +47,7 @@ public class Recibo {
         return pdf;
     }
 
-    public void setIdRecibo(Long idRecibo) {
+    public void setIdRecibo(String idRecibo) {
         this.idRecibo = idRecibo;
     }
 

@@ -13,13 +13,17 @@
             boton.setAttribute("disabled", true);
             boton.innerText = "Cargando..."
 
-            html2pdf()
+            let nombreCliente = document.getElementById("nombreCliente").innerText
+            let fechaActual = document.getElementById("fecha").innerText
+            
+            const pdf = await html2pdf()
+
             .set({
                 margin: 0,
-                filename: 'documento.pdf',
+                filename: `${nombreCliente}_${fechaActual}.pdf`,
                 image: {
-                    type: 'png',
-                    quality: 0.98,
+                    type: 'jpeg',
+                    quality: 0.8,
                     
                 },
                 html2canvas: {
@@ -40,14 +44,42 @@
             })
             .from(elementoParaConvertir)
             .save()
-            .then(()=>{
-                boton.classList.remove("btn-secondary");
-                boton.removeAttribute("disabled");
-                boton.innerText = "Generar PDF"
-            })
-            .catch(err => console.log(err));
+            .toPdf().output('blob').then( (data) => {
+               
+                console.log(data);
+           
+    // Convierte el objeto PDF en un Blob para enviarlo al servidor
+    const idCuota = document.getElementById('idCuota').innerText;
+    const formData = new FormData();
+    formData.append('file', new File([data], `${nombreCliente}_${fechaActual}.pdf`, { type: 'application/pdf' }));
+    formData.append('idCuota', idCuota);
+    // Envía el archivo al servidor
+   fetch('/api/pdf/guardar', {
+        method: 'POST',
+        body: formData,
+    })
 
+    
+    .then(data => {
+        console.log(data); // Puedes manejar la respuesta del servidor según sea necesario
+    })
+    .catch(error => console.error('Error al enviar el archivo al servidor', error))
+    .finally(() => {
+        // Restaura el estado del botón después de completar la operación
+        boton.classList.remove("btn-secondary");
+        boton.removeAttribute("disabled");
+        boton.innerText = "Generar PDF";
+        
+    }) 
+
+})
+        // Descarga el PDF en el navegador
+       
+            let esCuota1=document.getElementById('esCuota1')
+           let enviarForm=document.getElementById('miFormulario');
             
+           if(esCuota1){enviarForm.submit();
+        }
 
         };
         
@@ -81,15 +113,14 @@
     }
 
     function sumaTotal(sumandos, restando, total){
-        console.log(sumandos)
-        console.log(restando)
-        console.log(total)
+        console.log(sumandos);
         let sumatoria = 0;
         Array.from(sumandos).forEach((sumando)=>{
-          if(sumando.value)  sumatoria += Number(sumando.value);
+          if(sumando.innerText)  sumatoria += Number(sumando.innerText);
+            else if(sumando.value) sumatoria += Number(sumando.value);
         })
-        if(restando && restando.value) sumatoria=sumatoria-Number(restando.value);
-        
+        if(restando && restando.innerText) sumatoria=sumatoria-Number(restando.innerText);
+        else if(restando && restando.value) sumatoria = sumatoria - Number(restando.value);
         total.innerText = sumatoria;
     
     }

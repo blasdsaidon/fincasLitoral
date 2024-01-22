@@ -12,7 +12,7 @@
     
     </head>
     <page backtop="0" backbottom="0" backleft="0" backright="0" style="display: flex; justify-content: center; flex-direction: column;">
-        <form th:action="@{/datosReciboHono/__${contrato.idContrato}__}" id="miFormulario" method="POST">
+        <form id="miFormulario" th:action="@{/datosReciboLoca/__${contrato.idContrato}__}"  method="POST">
         <div  >
             <div id="contenido" class="row factura">
                 <div class="d-flex"><div class="col-6">
@@ -47,17 +47,17 @@
             <div class="detalles-cliente">
                 <div class="d-flex justify-content-between">
                     <div class="d-flex"><p class="me-2">Cliente:</p>
-                    <p class="capitalizar" id="nombreCliente" th:text="${contrato.propietario.nombre + ' ' + contrato.propietario.apellido}"></p></div>
+                    <p class="capitalizar" id="nombreCliente" th:text="${contrato.inquilino.nombre + ' ' + contrato.inquilino.apellido}"></p></div>
                 <div class="d-flex"><p class="me-2">CUIT:</p>
-                <p class="capitalizar" th:text="${contrato.propietario.cuit}"></p></div>
+                <p class="capitalizar" th:text="${contrato.inquilino.cuit}"></p></div>
             </div>
                <div class="d-flex justify-content-between">
                 <div class="d-flex"> <p class="me-2">Domicilio:</p>
-                <p class="capitalizar" th:text="${contrato.propietario.domicilio.calle + ' ' + contrato.propietario.domicilio.numero}" ></p>
+                <p class="capitalizar" th:text="${contrato.inquilino.domicilio.calle + ' ' + contrato.inquilino.domicilio.numero}" ></p>
             </div>
             <div class="d-flex">
                 <p>Localidad:</p>
-                <p class="capitalizar" th:text="${contrato.propietario.domicilio.localidad}"></p>
+                <p class="capitalizar" th:text="${contrato.inquilino.domicilio.localidad}"></p>
             </div>
         </div>
                 
@@ -82,14 +82,15 @@
                 </div>
                    <div class="d-flex justify-content-between">
                      
+
                     <div class="d-flex"><p class="me-2">Inmueble Locado:</p>
                     <p class="capitalizar"  th:text="${contrato.inmueble.domicilio.calle + ' ' + contrato.inmueble.domicilio.numero}"></p>
                     </div>
                     <div class="d-flex"><p class="me-2">Localidad:</p>
                         <p class="capitalizar" th:text="${contrato.inmueble.domicilio.localidad}"></p></div>
                 </div>
-                    <div class="d-flex"><p class="me-2">Locatario:</p>
-                        <p class="capitalizar" th:text="${contrato.inquilino.nombre + ' ' + contrato.inquilino.apellido}" ></p>
+                    <div class="d-flex"><p class="me-2">Locador:</p>
+                        <p class="capitalizar" th:text="${contrato.propietario.nombre + ' ' + contrato.propietario.apellido}" ></p>
                     </div>
                 </div>
     
@@ -105,20 +106,23 @@
                             <th style="width: 10%;">Año</th>
                             <span th:if="${pago.numeroCuota==1}" ><th style="width: 20%;">Importe</th></span>
                             <span th:unless="${pago.numeroCuota==1}"><th style="width: 32%;">Importe</th></span>
+
                         </tr>
                     </thead>
                     <tbody >
-                        <!-- @PathVariable String idContrato, String idPago, String idPagoSgte,  Double monto, Double montoAgua, Double montoTasa, String concepto1, String concepto2, String concepto3, Double monto1, Double monto2, Double monto3, Double interesesPuni, Double descuentoHono,String tipo) -->
-                        <input type="hidden" value="honorario" name="tipo">   
 
-                         <input type="hidden" th:value="${pago.idPago}" name="idPago">   
+                        <!-- @PathVariable String idContrato, String idPago, String idPagoSgte,  Double monto, Double montoAgua, Double montoTasa, String concepto1, String concepto2, String concepto3, Double monto1, Double monto2, Double monto3, Double interesesPuni, Double descuentoHono,String tipo) -->
+                        
+                            <input type="hidden" th:value="${pago.idPago}" name="idPago">   
+
                         <tr>
                             <td>Locacion</td>
-                            <td th:text="${pago.numeroCuota}"></td>
-                            <span th:if="${pago.numeroCuota==1}" ><td class="d-flex"><input class=""  ><p>Días</p></td></span>
+                            <td th:text="${pago.numeroCuota}"></td> 
+                            <span th:if="${pago.numeroCuota==1}" ><td class="d-flex align-items-center"><input    type="number"><p>Días</p></td></span>
                             <td class="fechaIso" th:text="${pago.mesAno}"></td>
                             <td class="añoIso"></td>
-                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importe}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto"> </span></td>
+                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeTasa}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="monto"> </span></td>
+
                         </tr>
                         <tr>
                             <td>Tasa General de Inmuebles</td>
@@ -127,8 +131,8 @@
                             <td  ></td>
                             <td ></td>
                             
-                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeTasa}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono" name="montoTasa"  onchange="sumaHono()" type="number"> </span></td>
-                                
+                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeTasa}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="montoTasa"> </span></td>
+                        
                         </tr>
                         
                         <tr>
@@ -138,56 +142,69 @@
                              <td  ></td>
                              <td ></td> 
                              
-                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeAgua}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="montoAgua"> </span></td>
-  
+                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeAgua}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="montoAgua"> </span></td>
+
                         
                         </tr>           
-                        <tr>                            
-                            <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${0}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text" name="concepto1"> </span></td>
-                            <!-- <td><p th:text="${pago.otros[__${0}__].concepto}" class="capitalizar" type="text"   ></td> -->
-                            <td ></td>
-                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
-                             <td  ></td>
-                             <td ></td> 
-                             
-                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${0}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto1"> </span></td>
-
-                            <!-- <td class="d-flex"> <p class="me-2">$</p><p  class="sumandoHono"  onchange="sumaHono()" type="number" th:text="${pago.otros[__${0}__].monto}" ></td> -->
-                        </tr>
                         <tr>
-                            <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${1}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input type="text" name="concepto2"> </span></td>
-
+                            <td>Seguro</td>
                             <td ></td>
                             <span th:if="${pago.numeroCuota==1}" ><td></td></span>
                              <td  ></td>
                              <td ></td> 
                              
-                               
-                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${1}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto2"> </span></td>
-                             </tr>
-                        <tr>
-                            <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${2}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text"  name="concepto3"> </span></td>
-                                <td ></td>
-                                <span th:if="${pago.numeroCuota==1}" ><td></td></span>
-                             <td  ></td>
-                             <td ></td> 
-                             
-                               
-                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${2}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto3"> </span></td>
-                             </tr>
-                           
-                        <tr style="border-bottom: 2px solid black;">
-                            <td>Descuento Honorarios</td>
-                            <td ></td>
-                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
-                            <td  ></td>
-                            <td ></td>
-                            
-                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.descuentoHono}" id="restandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input id="restandoHono"  onchange="sumaHono()" type="number" name="descuentoHono"> </span></td>
+                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${contrato.seguro.importe}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number"> </span></td>
 
-                            
                         
-                        </tr>
+                        </tr> 
+                    </tr>     
+                    <tr >
+                        <td>Intereses y punitorios en mora</td>
+                        <td ></td>
+                        <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                        <td  ></td>
+                        <td ></td>
+                        
+                        <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.interesesPuni}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number"> </span></td>
+                    
+                    </tr>
+                    <tr>
+                        <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${0}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text"> </span></td>
+
+                        
+                        <td ></td>
+                        <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                         <td  ></td>
+                         <td ></td> 
+                         
+                           
+                         <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${0}__].monto}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number"> </span></td>
+                         </tr>
+                     
+                        <tr>
+                            <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${1}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input type="text"> </span></td>
+
+                            <td ></td>
+                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                             <td  ></td>
+                             <td ></td> 
+                             
+                               
+                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${1}__].monto}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number"> </span></td>
+                             </tr>
+                        
+                        
+                                <tr style="border-bottom: 2px solid black;">
+                                    <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${2}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input type="text"> </span></td>
+
+                                    <td ></td>
+                                    <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                                     <td  ></td>
+                                     <td ></td> 
+                                     
+                                       
+                                     <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${2}__].monto}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number"> </span></td>
+                                     </tr>
                     </tbody>
                 </table>
             </div>
@@ -204,23 +221,24 @@
         </div>
         <div class="d-flex" style="width: 100%;">
             <p class="me-2">Recibí la cantidad de pesos: </p>
-            <textarea  style="display: flex; flex: 1; background-color: #c3bbbb;" type="text"></textarea>
+            <textarea cols="2" style="display: flex; flex: 1; background-color: #c3bbbb;" type="text"></textarea>
         </div>
         <div style="text-align: center; margin-top: 30px ; font-weight: bold; ">
-            
+            <p style="font-size: 11px;">Hemilse Ivana Salari</p>
+
+               <p style="font-size: 11px;"> Corredor Inmobiliario</p>
+                
+                <P style="font-size: 11px;">MP CCI 444</p>
             <p>----------------------------</p>
             <p  >Firma</p>
         </div>
         </div>
         </div>
         <p hidden th:text="${pago.idPago}" id="idCuota" ></p>
+        <input type="hidden" value="locacion" name="tipo">  
         </div>
-    
-
-       <span id="esCuota1" class="d-flex justify-content-center" th:if="${pago.numeroCuota==1}" ><button type="submit" id="boton" class="btn-primary align-self-center m-2" onclick="generarPDF()" >Generar PDF</button></span>
-
-    <span class="d-flex justify-content-center" th:if="${pago.numeroCuota!=1}"><button id="boton" class="btn-primary align-self-center m-2" onclick="generarPDF()" >Generar PDF</button></span>
-    
+    <span id="esCuota1" class="d-flex justify-content-center" th:if="${pago.numeroCuota==1}" ><button id="boton" type="submit" class="btn-primary align-self-center m-2" onclick="return generarPDF()" >Generar PDF</button></span>
+    <span class="d-flex justify-content-center" th:if="${pago.numeroCuota!=1}"><button id="boton" class="btn-primary align-self-center m-2" onclick="generarPDF()">Generar PDF</button></span>
     </form>
     
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

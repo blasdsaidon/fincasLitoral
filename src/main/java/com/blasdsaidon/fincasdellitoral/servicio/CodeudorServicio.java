@@ -8,6 +8,7 @@ import com.blasdsaidon.fincasdellitoral.entidades.Domicilio;
 import com.blasdsaidon.fincasdellitoral.entidades.Codeudor;
 import com.blasdsaidon.fincasdellitoral.repositorios.CodeudorRepositorio;
 import java.util.List;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,10 +56,54 @@ public class CodeudorServicio {
         
         codeudorRepo.save(codeudor);
     }
+    
+    @Transactional 
+    public void modificarCodeudor(String idPersona, String nombre, String apellido, String fechaNac, String dni, String cuit, String email, String telefono,   String calle,   String numero, String piso, String departamento, 
+            String provincia, String localidad){
+        
+        Optional<Codeudor> respuesta = codeudorRepo.findById(idPersona);
+        
+        if (respuesta.isPresent()) {
+            
+            Codeudor codeudor = respuesta.get();
+            
+            Domicilio domicilio = domicilioServicio.modificarDomicilio(codeudor.getDomicilio().getIdDom(), 
+            calle,  numero,  piso,  departamento, provincia,  localidad);
+            
+            codeudor.setNombre(nombre);
+            codeudor.setApellido(apellido);
+            codeudor.setTelefono(telefono);
+            codeudor.setDni(dni);
+            codeudor.setCuit(cuit);
+            codeudor.setEmail(email);
+            codeudor.setFechaNac(fechaNac);
+            codeudor.setDomicilio(domicilio);
+            
+            codeudorRepo.save(codeudor);
+            
+        }
+        
+    }
+    
     @Transactional
     public List<Codeudor> mostraCodeudor(){
         List<Codeudor> codeudorLista = codeudorRepo.findAll();
         
         return codeudorLista;
+    }
+    
+      @Transactional
+    public Codeudor getOne(String idCodeudor){
+        
+        Codeudor codeudor = null;
+        
+        Optional<Codeudor> respuesta = codeudorRepo.findById(idCodeudor);
+        
+        if (respuesta.isPresent()) {
+            codeudor = respuesta.get();
+        }
+        
+        return codeudor;
+        
     }
 }

@@ -1,3 +1,10 @@
+setTimeout(function() {
+    var mensajeErrorElement = document.getElementById('mensajeError');
+    if (mensajeErrorElement) {
+        mensajeErrorElement.style.display = 'none';
+    }
+}, 5000);
+
 /*Elegir provincia y ciudad, llamado a la api*/
 
 async function obtenerProvincia(){
@@ -11,11 +18,15 @@ async function obtenerProvincia(){
         const selectLocadCiudad=document.getElementById("ciudadesLocad")
         const selectCodCiudad=document.getElementById("ciudadesCod")
         const selectInmCiudad=document.getElementById("ciudadesInm")
+        const modifPersonaCiudad=document.getElementById("modificaCiudadPersona")
 
         const selectLocat=document.getElementById("provinciasLocat")
         const selectLocad=document.getElementById("provinciasLocad")
         const selectInm=document.getElementById("provinciasInm")
         const selectCod=document.getElementById("provinciasCod")
+        const modifPersonaProv=document.getElementById("modificaProvPersona")
+
+        console.log(modifPersonaProv,modifPersonaCiudad)
 
         Array.from(selectProvincia).forEach(select =>{
         data.provincias.forEach(provincia=> {
@@ -28,13 +39,13 @@ async function obtenerProvincia(){
             } 
              )
         })
-          selectCod.addEventListener("change",()=>rellenaCiudades(selectCod.value,selectCodCiudad))
-          selectInm.addEventListener("change",()=>rellenaCiudades(selectInm.value,selectInmCiudad))
-          selectLocad.addEventListener("change",()=>rellenaCiudades(selectLocad.value,selectLocadCiudad))
-          selectLocat.addEventListener("change",()=>rellenaCiudades(selectLocat.value,selectLocatCiudad))
-
-            
-
+         if(modifPersonaProv)modifPersonaProv.addEventListener("change",()=>rellenaCiudades(modifPersonaProv.value,modifPersonaCiudad))
+         if(selectCod) selectCod.addEventListener("change",()=>rellenaCiudades(selectCod.value,selectCodCiudad))
+         if(selectInm)selectInm.addEventListener("change",()=>rellenaCiudades(selectInm.value,selectInmCiudad))
+         if(selectLocad)selectLocad.addEventListener("change",()=>rellenaCiudades(selectLocad.value,selectLocadCiudad))
+         if(selectLocat)selectLocat.addEventListener("change",()=>rellenaCiudades(selectLocat.value,selectLocatCiudad))
+         
+         
     
     }).catch(error=>{
         console.log(error)
@@ -67,7 +78,18 @@ async function obtenerProvincia(){
 
 }
 
+function porcentajes(){
+var select = document.getElementById("porcentaje");
 
+if(select){
+for (var i = 1; i <= 30; i++) {
+  var option = document.createElement("option");
+  option.value = i/100;
+  option.text = i + "%";
+  select.add(option);
+}
+}
+}
 
 obtenerProvincia()
 
@@ -136,6 +158,7 @@ if (wordFile) {
 if (otroFile) {
     agregarFuncionInput(otroFile, previewOtro);
 }
+
 
 
 /*seleccionar varios archivos*/
@@ -348,29 +371,41 @@ if (otroFile) {
 
 
 
+
+function cargando(){
+    let botones = document.getElementsByClassName("boton");
+
+
+    Array.from(botones).forEach((boton) =>{
+    boton.classList.add("btn-secondary");
+    boton.setAttribute("disabled", true);
+    boton.innerText = "Cargando..."
+})
+    
+};
+
 /*validar nombre*/
+function validacionInputLocador(){
+
+    const apellidoLocador = document.getElementById("apellidoLocador").value 
+    const nameLocador = document.getElementById("nameLocador").value
 
 
+    if(!(/^[A-Z ]+$/i).test(nameLocador) || nameLocador == null || nameLocador.length == 0 ) { 
+    alert('[ERROR] El nombre no puede estar vacío o contiene caracteres prohibidos')
+    return false;}
 
-    function validacionInputLocador(){
+    else if(!(/^[A-Z ]+$/i).test(apellidoLocador) || apellidoLocador == null || apellidoLocador.length == 0 ) { 
+        alert('[ERROR] El apellido no puede estar vacío o contiene caracteres prohibidos')
+        return false
+    } else{
 
-        const apellidoLocador = document.getElementById("apellidoLocador").value 
-        const nameLocador = document.getElementById("nameLocador").value
-    
-    
-    if(!(/^[A-Z]+$/i).test(nameLocador) || nameLocatario == null || nameLocatario.length == 0 ) { 
-        alert('[ERROR] El nombre no puede estar vacío o contiene caracteres prohibidos')
-        return false;}
+        console.log("sin errores")
+        cargando();
 
-        else if(!(/^[A-Z]+$/i).test(apellidoLocador) || apellido == null || apellido.length == 0 ) { 
-            alert('[ERROR] El apellido no puede estar vacío o contiene caracteres prohibidos')
-            return false;}
-
-        
-
-        else{
-            return true;}
-        
+        return true
+    }
+     
 }
 
 function validacionInputLocatario(){
@@ -379,17 +414,20 @@ function validacionInputLocatario(){
     const nameLocatario = document.getElementById("nameLocatario").value
 
 
-if(!(/^[A-Z]+$/i).test(nameLocatario) || nameLocatario == null || nameLocatario.length == 0 ) { 
+if(!(/^[A-Z ]+$/i).test(nameLocatario) || nameLocatario == null || nameLocatario.length == 0 ) { 
     alert('[ERROR] El nombre no puede estar vacío o contiene caracteres prohibidos')
     return false;}
 
-    else if(!(/^[A-Z]+$/i).test(apellidoLocatario) || apellido == null || apellido.length == 0 ) { 
+    else if(!(/^[A-Z ]+$/i).test(apellidoLocatario) || apellidoLocatario == null || apellidoLocatario.length == 0 ) { 
         alert('[ERROR] El apellido no puede estar vacío o contiene caracteres prohibidos')
         return false;}
 
     
 
     else{
+
+        cargando();
+
         return true;}
     
 }
@@ -400,173 +438,170 @@ function validacionInputCodeu(){
     const nameCodeu = document.getElementById("nameCodeu").value
 
 
-if(!(/^[A-Z]+$/i).test(nameCodeu) || nameCodeu == null || nameCodeu.length == 0 ) { 
+if(!(/^[A-Z ]+$/i).test(nameCodeu) || nameCodeu == null || nameCodeu.length == 0 ) { 
     alert('[ERROR] El nombre no puede estar vacío o contiene caracteres prohibidos')
     return false;}
 
-    else if(!(/^[A-Z]+$/i).test(apellidoCodeu) || apellido == null || apellido.length == 0 ) { 
+    else if(!(/^[A-Z ]+$/i).test(apellidoCodeu) || apellidoCodeu == null || apellidoCodeu.length == 0 ) { 
         alert('[ERROR] El apellido no puede estar vacío o contiene caracteres prohibidos')
         return false;}
 
     
 
     else{
+
+        cargando();
+
         return true;}
     
 }
 
-    function validarInput(event) {
-        const inputValue = event.target.value;
-        const regex = /[a-z,]/i;
-    
-        if (!regex.test(inputValue)) {
-            // Si el valor no coincide con la expresión regular, elimina el último carácter
-            event.target.value = inputValue.slice(0, -1);
-        }
-    
-        const lastChar = inputValue.slice(-1);
-    
-        // Verifica si el último carácter es un número y elimínalo si es necesario
-        if (!isNaN(lastChar)) {
-            event.target.value = inputValue.slice(0, -1);
-        }
+function validarInput(event) {
+    const inputValue = event.target.value;
+    const regex = /[a-z,]/i;
+
+    if (!regex.test(inputValue)) {
+        // Si el valor no coincide con la expresión regular, elimina el último carácter
+        event.target.value = inputValue.slice(0, -1);
     }
-    
 
+    const lastChar = inputValue.slice(-1);
 
-    
-
-    
-    if (document.getElementById("opciones")) {
-        document.getElementById("opciones").addEventListener("change", function () {
-            mostrarOpcionesSeleccionadas();
-        });
+    // Verifica si el último carácter es un número y elimínalo si es necesario
+    if (!isNaN(lastChar)) {
+        event.target.value = inputValue.slice(0, -1);
     }
+
+    
+}
+
+if (document.getElementById("opciones")) {
+    document.getElementById("opciones").addEventListener("change", function () {
+        mostrarOpcionesSeleccionadas();
+    });
+}
     
 
-    function agregarOpcion() {
-        var select = document.getElementById("opciones");
-        var opcionesSeleccionadas = document.getElementById("opcionesSeleccionadas");
-        var opcionesArray = obtenerArrayDesdeCampoOculto();
+function agregarOpcion() {
+    var select = document.getElementById("opciones");
+    var opcionesSeleccionadas = document.getElementById("opcionesSeleccionadas");
+    var opcionesArray = obtenerArrayDesdeCampoOculto();
 
-        for (var i = 0; i < select.options.length; i++) {
-            if (select.options[i].selected) {
-                var opcion = select.options[i].value;
-                var codeuName = select.options[i].label;
-                console.log(opcion)
-                console.log(opcionesArray)
-                console.log(select.options[i])
-                // Verifica si la opción ya está en el array antes de agregarla
-                if (opcionesArray.indexOf(opcion) === -1) {
-                    opcionesArray.push(opcion);
+    for (var i = 0; i < select.options.length; i++) {
+        if (select.options[i].selected) {
+            var opcion = select.options[i].value;
+            var codeuName = select.options[i].label;
+            
+            // Verifica si la opción ya está en el array antes de agregarla
+            if (opcionesArray.indexOf(opcion) === -1) {
+                opcionesArray.push(opcion);
 
-                    // Agrega la opción a la lista visible
-                    var nuevaOpcion = document.createElement("li");
-                    nuevaOpcion.classList.add("d-flex")
-                    
-                    nuevaOpcion.innerHTML =  '<div class="capitalizar" style="text-align: center;">' +
-                    codeuName +
-                    '<button class="btn-primary button-remove" type="button" onclick="quitarOpcion(\'' + opcion + '\')">Quitar</button>' +
-                  '</div>';
-                    opcionesSeleccionadas.appendChild(nuevaOpcion);
-                }
+                // Agrega la opción a la lista visible
+                var nuevaOpcion = document.createElement("li");
+                nuevaOpcion.classList.add("d-flex")
+                
+                nuevaOpcion.innerHTML =  '<div class="capitalizar" style="text-align: center;">' +
+                codeuName +
+                '<button class="btn-primary button-remove ms-2" type="button" onclick="quitarOpcion(\'' + opcion + '\')">Quitar</button>' +
+                '</div>';
+                opcionesSeleccionadas.appendChild(nuevaOpcion);
             }
         }
-
-        // Actualiza el array oculto en el formulario
-        actualizarCampoOculto(opcionesArray);
     }
 
-    function quitarOpcion(opcion) {
-        var opcionesSeleccionadas = document.getElementById("opcionesSeleccionadas");
-        var opcionesArray = obtenerArrayDesdeCampoOculto();
+    // Actualiza el array oculto en el formulario
+    actualizarCampoOculto(opcionesArray);
+}
 
-        // Elimina la opción de la lista visible
-        for (var i = 0; i < opcionesSeleccionadas.childNodes.length; i++) {
-            if (opcionesSeleccionadas.childNodes[i].innerHTML.includes(opcion)) {
-                opcionesSeleccionadas.removeChild(opcionesSeleccionadas.childNodes[i]);
-                break;
-            }
-        }
+function quitarOpcion(opcion) {
+    var opcionesSeleccionadas = document.getElementById("opcionesSeleccionadas");
+    var opcionesArray = obtenerArrayDesdeCampoOculto();
 
-        // Elimina la opción del array
-        opcionesArray = opcionesArray.filter(function (item) {
-            return item !== opcion;
-        });
-
-        // Actualiza el array oculto en el formulario
-        actualizarCampoOculto(opcionesArray);
-    }
-
-    function actualizarCampoOculto(opcionesArray) {
-        var inputOpciones = document.getElementById("opcionesSeleccionadasInput");
-
-        // Si el campo oculto ya existe, actualiza su valor; de lo contrario, créalo
-        if (inputOpciones) {
-            inputOpciones.value = JSON.stringify(opcionesArray);
-        } else {
-            inputOpciones = document.createElement("input");
-            inputOpciones.type = "hidden";
-            inputOpciones.name = "codeudores";
-            inputOpciones.id = "opcionesSeleccionadasInput";
-            inputOpciones.value = JSON.stringify(opcionesArray);
-            document.getElementById("formContrato").appendChild(inputOpciones);
+    // Elimina la opción de la lista visible
+    for (var i = 0; i < opcionesSeleccionadas.childNodes.length; i++) {
+        if (opcionesSeleccionadas.childNodes[i].innerHTML.includes(opcion)) {
+            opcionesSeleccionadas.removeChild(opcionesSeleccionadas.childNodes[i]);
+            break;
         }
     }
 
-    function obtenerArrayDesdeCampoOculto() {
-        var inputOpciones = document.getElementById("opcionesSeleccionadasInput");
+    // Elimina la opción del array
+    opcionesArray = opcionesArray.filter(function (item) {
+        return item !== opcion;
+    });
 
-        if (inputOpciones && inputOpciones.value) {
-            return JSON.parse(inputOpciones.value);
-        } else {
-            return [];
-        }
+    // Actualiza el array oculto en el formulario
+    actualizarCampoOculto(opcionesArray);
+}
+
+function actualizarCampoOculto(opcionesArray) {
+    var inputOpciones = document.getElementById("opcionesSeleccionadasInput");
+
+    // Si el campo oculto ya existe, actualiza su valor; de lo contrario, créalo
+    if (inputOpciones) {
+        inputOpciones.value = JSON.stringify(opcionesArray);
+    } else {
+        inputOpciones = document.createElement("input");
+        inputOpciones.type = "hidden";
+        inputOpciones.name = "codeudores";
+        inputOpciones.id = "opcionesSeleccionadasInput";
+        inputOpciones.value = JSON.stringify(opcionesArray);
+        document.getElementById("formContrato").appendChild(inputOpciones);
     }
+}
 
-    function mostrarOpcionesSeleccionadas() {
-        // Puedes implementar esto si deseas mostrar las opciones seleccionadas al cambiar la selección
+function obtenerArrayDesdeCampoOculto() {
+    var inputOpciones = document.getElementById("opcionesSeleccionadasInput");
+
+    if (inputOpciones && inputOpciones.value) {
+        return JSON.parse(inputOpciones.value);
+    } else {
+        return [];
     }
+}
 
-    
-    function agregarTitular() {
-        var titularInput = document.getElementById("titularInput");
-        var nuevoTitular = titularInput.value;
+function mostrarOpcionesSeleccionadas() {
+    // Puedes implementar esto si deseas mostrar las opciones seleccionadas al cambiar la selección
+}
+  
+function agregarTitular() {
+    var titularInput = document.getElementById("titularInput");
+    var nuevoTitular = titularInput.value;
 
-        if (nuevoTitular.trim() !== "") {
-            // Crea un nuevo elemento de lista (li) para el titular
-            var nuevoElementoLista = document.createElement("li");
-            nuevoElementoLista.className = "titular-item";
+    if (nuevoTitular.trim() !== "") {
+        // Crea un nuevo elemento de lista (li) para el titular
+        var nuevoElementoLista = document.createElement("li");
+        nuevoElementoLista.className = "titular-item";
 
-            var nombreTitular = document.createElement("span");
-            nombreTitular.textContent = nuevoTitular;
+        var nombreTitular = document.createElement("span");
+        nombreTitular.textContent = nuevoTitular;
 
-            var deleteButton = document.createElement("button");
-            deleteButton.className = "delete-button";
-            deleteButton.textContent = "Eliminar";
-            deleteButton.onclick = function() {
-                eliminarTitular(nuevoElementoLista);
-            };
+        var deleteButton = document.createElement("button");
+        deleteButton.className = "delete-button";
+        deleteButton.textContent = "Eliminar";
+        deleteButton.onclick = function() {
+            eliminarTitular(nuevoElementoLista);
+        };
 
-            nuevoElementoLista.appendChild(nombreTitular);
-            nuevoElementoLista.appendChild(deleteButton);
+        nuevoElementoLista.appendChild(nombreTitular);
+        nuevoElementoLista.appendChild(deleteButton);
 
-            // Agrega el nuevo titular a la lista
-            document.getElementById("titulares").appendChild(nuevoElementoLista);
+        // Agrega el nuevo titular a la lista
+        document.getElementById("titulares").appendChild(nuevoElementoLista);
 
-            // Borra el contenido del campo de entrada
-            titularInput.value = "";
-        }
+        // Borra el contenido del campo de entrada
+        titularInput.value = "";
     }
+}
 
-    function eliminarTitular(elementoLista) {
-        // Elimina el elemento de la lista
-        elementoLista.remove();
-    }
-   
+function eliminarTitular(elementoLista) {
+    // Elimina el elemento de la lista
+    elementoLista.remove();
+}
 
-
-
+window.addEventListener("load", function() {
+porcentajes();
+})
 
 
 

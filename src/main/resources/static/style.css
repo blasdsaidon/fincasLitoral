@@ -13,6 +13,12 @@ body{
     width: 80%;
 }
 
+a img {
+    text-decoration: none; /* Elimina el subrayado del enlace */
+    border: none; /* Elimina el borde del enlace (en algunos navegadores) */
+    height:100px
+}
+
 .col-form {
     display: flex; 
     flex-direction: row; 
@@ -21,7 +27,7 @@ body{
 }
 
 .brand {
-    height: 155px;
+   
     width: 100%;
     background-color: white;
     display: flex;
@@ -30,6 +36,7 @@ body{
 }
 
 .section-div{
+    margin-top: 80px;
     background-color: #f5f5f5;
 }
 .containera {
@@ -46,7 +53,7 @@ body{
     align-items: center;
     justify-content: center;
 }
-.boton {
+.botonDiv {
     display: flex;
     justify-content: center;
     margin-bottom: 15px;
@@ -59,13 +66,14 @@ body{
   display: flex;
   align-items: center; 
   justify-content: center; 
+  padding-top: 30px;
 }
 
 legend {
     padding-top: 10px;
 }
 :target{
-    scroll-margin-top: 220px;
+    scroll-margin-top: 210px;
 }
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
@@ -298,6 +306,34 @@ table.montos td {
     padding: 0;
     margin: 0;
 }
+.modal {
+    margin-top: 200px;
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    top: 70%;
+    
+  }
+  
+  .modal-content {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    margin: auto;
+  }
+  
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 30px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+  }
+  
+  
 
 .detalle-body li {
     margin-bottom: 5px;

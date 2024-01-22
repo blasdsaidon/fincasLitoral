@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
     
     <head>
-        <title>TODO supply a title</title>
+        <title>Validar contraseña</title>
         <meta charset="UTF-8">
         <link
             rel="stylesheet"
@@ -16,7 +16,7 @@
     
     <body  style="padding-top: 75px"; >
         <div class="login-box">
-            <div class="brand"><img src="/1574430140clbe3-fincasdellitorallogo.png" alt=""></div>
+            <div class="brand"><a href="/"><img src="/1574430140clbe3-fincasdellitorallogo.png" alt=""></a></div>
             <p class="login-title">Ingrese su contraseña para continuar</p>
             <div class="divider"></div>
         
@@ -33,9 +33,9 @@
         
     </div>
         
-        <div th:replace="/fragments/exito:: div"></div>
+        <!-- <div th:replace="@{/fragments/exito:: div}"></div>
 
-        <div th:replace= "/fragments/error :: div"></div>
+        <div th:replace= "@{/fragments/error :: div}"></div> -->
 
         
 

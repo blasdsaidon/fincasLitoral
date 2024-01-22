@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es"
+xmlns:th="http://www.thymeleaf.org"
+xlmns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Propietario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/detalle_persona.css">
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+<nav class="fixed-top">
+       
+    <div class="brand"><a href="/"><img src="/1574430140clbe3-fincasdellitorallogo.png" alt=""></a></div>
+        
+    <div class="containera" >
+        <header class="d-flex justify-content-center py-3">
+          <ul class="nav nav-pills" style="flex-grow: 1; justify-content: center;" >
+
+            <li class="nav-item"><a th:href="@{/contratos/__${idContrato}__}"  class="nav-link">Volver</a></li>
+            <li class="nav-item"><a th:href="@{/}" class="nav-link">Crear</a></li>
+            <li class="nav-item"><a th:href="@{/contratos}" class="nav-link">Lista de contratos</a></li>
+            
+        </ul>
+            <div class="dropdown" style="align-self: flex-end; margin-right: 7px;">
+                <a style="background-color: #9c0202 " class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-square" style="font-size: 25px; color: white"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <div class="dropdown-header text-center font-weight-bold" style="background-color: transparent; cursor: default;">
+                        <strong style="font-size: 15px;" class="capitalizar" th:text="'Hola, ' + ${session.usuariosession.nombreUsuario}"></strong>
+                    </div>
+                  <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+                  <li><a class="dropdown-item" th:href="@{/modificarPerfil/__${session.usuariosession.idUsuario}__}">Modificar cuenta</a></li>
+                </ul>
+              </div>
+        
+        </header>
+      </div>
+    </nav>
+<body>
+
+    <div class="container" style="margin-top: 248px;">
+        <form th:action="@{/modificar/__${idPersona}__/__${tipoPersona}__}" method="post">
+        <h2 class="form-title">Modificar <span class="capitalizar" th:text="${tipoPersona}"></span></h2>
+        
+        <div class="row">
+            <div class="col-md-6">
+                
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" class="form-control capitalizar" id="nombre" name="nombre" th:value="${persona.nombre}">
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido:</label>
+                        <input type="text" class="form-control capitalizar" id="apellido" name="apellido" th:value="${persona.apellido}">
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="fechaNac">Fecha de Nacimiento:</label>
+                        <input type="date" class="form-control" id="fechaNac" name="fechaNac" th:value="${persona.fechaNac}">
+                    </div>
+
+                    <div style="background-color: #f5f5f5; padding: 20px 0px;">
+                        <h4 style="background-color: #9c0202; color: white; padding: 10px;">Domicilio</h4>
+                
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="calle">Calle:</label>
+                                <input type="text"  id="calle" name="calle" th:value="${persona.domicilio.calle}" class="form-control capitalizar">
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="numero">Número:</label>
+                                <input type="text" id="numero" name="numero" th:value="${persona.domicilio.numero}" class="form-control capitalizar">
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="piso">Piso:</label>
+                                <input type="text" id="piso" name="piso" th:value="${persona.domicilio.piso}" class="form-control capitalizar">
+                            </div>
+                        </div>
+                
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                <label for="departamento">Departamento:</label>
+                                <input type="text" id="departamento" name="departamento" th:value="${persona.domicilio.departamento}" class="form-control capitalizar">
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="provincia">Provincia:</label>
+                                <select id="modificaProvPersona" name="provincia" class="form-control selectProvincia">
+                                    <!-- Aquí deberías llenar las opciones con las provincias  disponibles -->
+                                    <option selected th:text="${persona.domicilio.provincia}"></option>
+                                   
+                                </select>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="localidad">Localidad:</label>
+                                <select id="modificaCiudadPersona" name="localidad" class="form-control">
+                                    <!-- Aquí deberías llenar las opciones con las localidades disponibles basadas en la provincia seleccionada -->
+                                    <option selected th:text="${persona.domicilio.localidad}"></option>
+                                    
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                   
+                
+            </div>
+            <div class="col-md-6">
+               
+                     <div class="form-group">
+                        <label for="dni">DNI:</label>
+                        <input type="text" class="form-control" id="dni" name="dni" th:value="${persona.dni}">
+                    </div>
+                    <div class="form-group">
+                        <label for="cuit">CUIT:</label>
+                        <input type="text" class="form-control" id="cuit" name="cuit" th:value="${persona.cuit}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" th:value="${persona.email}">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono:</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" th:value="${persona.telefono}">
+                    </div>
+
+                    
+                
+                    
+                   
+            </div>
+        </div>
+        <input type="hidden" th:value="${idContrato}" name="idContrato">
+        <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary ">Actualizar</button></div>
+    </form>
+    </div>
+
+
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/script.js"></script>
+</body>
+</html>

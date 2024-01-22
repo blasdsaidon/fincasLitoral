@@ -6,6 +6,7 @@ package com.blasdsaidon.fincasdellitoral.entidades;
 
 import java.util.Collection;
 import java.util.logging.Logger;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -25,7 +26,7 @@ public class Pago {
     private String idPago;
     private String mesAno;
     private Boolean realizado;
-    @OneToOne
+    @OneToOne(cascade={CascadeType.REMOVE}) 
     private Recibo recibo;
     private int numeroCuota;
     private Double interesesPuni;
@@ -48,7 +49,7 @@ public class Pago {
     private Double importe;
     private Double importeAgua;
     private Double importeTasa;
-    @OneToMany
+    @OneToMany(cascade={CascadeType.REMOVE}) 
     private Collection<Otros> otros;
 
     

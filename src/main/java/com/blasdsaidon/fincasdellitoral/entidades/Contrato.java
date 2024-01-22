@@ -8,6 +8,7 @@ package com.blasdsaidon.fincasdellitoral.entidades;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -37,19 +38,22 @@ public class Contrato {
     private Inmueble inmueble;
     @ManyToMany 
     private Collection<Codeudor> codeudores;
-    @OneToMany  
+    @OneToMany(cascade={CascadeType.REMOVE})  
     private Collection<Archivo> archivos   ;
     private String fechaInicio;
     private String fechaFinaliz;
     private boolean esComercial;
     private String periodoActualiza;
+    private Double porcentajeHonorario;
+
+    
     
     private String indice;
-    @OneToMany  
+    @OneToMany(cascade={CascadeType.REMOVE})  
     private Collection<Pago> honorarios ;
-    @OneToMany  
+    @OneToMany(cascade={CascadeType.REMOVE})  
     private Collection<Pago> locaciones  ;
-    @OneToOne
+    @OneToOne(cascade={CascadeType.REMOVE})
     private Seguro seguro;
     
     private Integer numContrato;
@@ -57,7 +61,7 @@ public class Contrato {
     public Contrato() {
     }
 
-    public Contrato(String idContrato, Inquilino inquilino, Propietario propietario, Inmueble inmueble, Collection<Codeudor> codeudores, Collection<Archivo> archivos, String fechaInicio, String fechaFinaliz, boolean esComercial, String periodoActualiza, String indice, Collection<Pago> honorarios, Collection<Pago> locaciones, Seguro seguro, Integer numContrato) {
+    public Contrato(String idContrato, Inquilino inquilino, Propietario propietario, Inmueble inmueble, Collection<Codeudor> codeudores, Collection<Archivo> archivos, String fechaInicio, String fechaFinaliz, boolean esComercial, String periodoActualiza, Double porcentajeHonorario, String indice, Collection<Pago> honorarios, Collection<Pago> locaciones, Seguro seguro, Integer numContrato) {
         this.idContrato = idContrato;
         this.inquilino = inquilino;
         this.propietario = propietario;
@@ -68,11 +72,20 @@ public class Contrato {
         this.fechaFinaliz = fechaFinaliz;
         this.esComercial = esComercial;
         this.periodoActualiza = periodoActualiza;
+        this.porcentajeHonorario = porcentajeHonorario;
         this.indice = indice;
         this.honorarios = honorarios;
         this.locaciones = locaciones;
         this.seguro = seguro;
         this.numContrato = numContrato;
+    }
+
+    public void setPorcentajeHonorario(Double porcentajeHonorario) {
+        this.porcentajeHonorario = porcentajeHonorario;
+    }
+
+    public Double getPorcentajeHonorario() {
+        return porcentajeHonorario;
     }
 
     public String getIdContrato() {

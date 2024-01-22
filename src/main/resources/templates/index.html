@@ -5,20 +5,18 @@
     xlmns:sec="http://www.thymeleaf.org/extras/spring-security"
     >
     <head>
-        <title>Rent Receipt Pro</title>
+        <title>Creacion de entidades</title>
         <meta charset="UTF-8" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-            <link rel="stylesheet" href="/style.css">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="/style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
-
-            
         <!--            <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     </head>
     
     <nav class="fixed-top">
        
-    <div class="brand"><img src="/1574430140clbe3-fincasdellitorallogo.png" alt=""></div>
+    <div class="brand"><a href="/"><img src="/1574430140clbe3-fincasdellitorallogo.png"  ></a></div>
         
     <div class="containera" >
         <header class="d-flex justify-content-center py-3">
@@ -50,7 +48,10 @@
     </nav>
     <!-- <li class="nav-item"><a class="nav-link" href="/logout">Cambiar de cuenta</a></li>
             <li class="nav-item"><a class="nav-link" th:href="@{/modificarPerfil/__${session.usuariosession.idUsuario}__}">Modificar cuenta</a></li>     -->
-     <body class="body-index">
+            <div th:if="${error != null}" id="mensajeError" class="alert alert-success bg-danger" role="alert" style="width:400px;margin:auto; margin-top: 150px;">
+                <h4 class="alert-heading bg-danger text-white" th:text="${error}" style="text-align:center"></h4>
+            </div>
+            <body class="body-index">
 
         
 
@@ -67,9 +68,9 @@
                  
                 
                     
-                <input id="nameLocador" oninput="validarInput(event)" class="form-control form-group" th:value="${nombre}" type="text" maxlength="50" name="nombre" placeholder="Nombre de Locador">
+                <input id="nameLocador" onsubmit="validarInput(event)" class="form-control form-group" th:value="${nombre}" type="text" maxlength="50" name="nombre" placeholder="Nombre de Locador">
 
-                <input id="apellidoLocador" class="form-control form-group" type="text" th:value="${apellido}" oninput="validarInput(event)" minlength="2" maxlength="50"  name="apellido" placeholder="Apellido de Locador">
+                <input id="apellidoLocador" class="form-control form-group" type="text" th:value="${apellido}" onsubmit="validarInput(event)" minlength="2" maxlength="50"  name="apellido" placeholder="Apellido de Locador">
 
 
                 <input id="dniLocador" th:value="${dni}" minlength="7" maxlength="8"  class="form-control form-group " type="number"  name="dni" placeholder="DNI de Locador">
@@ -94,8 +95,8 @@
                     </select>
                 </div>
             </div>  
-            <div class="boton" >   
-               <button type="submit" class="btn btn-primary"  >Enviar</button> 
+            <div class="botonDiv" >   
+               <button type="submit" class="btn btn-primary boton"   >Enviar</button> 
             </div> 
             </form>
         </div>
@@ -110,8 +111,8 @@
                 <div  class="col-6 ">
                  <legend>Datos</legend>
                     
-                <input id="nameLocatario" th:value="${nombre}"  class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50"  name="nombre" placeholder="Nombre de Locatario"> 
-                <input id="apellidoLocatario" th:value="${apellido}" class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50"  name="apellido" placeholder="Apellido de Locatario">
+                <input id="nameLocatario" th:value="${nombre}"  class="form-control form-group" type="text"  onsubmit="validarInput(event)" minlength="2" maxlength="50"  name="nombre" placeholder="Nombre de Locatario"> 
+                <input id="apellidoLocatario" th:value="${apellido}" class="form-control form-group" type="text"  onsubmit="validarInput(event)" minlength="2" maxlength="50"  name="apellido" placeholder="Apellido de Locatario">
                 <input minlength="7" maxlength="8" class="form-control form-group" type="number" th:value="${dni}" name="dni" placeholder="DNI de Locatario">
                 <input minlength="10" maxlength="11" class="form-control form-group" type="number" th:value="${cuit}" name="cuit" placeholder="CUIL/CUIT de Locatario">
                 <label class="form-label" for="customFile">Fecha nacimiento</label>
@@ -134,8 +135,8 @@
                     </select>
                 </div>
             </div>  
-            <div class="boton" >   
-               <button type="submit" class="btn btn-primary"  >Enviar</button> 
+            <div class="botonDiv" >   
+               <button type="submit" class="btn btn-primary boton"  >Enviar</button> 
             </div> 
             </form>
         </div>
@@ -150,8 +151,8 @@
                 <div  class="col-6 ">
                  <legend>Datos</legend>
                     
-                <input id="nameCodeu"  class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50" th:value="${nombre}" name="nombre" placeholder="Nombre de Codeudor"> 
-                <input id="apellidoCodeu"  class="form-control form-group" type="text"  oninput="validarInput(event)" minlength="2" maxlength="50" th:value="${apellido}" name="apellido" placeholder="Apellido de Codeudor">
+                <input id="nameCodeu"  class="form-control form-group" type="text"  onsubmit="validarInput(event)" minlength="2" maxlength="50" th:value="${nombre}" name="nombre" placeholder="Nombre de Codeudor"> 
+                <input id="apellidoCodeu"  class="form-control form-group" type="text"  onsubmit="validarInput(event)" minlength="2" maxlength="50" th:value="${apellido}" name="apellido" placeholder="Apellido de Codeudor">
                 <input minlength="7" maxlength="8"  class="form-control form-group" type="number" th:value="${dni}" name="dni" placeholder="DNI de Codeudor">
                 <input minlength="10" maxlength="11" class="form-control form-group" type="number" th:value="${cuit}"  name="cuit" placeholder="CUIL/CUIT de Codeudor">
                 <label class="form-label" for="customFile">Fecha nacimiento</label>
@@ -174,8 +175,8 @@
                     </select>
                 </div>
             </div>  
-            <div class="boton" >   
-               <button type="submit" class="btn btn-primary"  >Enviar</button> 
+            <div class="botonDiv" >   
+               <button type="submit" class="btn btn-primary boton"  >Enviar</button> 
             </div> 
             </form>
         </div>
@@ -187,7 +188,7 @@
            
          <div>
             <div id="inmueble" class=" title"><h3>Crear Inmueble</h3></div>
-            <form th:action="@{/inmueble/crear}" method="POST" >
+            <form th:action="@{/inmueble/crear}" method="POST" onsubmit="cargando()">
                 <div class="col-form " >
                     <div   class="col-6">
                         <legend>Domicilio</legend>
@@ -227,13 +228,13 @@
                 <input  class="form-control form-group" type="number" th:value="${tomo}" name="tomo" placeholder="Tomo">
                 <input  class="form-control form-group" type="number" th:value="${folio}" name="folio" placeholder="Folio">
                 <label class="form-label" for="customFile">Fecha</label> 
-                <input  class="form-control form-group" type="date" th:value="${fechaRegProp}" name="fechaRegProp" placeholder="Fecha"> 
+                <input id="fechaActual" class="form-control form-group" type="date" th:value="${fechaRegProp}" name="fechaRegProp" placeholder="Fecha"> 
                 <input type="hidden" th:value="${notas}" name="notas">
             </div>
                 
             </div>  
-            <div class="boton" >   
-               <button type="submit" class="btn btn-primary"  >Enviar</button> 
+            <div class="botonDiv" >   
+               <button type="submit" class="btn btn-primary boton"  >Enviar</button> 
             </div> 
             </form>
         </div>
@@ -299,7 +300,7 @@
                         </select>
                         <div class="columnas form-group">
                         
-                        <div><label class="form-label" >Coodeudores seleccionados:</label> 
+                        <div><label class="form-label" >Codeudores seleccionados:</label> 
                             <ul id="opcionesSeleccionadas"></ul>
 
                             
@@ -326,7 +327,7 @@
                     
                     </div>
                     <div class="col-6">
-                        <legend>Fechas y Actualización</legend>
+                        <legend>Fechas, Actualización y Porcentaje Honorarios</legend>
                         <div class="d-flex justify-content-between" style="max-width: 80%;">
                             <div>
                         <label class="form-label" for="customFile">Fecha inicio </label> 
@@ -369,6 +370,15 @@
     
                         </select>
                          </div>
+                         <div>
+                            <label class="form-label" for="customFile">Porcentaje Honorarios</label> 
+                            <select required  style="width: 180px;" id="porcentaje" class="form-control form-select form-group capitalizar" name="porcentajeHono"  >
+                                
+                               
+                                
+        
+                            </select>
+                             </div>
                         </div>
 
                         <legend>Archivos</legend>
@@ -385,7 +395,7 @@
                         <div style="display: flex; flex-direction: column;">
                         <label class="form-label" for="customFile">Contrato formato Pdf</label> 
                         <div class="file-select" id="src-file2" style="width: 80%;" >       
-                        <input multiple style="width: 100%;" required id="pdf" class="form-control form-group archivo" type="file" accept=".pdf" value="${pdf}" name="archivos">
+                        <input multiple style="width: 100%;"  id="pdf" class="form-control form-group archivo" type="file" accept=".pdf" value="${pdf}" name="archivos">
                         
                         </div>
                         <ul id="previewPdf"></ul>
@@ -417,13 +427,14 @@
                         
                     </div>
                 </div>  
-                <div class="boton" >   
-                <button type="submit" class="btn btn-primary"  >Enviar</button> 
+                <div class="botonDiv" >   
+                <button type="submit" class="btn btn-primary boton"  >Enviar</button> 
                 </div> 
             </form>
+            
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<script src="/script.js"></script>
+        <script src="/script.js"></script>
     </body>
     
 </html>

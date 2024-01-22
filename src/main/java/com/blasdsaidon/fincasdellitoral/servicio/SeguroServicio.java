@@ -6,6 +6,7 @@ package com.blasdsaidon.fincasdellitoral.servicio;
 
 import com.blasdsaidon.fincasdellitoral.entidades.Seguro;
 import com.blasdsaidon.fincasdellitoral.repositorios.SeguroRepositorio;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,4 +44,34 @@ public class SeguroServicio {
         
         return seguro;
     }
+    
+    @Transactional
+    public Seguro getOne(String idSeguro){
+        Seguro seguro = null;
+        Optional<Seguro> respuesta = seguroRepo.findById(idSeguro);
+        
+        if (respuesta.isPresent()) {
+            
+            seguro = respuesta.get();
+            
+        }
+        
+        return seguro;
+    }
+    
+    @Transactional
+    public void modificarSeguro(String idSeguro, String numeroCuenta, String poliza, String fechaVencSeguro){
+        
+        Seguro seguro = getOne(idSeguro);
+        
+        seguro.setNumeroCuenta(numeroCuenta);
+        seguro.setPoliza(poliza);
+        seguro.setFechaVencSeguro(fechaVencSeguro);
+        
+        seguroRepo.save(seguro);
+        
+        
+        
+    }
 }
+

@@ -6,6 +6,7 @@ package com.blasdsaidon.fincasdellitoral.servicio;
 
 import com.blasdsaidon.fincasdellitoral.entidades.Domicilio;
 import com.blasdsaidon.fincasdellitoral.repositorios.DomicilioRepositorio;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,30 @@ public class DomicilioServicio {
         
     
 }
+    
+    @Transactional
+    public Domicilio modificarDomicilio(String idDomicilio,String calle, String numero, String piso, String departamento, 
+            String provincia, String localidad){
+        Domicilio domicilio = null;
+        Optional<Domicilio> respuesta = domicilioRepo.findById(idDomicilio);
+        
+        if (respuesta.isPresent()) {
+            
+            domicilio = respuesta.get();
+            
+            domicilio.setCalle(calle);
+            domicilio.setNumero(numero);
+            domicilio.setPiso(piso);
+            domicilio.setDepartamento(departamento);
+            domicilio.setProvincia(provincia);
+            domicilio.setLocalidad(localidad);
+            
+            
+            
+        }
+        
+        return domicilio;
+    }
     
     
     

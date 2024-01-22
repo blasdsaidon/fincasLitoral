@@ -16,22 +16,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
-    @OneToOne
-    private Domicilio domicilio; 
-    private String numPartida;
-    private String numTGI;
-    private String numTOS;
-    @OneToOne
-    private Propietario propietario;
-    private String numRegPropiedad;
-    private String tomo;
-    private String folio;
-    private String fechaRegProp;
-    private String notas;
- * 
- */
+
 
 
 @Service
@@ -80,5 +65,47 @@ public class InmuebleServicio {
         List<Inmueble> inmuebleLista = inmuebleRepo.findAll();
         
         return inmuebleLista;
+    }
+    
+    @Transactional
+    public Inmueble getOne(String idInmueble){
+        Inmueble inmueble = null;
+        Optional<Inmueble> respuesta = inmuebleRepo.findById(idInmueble);
+        
+        if (respuesta.isPresent()) {
+            
+            inmueble = respuesta.get();
+            
+        }
+        
+        return inmueble;
+        
+    }
+    
+    @Transactional
+    public void modificarInmueble(String idInmueble, String calle, String numero, String piso, String departamento, 
+            String provincia, String localidad, String numPartida, String numTGI, String numTOS,
+            String titulares, String numRegPropiedad, String tomo,String folio, String fechaRegProp,
+            String notas){
+        
+        Inmueble inmueble = getOne(idInmueble);
+        
+        Domicilio domicilio = domicilioServicio.modificarDomicilio(inmueble.getDomicilio().getIdDom(), 
+                calle, numero, piso, departamento, provincia, localidad);
+        
+        inmueble.setDomicilio(domicilio);
+        inmueble.setFechaRegProp(fechaRegProp);
+        inmueble.setFolio(folio);
+        inmueble.setNotas(notas);
+        inmueble.setNumPartida(numPartida);
+        inmueble.setNumRegPropiedad(numRegPropiedad);
+        inmueble.setNumTGI(numTGI);
+        inmueble.setNumTOS(numTOS);
+        inmueble.setTitulares(titulares);
+        inmueble.setTomo(tomo);
+        
+        
+        inmuebleRepo.save(inmueble);
+        
     }
 }

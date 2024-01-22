@@ -10,7 +10,7 @@ import com.blasdsaidon.fincasdellitoral.entidades.Contrato;
 import com.blasdsaidon.fincasdellitoral.entidades.Inmueble;
 import com.blasdsaidon.fincasdellitoral.entidades.Inquilino;
 import com.blasdsaidon.fincasdellitoral.entidades.Otros;
-import com.blasdsaidon.fincasdellitoral.entidades.OtrosDTO;
+import com.blasdsaidon.fincasdellitoral.entidades.ContratoHonorariosDTO;
 import com.blasdsaidon.fincasdellitoral.entidades.Pago;
 import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
 import com.blasdsaidon.fincasdellitoral.entidades.Seguro;
@@ -18,6 +18,7 @@ import com.blasdsaidon.fincasdellitoral.entidades.Usuario;
 import com.blasdsaidon.fincasdellitoral.repositorios.ArchivoRepositorio;
 import com.blasdsaidon.fincasdellitoral.repositorios.PagoRepositorio;
 import com.blasdsaidon.fincasdellitoral.repositorios.UsuarioRepositorio;
+import com.blasdsaidon.fincasdellitoral.servicio.ArchivoServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.CodeudorServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.ContratoServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.PropietarioServicio;
@@ -26,6 +27,7 @@ import com.blasdsaidon.fincasdellitoral.servicio.InmuebleServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.InquilinoServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.OtrosServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.PagoServicio;
+import com.blasdsaidon.fincasdellitoral.servicio.ReciboServicio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -41,6 +43,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,6 +62,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/")
 public class PortalControlador {
     
+    @Autowired
+    private ArchivoServicio archivoServicio;
+    @Autowired
+    private ReciboServicio reciboServicio;
     @Autowired
     private UsuarioServicio usuarioServicio;
      @Autowired
@@ -224,6 +231,28 @@ public class PortalControlador {
         return "redirect:/";
     }
     
+    @GetMapping("/inmueble/{idInmueble}/{idContrato}")
+    public String detalleInmueble(@PathVariable String idInmueble,@PathVariable String idContrato, ModelMap modelo){
+        
+        Inmueble inmueble = inmuebleServicio.getOne(idInmueble);
+        
+        modelo.addAttribute("inmueble", inmueble);
+        modelo.addAttribute("idContrato", idContrato);
+        
+        return "inmueble_detalle.html";
+    }
+    
+    @PostMapping("/modificar/{idInmueble}")
+    public String modificarInmueble(String idContrato , @PathVariable String idInmueble, String calle, String numero, String piso, String departamento, 
+            String provincia, String localidad, String numPartida, String numTGI, String numTOS,
+            String titulares, String numRegPropiedad, String tomo,String folio, String fechaRegProp,
+            String notas){
+        
+        inmuebleServicio.modificarInmueble(idInmueble, calle, numero, piso, departamento, provincia, localidad, numPartida, numTGI, numTOS, titulares, numRegPropiedad, tomo, folio, fechaRegProp, notas);
+        
+        return "redirect:/contratos/"+idContrato;
+    }
+    
     @PostMapping("/codeudor/crear")
     public String crearCodeudor ( String nombre, String apellido, String fechaNac, String dni, String cuit, String email, String telefono,   String calle,   String numero, @RequestParam(required=false)  String piso,  @RequestParam(required=false)String departamento, 
             String provincia, String localidad ){
@@ -246,18 +275,106 @@ public class PortalControlador {
         }
                 return "redirect:/";
             }
+        
+        @PostMapping("/modificar/{idPersona}/{tipoPersona}")
+        public String modificarInquilino(@PathVariable String idPersona,@PathVariable String tipoPersona, String idContrato, String nombre, String apellido, String fechaNac, String dni, String cuit, String email, String telefono,   String calle,   String numero, String piso, String departamento, 
+            String provincia, String localidad ){
+            
+            if (tipoPersona.equalsIgnoreCase("inquilino")) {
+            inquilinoServicio.modificarInquilino(idPersona, nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad);
+            }
+            
+            if (tipoPersona.equalsIgnoreCase("propietario")) {
+                propietarioServicio.modificarPropietario(idPersona, nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad);
+            }
+            if (tipoPersona.equalsIgnoreCase("codeudor")) {
+                codeudorServicio.modificarCodeudor(idPersona, nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad);
+            }
+            return "redirect:/contratos/"+idContrato;
+        }
+        
+        @GetMapping("/persona/{idPersona}/{tipoPersona}/{idContrato}")
+        public String detallePersona(@PathVariable String idContrato, @PathVariable String tipoPersona, @PathVariable String idPersona, ModelMap modelo ){
+           
+            if (tipoPersona.equalsIgnoreCase("inquilino")) {
+                Inquilino inquilino = inquilinoServicio.getOne(idPersona);
+                 modelo.addAttribute("persona", inquilino);
+            }
+            if (tipoPersona.equalsIgnoreCase("Codeudor")) {
+                Codeudor codeudor = codeudorServicio.getOne(idPersona);
+                modelo.addAttribute("persona", codeudor);
+            }
+            
+            if (tipoPersona.equalsIgnoreCase("propietario")) {
+                Propietario propietario = propietarioServicio.getOne(idPersona);
+                 modelo.addAttribute("persona", propietario);
+            }
+            
+            modelo.addAttribute("idContrato", idContrato);
+            modelo.addAttribute("tipoPersona", tipoPersona);
+            return "persona_detalle";
+        }
+        
         /*(String esComercial, Integer periodoActualiza, String indice, String fechaInicio, ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos,Integer numContrato, String numeroCuenta, String poliza, String fechaVenceSeguro)*/
         @PostMapping("/contrato/crear")
-        public String crearContrato (String esComercial, String periodoActualiza, String indice, String poliza, String numeroCuenta, String fechaVenceSeguro, String fechaInicio,@RequestParam ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos, Integer numContrato){
+        public String crearContrato (String esComercial, String periodoActualiza, String indice, String poliza, String numeroCuenta, String fechaVenceSeguro, String fechaInicio,@RequestParam(name = "codeudores", required = false) ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos, Integer numContrato,RedirectAttributes redirectAttributes, Double porcentajeHono){
             try {
-                System.out.println("entro a controlador");
-                contratoServicio.crearContrato(esComercial, periodoActualiza, indice, fechaInicio, codeudores, fechaFin, idInq, idProp, idInm, archivos, numContrato, numeroCuenta, poliza, fechaVenceSeguro);
+                
+                contratoServicio.crearContrato(esComercial, periodoActualiza, indice, fechaInicio, codeudores, fechaFin, idInq, idProp, idInm, archivos, numContrato, numeroCuenta, poliza, fechaVenceSeguro, porcentajeHono);
             } catch (Exception e) {
-                e.printStackTrace();
+                redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/";
+                
             }
             
             return "redirect:/";
         }
+        
+        @DeleteMapping("/archivo/eliminar/{idArchivo}/{idContrato}")
+    public ResponseEntity<String> eliminarArchivo(@PathVariable String idArchivo, @PathVariable String idContrato ) {
+        contratoServicio.eliminarArchivo(idContrato, idArchivo);
+        return ResponseEntity.ok("Archivo eliminado correctamente");
+    }
+    
+    @PostMapping("/archivo/agregar/{idContrato}")
+    public String agregarArchivo(@PathVariable String idContrato, MultipartFile archivo) throws Exception{
+        
+        System.out.println("archivo" + archivo.getOriginalFilename());
+        
+        contratoServicio.agregarArchivo(idContrato, archivo);
+        
+        
+        
+        return "redirect:/contratos/"+idContrato;
+    }
+        
+        @GetMapping("/contrato/eliminar/{idContrato}")
+        public String eliminarContrato(@PathVariable String idContrato){
+            contratoServicio.eliminarContrato(idContrato);
+            
+            return "redirect:/";
+        }
+        
+        
+        @GetMapping("/contrato/{idContrato}")
+        public String modificarContrato (@PathVariable String idContrato, ModelMap modelo){
+            
+            Contrato contrato = contratoServicio.getOne(idContrato);
+            modelo.addAttribute("contrato",contrato);
+            
+            return "modifica_contrato.html";
+            
+        }
+        
+        @PostMapping("/modificarContrato/{idContrato}")
+        public String modificaContrato(@PathVariable String idContrato, String indice, String periodoActualiza, String tipoContrato, 
+    String numeroCuenta, String poliza, String fechaVencSeguro){
+            
+            contratoServicio.modificarContrato(idContrato, indice, periodoActualiza, tipoContrato, numeroCuenta, poliza, fechaVencSeguro);
+            
+            return "redirect:/contratos/"+idContrato;
+        }
+        
         
         @GetMapping("/contratos")
         public String listado_contratos (ModelMap modelo, HttpSession session ){
@@ -293,9 +410,9 @@ public class PortalControlador {
             Pago ultimaLoca=ultimasLocas[0];
             if(ultimaLoca.getOtros()!=null){
             ArrayList<Otros> ordenOtrosLoca = new ArrayList<>(ultimaLoca.getOtros());
-Collections.sort(ordenOtrosLoca, Comparator
-    .comparing(Otros::getMonto, Comparator.nullsLast(Comparator.naturalOrder()))
-    .thenComparing(Otros::getConcepto, Comparator.nullsLast(Comparator.naturalOrder())));
+            Collections.sort(ordenOtrosLoca, Comparator
+            .comparing(Otros::getMonto, Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(Otros::getConcepto, Comparator.nullsLast(Comparator.naturalOrder())));
             ultimaLoca.setOtros(ordenOtrosLoca);
             }
             Pago siguienteLoca=ultimasLocas[1];
@@ -352,7 +469,13 @@ Collections.sort(ordenOtrosLoca, Comparator
                 pago = respuesta.get();
                 
             }
-            System.out.println("!pago" +pago);
+            if(pago.getOtros()!=null){
+            ArrayList<Otros> ordenOtrosPago = new ArrayList<>(pago.getOtros());
+            Collections.sort(ordenOtrosPago, Comparator
+            .comparing(Otros::getMonto, Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(Otros::getConcepto, Comparator.nullsLast(Comparator.naturalOrder())));
+            pago.setOtros(ordenOtrosPago);
+            }
             Contrato contrato = contratoServicio.getOne(idContrato);
             
             modelo.addAttribute("contrato", contrato);
@@ -361,29 +484,67 @@ Collections.sort(ordenOtrosLoca, Comparator
             return "recibo.html";
         }
         
+        @GetMapping("/recibo_loca/{idContrato}/{idPago}")
+        public String reciboLoca(@PathVariable String idContrato, @PathVariable String idPago, ModelMap modelo){
+            System.out.println("idPago" + idPago);
+            Optional<Pago> respuesta = pagoRepo.findById(idPago);
+            Pago pago=new Pago();
+            if (respuesta.isPresent()) {
+                pago = respuesta.get();
+                
+            }
+            if(pago.getOtros()!=null){
+            ArrayList<Otros> ordenOtrosPago = new ArrayList<>(pago.getOtros());
+            Collections.sort(ordenOtrosPago, Comparator
+            .comparing(Otros::getMonto, Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(Otros::getConcepto, Comparator.nullsLast(Comparator.naturalOrder())));
+            pago.setOtros(ordenOtrosPago);
+            }
+            Contrato contrato = contratoServicio.getOne(idContrato);
+            
+            modelo.addAttribute("contrato", contrato);
+            modelo.addAttribute("pago", pago);
+            
+            return "recibo_locaciones.html";
+        }
+        
         @PostMapping("/datosReciboHono/{idContrato}")
-        public String cargarMontosHono(@PathVariable String idContrato, String idPago, String idPagoSgte,  Double monto, Double montoAgua, Double montoTasa, String concepto1, String concepto2, String concepto3, Integer monto1, Integer monto2, Integer monto3, Double interesesPuni, Double descuentoHono){
+        public String cargarMontosHono(@PathVariable String idContrato, String idPago, String idPagoSgte,  Double monto, Double montoAgua, Double montoTasa, String concepto1, String concepto2, String concepto3, Double monto1, Double monto2, Double monto3, Double interesesPuni, Double descuentoHono,String tipo){
             
             ArrayList<Otros> otros = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
             ArrayList<Otros> otrosSgte = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
-            
-            pagoServicio.guardarMontos(monto, montoAgua, montoTasa, idPago, otros, interesesPuni, descuentoHono);
-            pagoServicio.guardarMontos(monto, montoAgua, montoTasa, idPagoSgte, otrosSgte, interesesPuni, descuentoHono);
-            System.out.println("despues de guardar");
+            System.out.println("antes de servissoosoio");
+            pagoServicio.guardarMontos(monto, montoAgua, montoTasa, idPago, otros, interesesPuni, descuentoHono,tipo,idContrato);
+            System.out.println("desoues de sercijsijasdasd");
+            if(idPagoSgte!=null){
+            pagoServicio.guardarMontos(monto, montoAgua, montoTasa, idPagoSgte, otrosSgte, interesesPuni, descuentoHono,tipo,idContrato);
+            }
             return "redirect:/contratos/"+idContrato;
         }
         
          @PostMapping("/datosReciboLoca/{idContrato}")
-        public String cargarMontosLoca(@PathVariable String idContrato, String idPagoLoca, String idPagoSgteLoca,  Double montoLoca, Double montoAguaLoca, Double montoTasaLoca ,Double seguroImporte,String concepto1, String concepto2, String concepto3, Integer monto1, Integer monto2, Integer monto3,Double interesesPuni, Double descuentoHono){
+        public String cargarMontosLoca(@PathVariable String idContrato, String idPagoLoca, String idPagoSgteLoca,  Double montoLoca, Double montoAguaLoca, Double montoTasaLoca ,Double seguroImporte,String concepto1, String concepto2, String concepto3, Double monto1, Double monto2, Double monto3,Double interesesPuni, Double descuentoHono, String tipo){
             ArrayList<Otros> otros = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
-            ArrayList<Otros> otrosSgte = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
+            ArrayList<Otros> otrosSgte = (ArrayList<Otros>) otrosServicio.crearOtros();
 
             contratoServicio.montoSeguro(idContrato, seguroImporte);
-            pagoServicio.guardarMontos(montoLoca, montoAguaLoca, montoTasaLoca, idPagoLoca, otros, interesesPuni, descuentoHono );
-            pagoServicio.guardarMontos(montoLoca, montoAguaLoca, montoTasaLoca, idPagoSgteLoca, otrosSgte, interesesPuni, descuentoHono);
+            pagoServicio.guardarMontos(montoLoca, montoAguaLoca, montoTasaLoca, idPagoLoca, otros, interesesPuni, descuentoHono, tipo, idContrato );
+            Double interesesSgte = 0.0;
+            
+                  if(idPagoSgteLoca!=null){
+            pagoServicio.guardarMontos(montoLoca, montoAguaLoca, montoTasaLoca, idPagoSgteLoca, otrosSgte, interesesSgte, descuentoHono,tipo,idContrato);
+                  }
             System.out.println("despues de guardar");
             return "redirect:/contratos/"+idContrato;
         }
+        
+        @PostMapping("/api/pdf/guardar")
+    public ResponseEntity<String> guardarPdf(@RequestParam("file") MultipartFile file, @RequestParam("idCuota") String idCuota) throws Exception {
+        
+        reciboServicio.guardarRecibo(file, idCuota);
+
+        return ResponseEntity.ok("PDF guardado exitosamente");
+    }
 }
         
     

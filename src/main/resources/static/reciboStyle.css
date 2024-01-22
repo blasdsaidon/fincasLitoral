@@ -61,6 +61,10 @@ body {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  
+}
+td {
+  margin: 5px 0;
 }
 
 .total {
@@ -152,7 +156,11 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 input, textarea { 
-border-style: hidden; }
+border-style: hidden;
+padding: 0;
+
+width: 100%;
+}
 
 .capitalizar {
     text-transform: capitalize;

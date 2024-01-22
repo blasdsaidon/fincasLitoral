@@ -26,6 +26,61 @@ function compararFechas() {
      
     })
 }
+function alertaVence(){
+    let fechaActual = moment();
+    let fechaCuota = document.getElementById("fechaUltimaLoca").innerText;
+// Obtener la fecha de la cuota con Moment.js
+let fechaCuotaMoment = moment(fechaCuota, 'YYYY-MM-DD');
+if (fechaActual.isAfter(fechaCuotaMoment)) {
+    alert("Hay cuotas vencidas")
+}
+
+}
+function calcularIntereses(){
+
+    // Obtener la fecha actual con Moment.js
+let fechaActual = moment();
+
+let fechaCuota = document.getElementById("fechaUltimaLoca").innerText;
+// Obtener la fecha de la cuota con Moment.js
+let fechaCuotaMoment = moment(fechaCuota, 'YYYY-MM-DD');
+
+// Verificar si la fecha actual es posterior a la fecha de la cuota
+if (fechaActual.isAfter(fechaCuotaMoment)) {
+    // Calcular la diferencia de días solo si la fecha actual es posterior
+    let diferenciaDias = fechaActual.diff(fechaCuotaMoment, 'days');
+
+    console.log(diferenciaDias)
+
+    let locacion = document.getElementById("montoLocararios").value;
+    if(locacion!=null){
+
+    let intereses = locacion*diferenciaDias*0.02
+
+        
+        
+    document.getElementById("interesesLoca").value=intereses;
+    
+    }
+
+}
+
+}
+
+function calculaHonorarios(){
+let porcentaje=document.getElementById("porcentajeHono").innerText;
+console.log(porcentaje)
+let locacion=document.getElementById("montoLocararios").value;
+console.log(locacion)
+if(porcentaje&&locacion){
+let honorarios=locacion*porcentaje/100;
+console.log(honorarios);
+document.getElementById("restandoHono").value=honorarios;
+console.log(document.getElementById("restandoHono"))
+}
+
+}
+
 
 
 function cuotaActual() {
@@ -37,7 +92,7 @@ function cuotaActual() {
         let miObjetoSort = miObjeto.sort((a, b) => moment(a.mesAno, "YYYY-MM-DD").unix() - moment(b.mesAno, "YYYY-MM-DD").unix());
         
         for (let i = 0; i < miObjetoSort.length; i++) {
-            if (moment(miObjetoSort[i].mesAno, "YYYY-MM-DD").unix() > moment(fechaActual).unix()) {
+            if (!miObjetoSort[i].realizado ) {
                 cuotaActual = miObjetoSort[i].mesAno;
                 break;
             }
@@ -98,6 +153,8 @@ function sumaTotal(sumandos, restando, total){
 }
 
 function sumaLoca(){
+    calcularIntereses();
+    
     let sumandos = document.getElementsByClassName('sumandoLoca');
     let restando = document.getElementById('restandoLoca')
     let totalSuma = document.getElementById('sumaLoca');
@@ -105,6 +162,7 @@ function sumaLoca(){
 }
 
 function sumaHono(){
+    calculaHonorarios();
     let sumandos = document.getElementsByClassName('sumandoHono');
     let restando = document.getElementById('restandoHono')
     let totalSuma = document.getElementById('sumaHono');
@@ -112,11 +170,62 @@ function sumaHono(){
 }
 
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    var btns = document.getElementsByClassName('eliminarArchivoBtn');
+    
+    Array.from(btns).forEach((btn)=>{
+    btn.addEventListener('click', function() {
+        var idArchivo = this.getAttribute('data-idArchivo');
+        var idContrato = this.getAttribute('data-idContrato');
+
+        // Confirmación de eliminación
+        if(confirm("¿Estás seguro de que quieres eliminar este archivo?")) {
+            var xhr = new XMLHttpRequest();
+            
+            xhr.open('DELETE', '/archivo/eliminar/' + idArchivo + '/' + idContrato, true);
+            
+            xhr.onload = function() {
+                if(xhr.status === 200) {
+                    alert('Archivo eliminado correctamente');
+                    // Aquí puedes redirigir o realizar otras acciones después de eliminar
+                } else {
+                    alert('Error al eliminar el archivo');
+                }
+            };
+            
+            xhr.onerror = function() {
+                alert('Error de red');
+            };
+            
+            xhr.send();
+
+            location.reload();
+        }
+    });
+});
+});
+
+function cargando(){
+    let botones = document.getElementsByClassName("boton");
+
+
+    Array.from(botones).forEach((boton) =>{
+    boton.classList.add("btn-secondary");
+    boton.setAttribute("disabled", true);
+    boton.innerText = "Cargando..."
+})
+    
+};
+
+
 // Llamar a la función al cargar la página
 window.addEventListener("load", function() {
     compararFechas();
     cuotaActual();
     sumaHono();
+    alertaVence();
     sumaLoca();
+    
     
 });

@@ -25,8 +25,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,14 +86,19 @@ public class ContratoServicio {
     
     
     @Transactional
-    public void crearContrato (String esComercial, String periodoActualiza, String indice, String fechaInicio, ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos,Integer numContrato, String numeroCuenta, String poliza, String fechaVenceSeguro) throws Exception{
+    public void crearContrato (String esComercial, String periodoActualiza, String indice, String fechaInicio, ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos,Integer numContrato, String numeroCuenta, String poliza, String fechaVenceSeguro, Double porcentajeHono) throws Exception{
        
-        
+        if(codeudores==null){
+            throw new Exception("Contrato no creado, ningun codeudor seleccionado");
+        }else if(codeudores.isEmpty()){
+            throw new Exception("Contrato no creado, ningun codeudor seleccionado");
+        }
         Seguro seguro = seguroServicio.crearSeguro(numeroCuenta, poliza, fechaVenceSeguro);
         //modificar el array de codeudores recibidos
           List<String> codeudoress = codeudores.stream()
                 .map(s -> s.replaceAll("[\\[\\]\"]", ""))
-                .toList();
+                .collect(Collectors.toList());
+          
        /*List<Pago> honorarios, List<Pago> locaciones,*/
        List<Pago> honorarios=pagoServicio.crearPagos(fechaInicio, fechaFin);
        List<Pago> locaciones=pagoServicio.crearPagos(fechaInicio, fechaFin);
@@ -146,10 +153,14 @@ public class ContratoServicio {
             }
         System.out.println("###############"+codeudoresNueva);
        
+        
+        
         Collection<Archivo> archivosNueva = archivoServicio.guardar(archivos);
         
+       
         
         contrato.setInquilino(inquilino);
+        contrato.setPorcentajeHonorario(porcentajeHono);
         contrato.setInmueble(inmueble);
         contrato.setPropietario(propietario);
         contrato.setCodeudores(codeudoresNueva);
@@ -165,11 +176,31 @@ public class ContratoServicio {
         contrato.setPeriodoActualiza(periodoActualiza);
         
         
-        System.out.println("*********************" + contrato.toString());
+       
         contratoRepositorio.save(contrato);
             
     
 }
+    
+    @Transactional
+    public void agregarArchivo(String idContrato, MultipartFile documento) throws Exception{
+        
+        Archivo archivo = archivoServicio.guardarUno(documento);
+        
+        Contrato contrato = getOne(idContrato);
+        
+        Collection<Archivo> archivos = contrato.getArchivos();
+        System.out.println("antes de agregar el nuevo"+archivos);
+        archivos.add(archivo);
+        System.out.println("despues de agregar archivo nuevo"+archivos);
+        contrato.setArchivos(archivos);
+        
+        contratoRepositorio.save(contrato);
+        
+               
+    }
+    
+    
     @Transactional
     public List<Contrato> mostraContrato(){
         List<Contrato> contratoLista = contratoRepositorio.findAll();
@@ -193,7 +224,7 @@ public class ContratoServicio {
         
     }
     
-    @Transactional
+ /*   @Transactional
     public Pago[] ultimasCuotas(String idContrato, String tipoPago){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -233,6 +264,36 @@ public class ContratoServicio {
             
         return actualYSiguiente;    
         
+    }*/
+    
+    @Transactional
+    public Pago[] ultimasCuotas(String idContrato, String tipoPago){
+       
+        Contrato contrato = getOne(idContrato);
+        List<Pago> lista = null;
+        Pago actualYSiguiente[] = new Pago[2];
+        
+        if (tipoPago.equalsIgnoreCase("locacion")) {
+            lista = (List<Pago>) contrato.getLocaciones();
+        }else{
+            lista = (List<Pago>) contrato.getHonorarios();
+        }
+        Collections.sort(lista, (pago1, pago2) -> Integer.compare(pago1.getNumeroCuota(), pago2.getNumeroCuota()));
+        
+        for (Pago pago : lista) {
+            if(!pago.getRealizado()){
+                
+                actualYSiguiente[0]=pago;
+                
+                if(lista.get(lista.indexOf(pago)+1) != null){
+                actualYSiguiente[1]=lista.get(lista.indexOf(pago)+1);
+                
+                }
+                break;
+            }
+            
+        }
+        return actualYSiguiente;  
     }
     
     public void montoSeguro(String idContrato, Double seguroImporte){
@@ -248,7 +309,60 @@ public class ContratoServicio {
         
     }
     
+    @Transactional
+    public void modificarContrato(String idContrato, String indice, String periodoActualiza, String tipoContrato, 
+    String numeroCuenta, String poliza, String fechaVencSeguro  ){
     
+        Contrato contrato = getOne(idContrato);
+        
+        seguroServicio.modificarSeguro(contrato.getSeguro().getIdSeguro(), numeroCuenta, poliza, fechaVencSeguro);
+        
+        contrato.setIndice(indice);
+        contrato.setPeriodoActualiza(periodoActualiza);
+        contrato.setEsComercial(false);
+        
+        if (tipoContrato.equalsIgnoreCase("comercial")) {
+            contrato.setEsComercial(true);
+        }
+    }
+        @Transactional    
+    public void eliminarArchivo(String idContrato, String idArchivo){
+        
+            System.out.println("idcontrato"+idContrato);
+            System.out.println("idArchivo"+idArchivo);
+        
+        Contrato contrato = getOne(idContrato);
+            System.out.println("coontrato"+contrato);
+        Collection<Archivo> archivos = contrato.getArchivos();
+        
+            Archivo archivo = archivoServicio.getOne(idArchivo);
+            System.out.println("++++++++++"+archivo.getId());
+            archivos.remove(archivo);
+            System.out.println("archivos"+archivos.size());
+            contrato.setArchivos(archivos);
+            
+            contratoRepositorio.save(contrato);
+            System.out.println("despues de contrato save");
+            archivoServicio.borrar(idArchivo);
+            
+        
+     
     
+    }
 
+    @Transactional
+    public void eliminarContrato(String idContrato){
+        
+        Contrato contrato=getOne(idContrato);
+        
+        contrato.setCodeudores(null);
+        contrato.setInmueble(null);
+        contrato.setPropietario(null);
+        contrato.setInquilino(null);
+        
+        contratoRepositorio.delete(contrato);
+        
+        
+    }
+    
 }

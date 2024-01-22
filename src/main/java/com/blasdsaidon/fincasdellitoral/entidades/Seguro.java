@@ -19,6 +19,14 @@ public class Seguro {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
      private String idSeguro;
+
+    public String getIdSeguro() {
+        return idSeguro;
+    }
+
+    public void setIdSeguro(String idSeguro) {
+        this.idSeguro = idSeguro;
+    }
   private String numeroCuenta;
   private String poliza;
   private String fechaVencSeguro;
@@ -28,13 +36,16 @@ public class Seguro {
     public Seguro() {
     }
 
-    public Seguro(String numeroCuenta, String poliza, String fechaVencSeguro, int cuota, Double importe) {
+    public Seguro(String idSeguro, String numeroCuenta, String poliza, String fechaVencSeguro, int cuota, Double importe) {
+        this.idSeguro = idSeguro;
         this.numeroCuenta = numeroCuenta;
         this.poliza = poliza;
         this.fechaVencSeguro = fechaVencSeguro;
         this.cuota = cuota;
         this.importe = importe;
     }
+
+   
     
     
 

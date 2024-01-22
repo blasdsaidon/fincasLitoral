@@ -39,7 +39,7 @@ public class OtrosServicio {
         
     }
     
-    public ArrayList<Otros> insertarOtros(String concepto1, String concepto2, String concepto3, Integer monto1, Integer monto2, Integer monto3){
+    public ArrayList<Otros> insertarOtros(String concepto1, String concepto2, String concepto3, Double monto1, Double monto2, Double monto3){
         Otros otro1 = new Otros();
         Otros otro2 = new Otros();
         Otros otro3 = new Otros();

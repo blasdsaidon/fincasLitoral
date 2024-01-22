@@ -20,7 +20,7 @@ public class Otros {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String idOtros;
     private String concepto;
-    private Integer monto;
+    private Double monto;
 
     public String getIdOtros() {
         return idOtros;
@@ -38,18 +38,18 @@ public class Otros {
         this.concepto = concepto;
     }
 
-    public Integer getMonto() {
+    public Double getMonto() {
         return monto;
     }
 
-    public void setMonto(Integer monto) {
+    public void setMonto(Double monto) {
         this.monto = monto;
     }
 
     public Otros() {
     }
 
-    public Otros(String idOtros, String concepto, Integer monto) {
+    public Otros(String idOtros, String concepto, Double monto) {
         this.idOtros = idOtros;
         this.concepto = concepto;
         this.monto = monto;
