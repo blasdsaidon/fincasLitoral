@@ -17,11 +17,11 @@ import org.springframework.stereotype.Repository;
 public interface ReciboRepositorio extends JpaRepository<Recibo, String> {
     
         // Consulta nativa para obtener el identificadorHonorario más grande
-    @Query(value = "SELECT MAX(identificador_honorario) FROM Recibo", nativeQuery = true)
+    @Query(value = "SELECT MAX(identificador_honorario) FROM recibo", nativeQuery = true)
     int encontrarMaxIdentificadorHonorario();
 
     // Consulta nativa para obtener el identificadorLocacion más grande
-    @Query(value = "SELECT MAX(identificador_locacion) FROM Recibo", nativeQuery = true)
+    @Query(value = "SELECT MAX(identificador_locacion) FROM recibo", nativeQuery = true)
     int encontrarMaxIdentificadorLocacion();
 }
 

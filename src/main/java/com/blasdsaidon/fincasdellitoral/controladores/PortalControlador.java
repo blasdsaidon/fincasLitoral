@@ -29,29 +29,37 @@ import com.blasdsaidon.fincasdellitoral.servicio.InquilinoServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.OtrosServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.PagoServicio;
 import com.blasdsaidon.fincasdellitoral.servicio.ReciboServicio;
+import excepciones.CustomNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -398,24 +406,38 @@ public class PortalControlador {
             Pago[] ultimasLocas = contratoServicio.ultimasCuotas(idContrato, "locacion");
             Pago ultimoHono=ultimosHonos[0];
             
-            if (ultimoHono.getOtros()!=null) {
+            if (ultimoHono!=null && ultimoHono.getOtros()!=null) {
                 
             
             ArrayList<Otros> ordenOtrosHono = new ArrayList<>(ultimoHono.getOtros());
             Collections.sort(ordenOtrosHono, Comparator
     .comparing(Otros::getMonto, Comparator.nullsLast(Comparator.naturalOrder()))
     .thenComparing(Otros::getConcepto, Comparator.nullsLast(Comparator.naturalOrder())));
+            
+            ordenOtrosHono.sort(
+            Comparator.comparingInt(otros ->
+                Objects.requireNonNullElse(otros.getOrden(), Integer.MAX_VALUE)
+            )
+        );
                     
             ultimoHono.setOtros(ordenOtrosHono);
             }
             
             Pago siguienteHono=ultimosHonos[1];
             Pago ultimaLoca=ultimasLocas[0];
-            if(ultimaLoca.getOtros()!=null){
+            
+            if(ultimaLoca!=null && ultimaLoca.getOtros()!=null){
             ArrayList<Otros> ordenOtrosLoca = new ArrayList<>(ultimaLoca.getOtros());
             Collections.sort(ordenOtrosLoca, Comparator
             .comparing(Otros::getMonto, Comparator.nullsLast(Comparator.naturalOrder()))
             .thenComparing(Otros::getConcepto, Comparator.nullsLast(Comparator.naturalOrder())));
+           
+            ordenOtrosLoca.sort(
+            Comparator.comparingInt(otros ->
+                Objects.requireNonNullElse(otros.getOrden(), Integer.MAX_VALUE)
+            )
+        );
+                    
             ultimaLoca.setOtros(ordenOtrosLoca);
             }
             Pago siguienteLoca=ultimasLocas[1];
@@ -477,11 +499,20 @@ public class PortalControlador {
             Collections.sort(ordenOtrosPago, Comparator
             .comparing(Otros::getMonto, Comparator.nullsLast(Comparator.naturalOrder()))
             .thenComparing(Otros::getConcepto, Comparator.nullsLast(Comparator.naturalOrder())));
+           
+              ordenOtrosPago.sort(
+            Comparator.comparingInt(otros ->
+                Objects.requireNonNullElse(otros.getOrden(), Integer.MAX_VALUE)
+            )
+        );
+            
             pago.setOtros(ordenOtrosPago);
             }
             Contrato contrato = contratoServicio.getOne(idContrato);
-            
-            int numeroHonorario = reciboRepo.encontrarMaxIdentificadorHonorario();
+            int numeroHonorario = 0;
+            if(!reciboRepo.findAll().isEmpty()){
+            numeroHonorario = reciboRepo.encontrarMaxIdentificadorHonorario();
+            }
             numeroHonorario = numeroHonorario + 1;
             System.out.println("numerphonorario " + numeroHonorario);    
             String stringHonorario=String.format("%07d", numeroHonorario);
@@ -508,11 +539,21 @@ public class PortalControlador {
             Collections.sort(ordenOtrosPago, Comparator
             .comparing(Otros::getMonto, Comparator.nullsLast(Comparator.naturalOrder()))
             .thenComparing(Otros::getConcepto, Comparator.nullsLast(Comparator.naturalOrder())));
+            
+              ordenOtrosPago.sort(
+            Comparator.comparingInt(otros ->
+                Objects.requireNonNullElse(otros.getOrden(), Integer.MAX_VALUE)
+            )
+        );
+            
             pago.setOtros(ordenOtrosPago);
             }
             Contrato contrato = contratoServicio.getOne(idContrato);
             
-            int numeroLocacion = reciboRepo.encontrarMaxIdentificadorLocacion();
+            int numeroLocacion = 0;
+            if(!reciboRepo.findAll().isEmpty()){
+            numeroLocacion = reciboRepo.encontrarMaxIdentificadorLocacion();
+            }
             numeroLocacion = numeroLocacion + 1;
             
             String stringLocacion = String.format("%07d", numeroLocacion);
@@ -530,6 +571,7 @@ public class PortalControlador {
             ArrayList<Otros> otros = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
             ArrayList<Otros> otrosSgte = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
             
+            System.out.println("descuendotot hono " + descuentoHono);
             pagoServicio.guardarMontos(monto, montoAgua, montoTasa, idPago, otros, interesesPuni, descuentoHono,tipo,idContrato);
             
             if(idPagoSgte!=null){
@@ -572,9 +614,30 @@ public class PortalControlador {
         return "mostrar_datos.html"; // Esto se corresponde con el nombre de tu plantilla Thymeleaf
     }
     
+   @Controller
+public class GlobalExceptionHandler implements ErrorController {
+
+    @RequestMapping("/error")
+    public String handleError(Model model) {
+        // Aquí puedes personalizar el mensaje de error genérico
+        model.addAttribute("error1", "Ocurrió un error inesperado");
+        return "error1";
+    }
+
+    public String getErrorPath() {
+        return "/error1";
+    }
+}
+
+    // Agrega más métodos @ExceptionHandler para otros tipos de excepciones según sea necesario
+
     
-    
-    
+       @GetMapping("/sample")
+    public String sample() {
+        // Lanza una excepción para probar el manejo de errores
+        throw new RuntimeException("Este es un error de ejemplo");
+    }
+
 }
          
 

@@ -272,20 +272,20 @@ public class ContratoServicio {
         Contrato contrato = getOne(idContrato);
         List<Pago> lista = null;
         Pago actualYSiguiente[] = new Pago[2];
-        
+        System.out.println("idContrato"+idContrato);
         if (tipoPago.equalsIgnoreCase("locacion")) {
             lista = (List<Pago>) contrato.getLocaciones();
         }else{
             lista = (List<Pago>) contrato.getHonorarios();
         }
         Collections.sort(lista, (pago1, pago2) -> Integer.compare(pago1.getNumeroCuota(), pago2.getNumeroCuota()));
-        
+        System.out.println("despues de ordenar -----------------------");
         for (Pago pago : lista) {
             if(!pago.getRealizado()){
                 
                 actualYSiguiente[0]=pago;
                 
-                if(lista.get(lista.indexOf(pago)+1) != null){
+                if( lista.indexOf(pago)<lista.size()-1 && lista.get(lista.indexOf(pago)+1) != null){
                 actualYSiguiente[1]=lista.get(lista.indexOf(pago)+1);
                 
                 }
@@ -293,6 +293,7 @@ public class ContratoServicio {
             }
             
         }
+        System.out.println("despues del for-------------");
         return actualYSiguiente;  
     }
     

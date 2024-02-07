@@ -46,102 +46,115 @@ xlmns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
     
 
-<form th:action="@{/modificar/__${idInmueble}__}" method="post" class="formulario" style="padding-top: 230px;">
-    <div style="background-color: #f5f5f5; padding: 20px;">
-
-        <!-- Sección de domicilio -->
-        <div style="background-color: #f5f5f5; padding: 20px 0px;">
-            <h4 style="background-color: #9c0202; color: white; padding: 10px;">Domicilio</h4>
+    <form th:action="@{/modificar/__${idInmueble}__}" method="post" class="formulario" style="padding-top: 230px;">
+        <div style="background-color: #f5f5f5; padding: 20px;">
     
-            <div class="row">
-                <div class="col-md-6 form-group">
-                    <label for="calle">Calle:</label>
-                    <input type="text"  id="calle" name="calle" th:value="${inmueble.domicilio.calle}" class="form-control capitalizar">
-                </div>
-                <div class="col-md-3 form-group">
-                    <label for="numero">Número:</label>
-                    <input type="text" id="numero" name="numero" th:value="${inmueble.domicilio.numero}" class="form-control capitalizar">
-                </div>
-                <div class="col-md-3 form-group">
-                    <label for="piso">Piso:</label>
-                    <input type="text" id="piso" name="piso" th:value="${inmueble.domicilio.piso}" class="form-control capitalizar">
-                </div>
-            </div>
-    
-            <div class="row">
-                <div class="col-md-4 form-group">
-                    <label for="departamento">Departamento:</label>
-                    <input type="text" id="departamento" name="departamento" th:value="${inmueble.domicilio.departamento}" class="form-control capitalizar">
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="provincia">Provincia:</label>
-                    <select id="modificaProvPersona" name="provincia" class="form-control selectProvincia">
-                        <!-- Aquí deberías llenar las opciones con las provincias  disponibles -->
-                        <option selected th:text="${inmueble.domicilio.provincia}"></option>
-                       
-                    </select>
-                </div>
-                <div class="col-md-4 form-group">
-                    <label for="localidad">Localidad:</label>
-                    <select id="modificaCiudadPersona" name="localidad" class="form-control">
-                        <!-- Aquí deberías llenar las opciones con las localidades disponibles basadas en la provincia seleccionada -->
-                        <option selected th:text="${inmueble.domicilio.localidad}"></option>
+            <!-- Sección de domicilio -->
+            
+                <!-- Columna izquierda -->
+                <h4 style="background-color: #9c0202; color: white; padding: 10px; width: 100%;">Domicilio</h4>
+                <div class="row">
+                <div class="  col-md-6" >
+                    
+        
+                    
+                        <div class=" form-group">
+                            <label class="form-label" for="calle">Calle</label>
+                            <input type="text"  id="calle" name="calle" th:value="${inmueble.domicilio.calle}" class="form-control capitalizar">
+                        </div>
+                        <div class=" form-group">
+                            <label class="form-label" for="numero">Número</label>
+                            <input type="text" id="numero" name="numero" th:value="${inmueble.domicilio.numero}" class="form-control capitalizar">
+                        </div>
+                        <div class=" form-group">
+                            <label class="form-label" for="piso">Piso</label>
+                            <input type="text" id="piso" name="piso" th:value="${inmueble.domicilio.piso}" class="form-control capitalizar">
+                        </div>
+                    
+        
+                    
+                        <div class=" form-group">
+                            <label class="form-label" for="departamento">Departamento</label>
+                            <input type="text" id="departamento" name="departamento" th:value="${inmueble.domicilio.departamento}" class="form-control capitalizar">
+                        </div>
+                        <div class=" form-group">
+                            <label class="form-label" for="provincia">Provincia</label>
+                            <select id="modificaProvPersona" name="provincia" class="form-control selectProvincia">
+                                <!-- Aquí deberías llenar las opciones con las provincias  disponibles -->
+                                <option selected th:text="${inmueble.domicilio.provincia}"></option>
+                            </select>
+                        </div>
+                        <div class=" form-group">
+                            <label class="form-label" for="localidad">Localidad</label>
+                            <select id="modificaCiudadPersona" name="localidad" class="form-control">
+                                <!-- Aquí deberías llenar las opciones con las localidades disponibles basadas en la provincia seleccionada -->
+                                <option selected th:text="${inmueble.domicilio.localidad}"></option>
+                            </select>
+                        </div>
                         
-                    </select>
-                </div>
+                            <div class=" form-group">
+                                <label for="numPartida" class="form-label">Número de Partida</label>
+                                <input type="text" class="form-control" id="numPartida" name="numPartida" th:value="${inmueble.numPartida}">
+                            </div>
+                            <div class=" form-group">
+                                <label for="numTGI" class="form-label">Número TGI</label>
+                                <input type="text" class="form-control" id="numTGI" name="numTGI" th:value="${inmueble.numTGI}">
+                            </div>
+                            <div class=" form-group">
+                                <label for="numTOS" class="form-label">Número TOS</label>
+                                <input type="text" class="form-control" id="numTOS" name="numTOS" th:value="${inmueble.numTOS}">
+                            </div>
+                        </div>
+                    
+                
+    
+                <!-- Columna derecha -->
+                
+                <div class="  col-md-6">
+                    
+                    <!-- Sección de otros campos -->
+                   
+    
+                    
+                        <div class=" form-group">
+                            <label for="titulares" class="form-label">Titulares</label>
+                            <input type="text" class="form-control capitalizar" id="titulares" name="titulares" th:value="${inmueble.titulares}">
+                        </div>
+                        <div class=" form-group">
+                            <label for="numRegPropiedad" class="form-label">Número de Registro de Propiedad</label>
+                            <input type="text" class="form-control" id="numRegPropiedad" name="numRegPropiedad" th:value="${inmueble.numRegPropiedad}">
+                        </div>
+                        <div class=" form-group">
+                            <label for="tomo" class="form-label">Tomo</label>
+                            <input type="text" class="form-control" id="tomo" name="tomo" th:value="${inmueble.tomo}">
+                        </div>
+                    
+    
+                    
+                        <div class=" form-group">
+                            <label for="folio" class="form-label">Folio</label>
+                            <input type="text" class="form-control" id="folio" name="folio" th:value="${inmueble.folio}">
+                        </div>
+                        <div class=" form-group">
+                            <label for="fechaRegProp" class="form-label">Fecha de Registro de Propiedad</label>
+                            <input type="text" class="form-control" id="fechaRegProp" name="fechaRegProp" th:value="${inmueble.fechaRegProp}">
+                        </div>
+                        <div class=" form-group">
+                            <label for="notas" class="form-label">Notas</label>
+                            <textarea cols="3" style="resize: none;" type="text" class="form-control" id="notas" name="notas" th:text="${inmueble.notas}"></textarea>
+                        </div>
+                    
+                
+            </div>
+    
+            <input th:value="${idContrato}" type="hidden" name="idContrato">
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Actualizar Inmueble</button>
             </div>
         </div>
-
-        <!-- Sección de otros campos -->
-        <div class="row mb-3">
-            <div class="col-md-4 form-group">
-                <label for="numPartida" class="form-label">Número de Partida</label>
-                <input type="text" class="form-control" id="numPartida" name="numPartida" th:value="${inmueble.numPartida}">
-            </div>
-            <div class="col-md-4 form-group">
-                <label for="numTGI" class="form-label">Número TGI</label>
-                <input type="text" class="form-control" id="numTGI" name="numTGI" th:value="${inmueble.numTGI}">
-            </div>
-            <div class="col-md-4 form-group">
-                <label for="numTOS" class="form-label">Número TOS</label>
-                <input type="text" class="form-control" id="numTOS" name="numTOS" th:value="${inmueble.numTOS}">
-            </div>
-        </div>
-
-        <div class="row mb-3 ">
-            <div class="col-md-4 form-group">
-                <label for="titulares" class="form-label">Titulares</label>
-                <input type="text" class="form-control capitalizar" id="titulares" name="titulares" th:value="${inmueble.titulares}">
-            </div>
-            <div class="col-md-4 form-group">
-                <label for="numRegPropiedad" class="form-label">Número de Registro de Propiedad</label>
-                <input type="text" class="form-control" id="numRegPropiedad" name="numRegPropiedad" th:value="${inmueble.numRegPropiedad}">
-            </div>
-            <div class="col-md-4 form-group">
-                <label for="tomo" class="form-label">Tomo</label>
-                <input type="text" class="form-control" id="tomo" name="tomo" th:value="${inmueble.tomo}">
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-4 form-group">
-                <label for="folio" class="form-label">Folio</label>
-                <input type="text" class="form-control" id="folio" name="folio" th:value="${inmueble.folio}">
-            </div>
-            <div class="col-md-4 form-group">
-                <label for="fechaRegProp" class="form-label">Fecha de Registro de Propiedad</label>
-                <input type="text" class="form-control" id="fechaRegProp" name="fechaRegProp" th:value="${inmueble.fechaRegProp}">
-            </div>
-            <div class="col-md-4 form-group">
-                <label for="notas" class="form-label">Notas</label>
-                <textarea cols="3" style="resize: none;" type="text" class="form-control" id="notas" name="notas" th:value="${inmueble.notas}"></textarea>
-            </div>
-        </div>
-        <input th:value="${idContrato}" type="hidden" name="idContrato">
-        <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-primary">Actualizar Inmueble</button></div>
-    </div>
-</form>
+    </form>
+    
+    
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     filas.forEach(function (row) {
         var mesAno = row.querySelector('.mes-ano').textContent;
         var descuentoHono = parseFloat(row.querySelector('.descuento-honorario').textContent);
+        var nombrePropietario = row.querySelector('.nombre-propietario').textContent;
 
         if (mesActual !== mesAno) {
             // Insertar celda al final del mes anterior
@@ -32,7 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
         fila.innerHTML = '<td>Total ' + obtenerNombreMes(mes) + '</td>' + // Total Mes
             '<td></td>' + // Número de Cuota (puede ser vacío)
             '<td></td>' + // Número de Contrato (puede ser vacío)
-            '<td>' + total.toFixed(2) + '</td>'; // Descuento Honorario
+            '<td>' + total.toFixed(2) + '</td>' + // Descuento Honorario
+            '<td></td>'; // Nombre Propietario (puede ser vacío)
 
         // Buscar la última fila del mes manualmente
         var ultimaFilaDelMes = null;

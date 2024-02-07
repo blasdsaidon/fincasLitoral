@@ -65,7 +65,14 @@
 
     
     .then(data => {
-        console.log(data); // Puedes manejar la respuesta del servidor según sea necesario
+        let esCuota1=document.getElementById('esCuota1')
+        let enviarForm=document.getElementById('miFormulario');
+         
+        if(esCuota1){
+         
+         enviarForm.submit();
+     }
+
     })
     .catch(error => console.error('Error al enviar el archivo al servidor', error))
     .finally(() => {
@@ -79,13 +86,7 @@
 })
         // Descarga el PDF en el navegador
        
-            let esCuota1=document.getElementById('esCuota1')
-           let enviarForm=document.getElementById('miFormulario');
-            
-           if(esCuota1){
-            
-            enviarForm.submit();
-        }
+           
 
         };
         
@@ -119,15 +120,34 @@
     }
 
     function sumaTotal(sumandos, restando, total){
-        console.log(sumandos);
+        
         let sumatoria = 0;
         Array.from(sumandos).forEach((sumando)=>{
-          if(sumando.innerText)  sumatoria += Number(sumando.innerText);
-            else if(sumando.value) sumatoria += Number(sumando.value);
+            console.log(sumando)
+
+          if(sumando.innerText) {
+            
+            const textFormateado = parseFloat(sumando.innerText).toFixed(2);
+            sumando.innerText = textFormateado;
+            sumatoria += Number(textFormateado);
+          }
+            else if(sumando.value){
+                const numFormateado = parseFloat(sumando.value).toFixed(2);
+                sumando.value = numFormateado;
+                 sumatoria += Number(numFormateado);
+            }
         })
-        if(restando && restando.innerText) sumatoria=sumatoria-Number(restando.innerText);
-        else if(restando && restando.value) sumatoria = sumatoria - Number(restando.value);
-        total.innerText = sumatoria;
+        if(restando && restando.innerText) {
+            const textFormateado = parseFloat(restando.innerText).toFixed(2);
+            restando.innerText = textFormateado;
+        sumatoria=sumatoria-Number(textFormateado);
+        }
+        else if(restando && restando.value) {
+            const numFormateado = parseFloat(restando.value).toFixed(2);
+            restando.value = numFormateado;
+            sumatoria = sumatoria - Number(numFormateado);
+        }
+        total.innerText = parseFloat(sumatoria).toFixed(2);
     
     }
 

@@ -94,14 +94,15 @@
                 </div>
             </div>
                     <div class="col-md-4" >
-                        <div class="detalle">
+                        <div th:if="${ultimaLoca!=null}" class="detalle">
+                            
                             <p hidden id="fechaUltimaLoca" th:text="${ultimaLoca.mesAno}"></p> 
                             <div class="section-title d-flex">Locatario<p th:text="${ultimaLoca.mesAno + ' | Cuota N° ' + ultimaLoca.numeroCuota}" class="fechaCuota m-0 ps-2"></p></div>
                             
                              <form method="POST" onsubmit="return cargando()" th:action="@{/datosReciboLoca/__${contrato.idContrato}__}">
                                 <input type="hidden" value="locacion" name="tipo">
                            <input type="hidden" th:value="${ultimaLoca.idPago}" name="idPagoLoca">
-                           <input type="hidden" th:value="${siguienteLoca.idPago}" name="idPagoSgteLoca">
+                           <input th:if="${siguienteLoca!=null}" type="hidden" th:value="${siguienteLoca.idPago}" name="idPagoSgteLoca">
                             
                             <table class="table montos">
                                 <thead>
@@ -167,17 +168,21 @@
                                 </div>
                         </form> 
                         </div>
+                        
+                        <div th:unless="${ultimaLoca!=null}" class="detalle " >
+                            <div style="margin: 0;" class="section-title d-flex justify-content-center"  ><p style="margin: 0%;">No hay mas cuotas</p></div>
+                        </div>
                     </div>
                    
                         <div class="col-md-4" >
                            
-                        <div class="detalle">
+                        <div th:if="${ultimoHono!=null}" class="detalle">
                             <div class="section-title d-flex">Locador<p th:text="${ultimoHono.mesAno +' | Cuota N° ' +  ultimoHono.numeroCuota }" class="fechaCuota m-0 ps-2"></p></div>
                             
                             <form onsubmit="return cargando()" method="POST" th:action="@{/datosReciboHono/__${contrato.idContrato}__}">
                                 <input type="hidden" value="honorario" name="tipo">
                            <input type="hidden" th:value="${ultimoHono.idPago}" name="idPago">
-                           <input type="hidden" th:value="${siguienteHono.idPago}" name="idPagoSgte">
+                           <input th:if="${siguienteHono!=null}" type="hidden" th:value="${siguienteHono.idPago}" name="idPagoSgte">
 
                             <table class="table montos">
                                 <thead>
@@ -240,7 +245,9 @@
                         </div>
                         </form>
                         </div>
-                        
+                        <div th:unless="${ultimoHono!=null}" class="detalle " >
+                        <div style="margin: 0;" class="section-title d-flex justify-content-center"  ><p style="margin: 0%;">No hay mas cuotas</p></div>
+                    </div>
                     </div>
                     
                 </div>
@@ -257,7 +264,17 @@
                         </li>
                     </ul>
                 </div>
-            
+
+                <div class="detalle">
+                    <div class="section-title d-flex justify-content-between align-items-center">
+                        <p style="margin: 0;">Titulares</p>
+                        <div class="d-flex  align-self-end">
+                        
+                        </div>
+                    </div>
+                    <p class="list-group-item capitalizar" th:text="${contrato.inmueble.titulares}"></p>
+                
+            </div>
                 <div class="detalle">
                     <div class="section-title">Archivos</div>
                     <ul class="list-group">

@@ -21,6 +21,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/inmobiliaria?allowPublicKeyRetrieval=true&useSSL=FALSE&useTimezone=true&serverTimezone=GMT&characterEncoding=UTF-8
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    volumes:
+      - C:\Users\blasd\Documents\mysqlDB:/var/lib/mysql
     networks:
       - mynetwork
 networks:

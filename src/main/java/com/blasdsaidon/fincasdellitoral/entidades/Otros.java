@@ -21,6 +21,7 @@ public class Otros {
     private String idOtros;
     private String concepto;
     private Double monto;
+    private Integer orden;
 
     public String getIdOtros() {
         return idOtros;
@@ -49,11 +50,22 @@ public class Otros {
     public Otros() {
     }
 
-    public Otros(String idOtros, String concepto, Double monto) {
+    public Otros(String idOtros, String concepto, Double monto, Integer orden) {
         this.idOtros = idOtros;
         this.concepto = concepto;
         this.monto = monto;
+        this.orden = orden;
     }
+
+    public Integer getOrden() {
+        return orden;
+    }
+
+    public void setOrden(Integer orden) {
+        this.orden = orden;
+    }
+
+    
 
     @Override
     public String toString() {

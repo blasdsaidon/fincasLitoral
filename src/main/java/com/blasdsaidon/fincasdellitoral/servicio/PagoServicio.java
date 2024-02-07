@@ -146,9 +146,7 @@ public void esDiferenciaMayorAUnMes(String fechaInicio, String fechaFin) throws 
                        pagoRepo.save(locacione);
                    }
                }
-{
-                   
-               }
+
         }else if(tipo.equalsIgnoreCase("locacion")){
             Collection<Pago> honorarios =  contrato.getHonorarios();
                for (Pago honorario : honorarios) {
@@ -157,9 +155,7 @@ public void esDiferenciaMayorAUnMes(String fechaInicio, String fechaFin) throws 
                        pagoRepo.save(honorario);
                    }
                }
-{
-                   
-               }
+
         }
             pago.setImporte(monto);
             pago.setImporteAgua(montoAgua);
@@ -167,6 +163,8 @@ public void esDiferenciaMayorAUnMes(String fechaInicio, String fechaFin) throws 
             pago.setOtros(otros);
             pago.setDescuentoHono(descuentoHono);
             pago.setInteresesPuni(interesesPuni);
+            
+            System.out.println("pago antes de save"+pago.toString());
             
             pagoRepo.save(pago);
         }

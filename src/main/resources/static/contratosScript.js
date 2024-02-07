@@ -139,16 +139,21 @@ function cuotaActual() {
 
 
 function sumaTotal(sumandos, restando, total){
-    console.log(sumandos)
-    console.log(restando)
-    console.log(total)
+   
     let sumatoria = 0;
     Array.from(sumandos).forEach((sumando)=>{
-      if(sumando.value)  sumatoria += Number(sumando.value);
+      if(sumando.value) {
+        const numFormateado = parseFloat(sumando.value).toFixed(2);
+        sumando.value = numFormateado;
+        sumatoria += Number(numFormateado);
+      } 
     })
-    if(restando && restando.value) sumatoria=sumatoria-Number(restando.value);
-    
-    total.innerText = sumatoria;
+    if(restando && restando.value) {
+        const numFormateado = parseFloat(restando.value).toFixed(2);
+        restando.value = numFormateado;
+        sumatoria=sumatoria-Number(numFormateado);
+    }
+    total.innerText = parseFloat(sumatoria).toFixed(2) ;
 
 }
 

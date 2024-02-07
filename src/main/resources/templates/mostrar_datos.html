@@ -45,17 +45,22 @@
             <thead class="thead-dark">
             <tr>
                 <th>Fecha</th>
+                <th>Propietario</th>
                 <th>Número de Cuota</th>
                 <th>Número de Contrato</th>
                 <th>Honorarios</th>
+                
+
             </tr>
         </thead>
         <tbody id="datos-tbody">
             <tr th:each="dato : ${datos}" class="dato-row">
                 <td class="mes-ano" th:text="${dato[0]}"></td>
+                <td class="nombre-propietario capitalizar" th:text="${dato[4]}"></td>
                 <td class="numero-cuota" th:text="${dato[1]}"></td>
                 <td class="numero-contrato" th:text="${dato[2]}"></td>
                 <td class="descuento-honorario" th:text="${dato[3]}"></td>
+                
             </tr>
         </tbody>
     </table>

@@ -33,7 +33,7 @@
                     <div style="margin: auto;">
                         <h6 style="font-weight: bold; margin: 0;">RECIBO</h6>
                         <p style="font-size: 11px; margin: 0;">DOCUMENTO NO VALIDO COMO FACTURA</p>
-                        <div class="d-flex"><p>N°: 00004-</p><p th:text="${stringHonorario}" id="identificador"></p></div>
+                        <div class="d-flex"><p>N°: 00005-</p><p th:text="${stringHonorario}" id="identificador"></p></div>
                         <div class="d-flex"><p style="margin-right: 4px;">Fecha:</p><p id="fecha"></p></div>
                         <p style="font-size: 10px; margin: 0;" >CUIT: 27-31103339-0</p>
                         <p style="font-size: 10px; margin: 0;" >Ing. Brutos: 011-181581-4</p>
@@ -41,7 +41,7 @@
                     </div>
                 </div></div>
         
-                <p type="hidden" th:text="honorario" id="tipoRecibo"></p>
+                <p hidden th:text="honorario" id="tipoRecibo"></p>
         
                 <div class="segunda-parte">
             <div class="detalles-cliente">
@@ -143,7 +143,7 @@
                         
                         </tr>           
                         <tr>                            
-                            <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${0}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text" name="concepto1"> </span></td>
+                            <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar"  th:text="${pago.otros[__${0}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text" name="concepto1"> </span></td>
                             <!-- <td><p th:text="${pago.otros[__${0}__].concepto}" class="capitalizar" type="text"   ></td> -->
                             <td ></td>
                             <span th:if="${pago.numeroCuota==1}" ><td></td></span>
@@ -155,7 +155,7 @@
                             <!-- <td class="d-flex"> <p class="me-2">$</p><p  class="sumandoHono"  onchange="sumaHono()" type="number" th:text="${pago.otros[__${0}__].monto}" ></td> -->
                         </tr>
                         <tr>
-                            <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${1}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input type="text" name="concepto2"> </span></td>
+                            <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar"  th:text="${pago.otros[__${1}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input type="text" name="concepto2"> </span></td>
 
                             <td ></td>
                             <span th:if="${pago.numeroCuota==1}" ><td></td></span>
@@ -166,7 +166,7 @@
                              <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${1}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto2"> </span></td>
                              </tr>
                         <tr>
-                            <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${2}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text"  name="concepto3"> </span></td>
+                            <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar" th:text="${pago.otros[__${2}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text"  name="concepto3"> </span></td>
                                 <td ></td>
                                 <span th:if="${pago.numeroCuota==1}" ><td></td></span>
                              <td  ></td>

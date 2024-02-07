@@ -46,14 +46,17 @@ public class OtrosServicio {
         if (concepto1!=null && monto1!=null) {
             otro1.setConcepto(concepto1);
             otro1.setMonto(monto1);
+            otro1.setOrden(1);
         }
         if (concepto2!=null && monto2!=null) {
             otro2.setConcepto(concepto2);
             otro2.setMonto(monto2);
+            otro2.setOrden(2);
         }
         if (concepto3!=null && monto3!=null) {
             otro3.setConcepto(concepto3);
             otro3.setMonto(monto3);
+            otro3.setOrden(3);
         }
         
         otrosRepo.save(otro1);

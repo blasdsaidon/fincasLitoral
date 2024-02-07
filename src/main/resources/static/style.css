@@ -191,14 +191,14 @@ input[type=number]::-webkit-outer-spin-button {
     flex:1;
     align-items: center;
     background-color:teal;
-    justify-content:center
+    justify-content:center;
 }
 .login-box{
     background-color:  #9c0202;
     display:flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom:15px;
+    padding-bottom:0;
     width: 40vw;
     margin:auto;
     border-radius: 5px;

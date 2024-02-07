@@ -41,7 +41,7 @@
                     </div>
                 </div></div>
         
-                <p type="hidden" th:text="locacion" id="tipoRecibo"></p>
+                <p hidden th:text="locacion" id="tipoRecibo"></p>
         
                 <div class="segunda-parte">
             <div class="detalles-cliente">
@@ -121,7 +121,7 @@
                             <span th:if="${pago.numeroCuota==1}" ><td class="d-flex align-items-center"><input    type="number"><p>Días</p></td></span>
                             <td class="fechaIso" th:text="${pago.mesAno}"></td>
                             <td class="añoIso"></td>
-                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importe}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="monto"> </span></td>
+                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importe}" class="sumandoHono" onchange="sumaHono()" type="number" > </span> <span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="montoLoca"> </span></td>
 
                         </tr>
                         <tr>
@@ -131,7 +131,7 @@
                             <td  ></td>
                             <td ></td>
                             
-                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeTasa}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="montoTasa"> </span></td>
+                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeTasa}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="montoTasaLoca"> </span></td>
                         
                         </tr>
                         
@@ -142,7 +142,7 @@
                              <td  ></td>
                              <td ></td> 
                              
-                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeAgua}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="montoAgua"> </span></td>
+                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeAgua}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="montoAguaLoca"> </span></td>
 
                         
                         </tr>           
@@ -153,7 +153,7 @@
                              <td  ></td>
                              <td ></td> 
                              
-                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${contrato.seguro.importe}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number"> </span></td>
+                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${contrato.seguro.importe}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input name="seguroImporte" class="sumandoHono " onchange="sumaHono()" type="number"> </span></td>
 
                         
                         </tr> 
@@ -165,11 +165,11 @@
                         <td  ></td>
                         <td ></td>
                         
-                        <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.interesesPuni}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number"> </span></td>
+                        <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.interesesPuni}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="interesesPuni"> </span></td>
                     
                     </tr>
                     <tr>
-                        <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${0}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text"> </span></td>
+                        <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar" th:text="${pago.otros[__${0}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text" name="concepto1"> </span></td>
 
                         
                         <td ></td>
@@ -178,11 +178,11 @@
                          <td ></td> 
                          
                            
-                         <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${0}__].monto}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number"> </span></td>
+                         <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${0}__].monto}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="monto1"> </span></td>
                          </tr>
                      
                         <tr>
-                            <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${1}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input type="text"> </span></td>
+                            <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar" th:text="${pago.otros[__${1}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input type="text" name="concepto2"> </span></td>
 
                             <td ></td>
                             <span th:if="${pago.numeroCuota==1}" ><td></td></span>
@@ -190,12 +190,12 @@
                              <td ></td> 
                              
                                
-                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${1}__].monto}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number"> </span></td>
+                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${1}__].monto}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="monto2" > </span></td>
                              </tr>
                         
                         
                                 <tr style="border-bottom: 2px solid black;">
-                                    <td> <span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${2}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input type="text"> </span></td>
+                                    <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar" th:text="${pago.otros[__${2}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input type="text" name="concepto3"> </span></td>
 
                                     <td ></td>
                                     <span th:if="${pago.numeroCuota==1}" ><td></td></span>
@@ -203,7 +203,7 @@
                                      <td ></td> 
                                      
                                        
-                                     <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${2}__].monto}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number"> </span></td>
+                                     <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${2}__].monto}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="monto3" > </span></td>
                                      </tr>
                     </tbody>
                 </table>
