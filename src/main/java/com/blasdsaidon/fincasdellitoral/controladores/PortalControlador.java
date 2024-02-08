@@ -255,11 +255,11 @@ public class PortalControlador {
     
     @PostMapping("/modificar/{idInmueble}")
     public String modificarInmueble(String idContrato , @PathVariable String idInmueble, String calle, String numero, String piso, String departamento, 
-            String provincia, String localidad, String numPartida, String numTGI, String numTOS,
+            String provincia, String localidad, String partida, String numTGI, String numTOS,
             String titulares, String numRegPropiedad, String tomo,String folio, String fechaRegProp,
             String notas){
         
-        inmuebleServicio.modificarInmueble(idInmueble, calle, numero, piso, departamento, provincia, localidad, numPartida, numTGI, numTOS, titulares, numRegPropiedad, tomo, folio, fechaRegProp, notas);
+        inmuebleServicio.modificarInmueble(idInmueble, calle, numero, piso, departamento, provincia, localidad, partida, numTGI, numTOS, titulares, numRegPropiedad, tomo, folio, fechaRegProp, notas);
         
         return "redirect:/contratos/"+idContrato;
     }

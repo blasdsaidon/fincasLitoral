@@ -216,7 +216,7 @@
                      <!-- •	Datos del inmueble (ubicación, Nº de Partida Inmobiliaria,  Nº Cuenta Tasa General de Inmuebles, Nº Cuenta Agua Corriente y Cloacas, agregado de notas con información adicional, Datos de titulares registrales, Nro de inscripción Registro de la Propiedad –  Tomo – Folio - Fecha) -->
                  <legend>Datos del inmueble</legend>
                     
-                <input  class="form-control form-group" type="number" th:value="${numPartida}" name="numPartida" placeholder="Número de partida Inmobiliaria"> 
+                <input autocomplete="off"  class="form-control form-group" type="number" th:value="${numPartida}" name="numPartida" placeholder="N° de partida Inmobiliaria"> 
                 <input  class="form-control form-group" type="number" th:value="${numTGI}" name="numTGI" placeholder="N° Cuenta TGI">
                 <input  class="form-control form-group" type="number" th:value="${numTOS}" name="numTOS" placeholder="N° Cuenta Agua y Cloacas">
                 
@@ -312,9 +312,9 @@
                         <legend>Seguro</legend>
 
                         <label class="form-label" for="customFile">Poliza </label> 
-                        <input    class="form-control form-group" type="text" name="poliza" placeholder="000000000/00">  
+                        <input    class="form-control form-group" type="text" name="poliza" placeholder="Ingrese Poliza">  
                         <label class="form-label" for="customFile">Número de Cuenta </label> 
-                        <input    class="form-control form-group" type="text" name="numeroCuenta" placeholder="000000" >  
+                        <input    class="form-control form-group" type="text" name="numeroCuenta" placeholder="Ingrese Número de Cuenta" >  
                         <label class="form-label" for="customFile">Fecha Vencimiento </label> 
                         <input    class="form-control form-group" type="date" name="fechaVenceSeguro" >  
                         
