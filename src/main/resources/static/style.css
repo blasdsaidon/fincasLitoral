@@ -1,0 +1,359 @@
+body{
+    background-color: #f5f5f5;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.body-index {
+   padding-top: 225px; 
+ 
+}
+
+.form-group {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 80%;
+}
+
+a img {
+    text-decoration: none; /* Elimina el subrayado del enlace */
+    border: none; /* Elimina el borde del enlace (en algunos navegadores) */
+    height:100px
+}
+
+.col-form {
+    display: flex; 
+    flex-direction: row; 
+    align-items: flex-start;
+    padding-left: 30px;
+}
+
+.brand {
+   
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    padding:20px
+}
+
+.section-div{
+    margin-top: 40px;
+    background-color: #f5f5f5;
+}
+.containera {
+    background-color: #9c0202;
+    width: 100%;
+}
+.total-row {
+    background-color: #FFFF99; /* Cambia el color de fondo según tus preferencias */
+    font-weight: bold; /* Hace que el texto sea más visible */
+}
+
+
+.nav-link {
+    color: white;
+    font-weight: 500;
+}
+.nav-item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.botonDiv {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.title {
+    height: 75px;
+    width: 100%;
+    background-color: white;  
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  padding-top: 30px;
+}
+
+legend {
+    padding-top: 10px;
+}
+:target{
+    scroll-margin-top: 220px;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.file-select {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .file-select::before {
+    background-color: #5678EF;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    content: 'Seleccionar'; /* testo por defecto */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+  
+  .file-select input[type="file"] {
+    opacity: 0;
+    width: 200px;
+    height: 32px;
+    display: inline-block;
+  }
+  
+  #src-file1::before {
+    content: 'Seleccionar Archivo Word';
+  }
+
+  #src-file2::before {
+    content: 'Seleccionar Archivo Pdf';
+  }
+
+  .drop-area {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    width: 80%;
+    height: 150px;
+    border: 3px dashed #2196F3;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#files {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.drop-text {
+    text-align: center;
+    
+    font-size: 14px;
+    color: #666;
+}
+
+.drop-area.active {
+    border-color: #2196F3;
+}
+
+.preview-list {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.preview-list li {
+    margin-bottom: 8px;
+}
+
+.drop-area.active .drop-text {
+    color: #2196F3;
+}
+
+.drop-content{
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    
+}
+
+.button-margin {
+    margin: 5px;
+}
+
+.columnas {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.container-login{
+    display:flex;
+    flex-direction: column;
+    flex:1;
+    align-items: center;
+    background-color:teal;
+    justify-content:center;
+}
+.login-box{
+    background-color:  #9c0202;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom:0;
+    width: 40vw;
+    margin:auto;
+    border-radius: 5px;
+    align-self: center;
+    box-shadow: 4px 5px 14px rgb(77, 71, 71);
+}
+.form-login{
+    width: 100%;
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding:20px
+}
+
+.login-title{
+    font-size: 26px;
+    padding-top: 15px;
+    color: #ffffff;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.login-box div.brand{
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+.login-box input,.login-box button{
+    width: 100%;
+    margin-bottom:10px;
+}
+.login-box .btn{
+    margin-top: 20px;
+    box-shadow: 1px 1px 6px rgba(29, 29, 29, 0.205);
+}
+div.divider{
+    height: 1px;
+    width: 90%;
+    margin:5px;
+    background-color: #acacac;
+    box-shadow: 1px 1px 10px rgb(255, 255, 255);
+}
+
+.capitalizar {
+    text-transform: capitalize;
+}
+
+.dropdown-toggle::after {
+    color: white;
+  }
+
+  .resaltar {
+    background-color: yellow; 
+}
+
+.destacar {
+    background-color: rgb(255, 0, 0); 
+}
+
+.titular-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.titular-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.delete-button {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+table p, table a {
+    font-size: medium;
+    padding: 0;
+    margin: 0;
+}
+input.sumandoHono, input.sumandoLoca, input.restandoHono, input.restandoLoca {
+    width: 110px;
+}
+
+table.montos td {
+    font-size: 13px;
+    width: fit-content;
+}
+
+.detalle-body h1 {
+    margin: 30px 20px;
+}
+
+.section-title {
+    background-color: #9c0202;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.detalle {
+    border: 1px solid #9c0202;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.detalle-body ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.modal {
+    margin-top: 200px;
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    top: 70%;
+    
+  }
+  
+  .modal-content {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    margin: auto;
+  }
+  
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 30px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+  }
+  
+  
+
+.detalle-body li {
+    margin-bottom: 5px;
+}
+
+.ver-mas {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}

@@ -1,0 +1,34 @@
+version: "3"
+services:
+  springboot-app:
+    container_name: fincas-app
+    image: fincas-litoral
+    #build: ./target/fincasdellitoral-0.0.1-SNAPSHOT.jar
+    depends_on:
+      - mysqldb 	
+    ports:
+      - 8080:8080
+    environment:
+      - MYSQL_HOST=localhost
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_PORT=3306
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/inmobiliaria?autoReconnect=true&useSSL=false
+    networks:
+      - mynetwork
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:8.0.35
+    ports:
+      - 3308:3306
+    environment:
+      - MYSQL_DATABASE=inmobiliaria
+      - MYSQL_ROOT_PASSWORD=root
+    #volumes: 
+     #- C:\Users\blasd\Documents\mysqlDB:/var/lib/mysql
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

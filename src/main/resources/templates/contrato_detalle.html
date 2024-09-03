@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html
+    lang="es"
+    xmlns:th="http://www.thymeleaf.org"
+    xlmns:sec="http://www.thymeleaf.org/extras/spring-security"
+    >
+    <head>
+        <title>Detalle de Contrato</title>
+        <meta charset="UTF-8" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+            <link rel="stylesheet" href="/style.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+
+            
+        <!--            <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    </head>
+    <nav class="fixed-top">
+       
+        <div class="brand"><a href="/"><img src="/1574430140clbe3-fincasdellitorallogo.png" alt=""></a></div>
+            
+        <div class="containera" >
+            <header class="d-flex justify-content-center py-3">
+              <ul class="nav nav-pills" style="flex-grow: 1; justify-content: center;" >
+    
+                
+                <li class="nav-item"><a th:href="@{/}" class="nav-link">Crear</a></li>
+                <li class="nav-item"><a th:href="@{/contratos}" class="nav-link">Lista de contratos</a></li>
+                
+            </ul>
+                <div class="dropdown" style="align-self: flex-end; margin-right: 7px;">
+                    <a style="background-color: #9c0202 " class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-square" style="font-size: 25px; color: white"></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <div class="dropdown-header text-center font-weight-bold" style="background-color: transparent; cursor: default;">
+                            <strong style="font-size: 15px;" class="capitalizar" th:text="'Hola, ' + ${session.usuariosession.nombreUsuario}"></strong>
+                        </div>
+                      <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+                      <li><a class="dropdown-item" th:href="@{/modificarPerfil/__${session.usuariosession.idUsuario}__}">Modificar cuenta</a></li>
+                    </ul>
+                  </div>
+            
+            </header>
+          </div>
+        </nav>
+
+        <body class="body-index detalle-body">
+            <div class=container> 
+            <div class= "row mt-5">
+                <h1 class="section-title">Detalle de Contrato</h1>
+                
+
+
+                <div class="col-md-4">
+                <div class="detalle ">
+                    
+                    <div class="section-title d-flex justify-content-between align-items-center">
+                        <p style="margin: 0;">Información General</p>
+                        <div class="d-flex  align-self-end">
+                        <a style="color: white;" th:href="@{/contrato/__${contrato.idContrato}__}" type="button" class="btn ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+              <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
+            </svg>
+                            
+                          </a>
+                          <a style="color: white;" onclick="return confirm('Estas seguro que deseas eliminar este contrato?')" th:href="@{/contrato/eliminar/__${contrato.idContrato}__}" type="button" class="btn ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+            </svg>
+                            
+                          </a>
+                        </div>
+                    </div>
+
+                    <ul class="list-group">
+                        <li class="list-group-item">Numero Contrato: <span th:text="${contrato.numContrato}"></span></li>
+                        <li class="list-group-item capitalizar">Inquilino: <a th:href="@{/persona/__${contrato.inquilino.idPersona}__/inquilino/__${contrato.idContrato}__}" > <span th:text="${contrato.inquilino.nombre + ' ' + contrato.inquilino.apellido}"></span></a></li>
+                        <li class="list-group-item capitalizar">Propietario: <a th:href="@{/persona/__${contrato.propietario.idPersona}__/propietario/__${contrato.idContrato}__}" > <span th:text="${contrato.propietario.nombre + ' ' + contrato.propietario.apellido}"></span></a></li>
+                        <li class="list-group-item capitalizar">Inmueble: <a th:href="@{/inmueble/__${contrato.inmueble.idInm}__/__${contrato.idContrato}__}"> <span th:text="${contrato.inmueble.domicilio.calle + ' ' + contrato.inmueble.domicilio.numero}"></span></a></li>
+                        <li class="list-group-item ">Porcentaje Honorarios: <span id="porcentajeHono" th:text="${contrato.porcentajeHonorario*100}"></span></li>
+                        <li class="list-group-item ">Fecha Inicio: <span th:text="${contrato.fechaInicio}"></span></li>
+                        <li class="list-group-item">Fecha Finalización: <span th:text="${contrato.fechaFinaliz}"></span></li>
+                        <li class="list-group-item">Tipo de Contrato:<span th:if="${contrato.esComercial}">
+                         Comercial</span>
+                        <span th:unless="${contrato.esComercial}">Vivienda</span></li>
+                        <li class="list-group-item">Indice de Actualización: <span th:text="${contrato.indice}"></span></li>
+                            <li class="list-group-item">Período de  Actualización: <span th:text="${contrato.periodoActualiza}"> </span> Meses</li>
+                            
+                           
+                    </ul>
+                </div>
+            </div>
+                    <div class="col-md-4" >
+                        <div th:if="${ultimaLoca!=null}" class="detalle">
+                            
+                            <p hidden id="fechaUltimaLoca" th:text="${ultimaLoca.mesAno}"></p> 
+                            <div class="section-title d-flex">Locatario<p th:text="${ultimaLoca.mesAno + ' | Cuota N° ' + ultimaLoca.numeroCuota}" class="fechaCuota m-0 ps-2"></p></div>
+                            
+                             <form method="POST" onsubmit="return cargando()" th:action="@{/datosReciboLoca/__${contrato.idContrato}__}">
+                                <input type="hidden" value="locacion" name="tipo">
+                           <input type="hidden" th:value="${ultimaLoca.idPago}" name="idPagoLoca">
+                           <input th:if="${siguienteLoca!=null}" type="hidden" th:value="${siguienteLoca.idPago}" name="idPagoSgteLoca">
+                            
+                            <table class="table montos">
+                                <thead>
+                                    <tr>
+                                        <th>Concepto</th>
+                                        <th>Importe</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Locación</td>
+                                        <td class="d-flex justify-content-end"><p class="me-2 ">$</p><input  th:value="${ultimaLoca.importe}" id="montoLocararios" onchange="sumaLoca()" class="sumandoLoca" type="number" step="0.01" name="montoLoca" placeholder="Ingrese Importe"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tasa General de Inmuebles</td>
+                                        <td class="d-flex justify-content-end"><p class="me-2 ">$</p><input th:value="${ultimaLoca.importeTasa}" id="montoTasa" onchange="sumaLoca()" class="sumandoLoca" type="number" step="0.01" placeholder="Ingrese Importe" name="montoTasaLoca"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Agua Corriente y Cloacas</td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimaLoca.importeAgua}" id="montoAgua" onchange="sumaLoca()" class="sumandoLoca" name="montoAguaLoca" type="number" step="0.01" placeholder="Ingrese Importe"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Seguro</td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${contrato.seguro.importe}"  id="montoAgua" onchange="sumaLoca()" class="sumandoLoca" name="seguroImporte"  type="number" step="0.01" placeholder="Ingrese Importe"></td>
+
+                                    </tr>
+                                     <tr>
+                                        <td><input class="capitalizar" th:value="${ultimaLoca.otros[__${0}__].concepto}" id="montoAgua" type="text" placeholder="Ingrese Concepto" name="concepto1"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input id="montoAgua" th:value="${ultimaLoca.otros[__${0}__].monto}"  onchange="sumaLoca()" class="sumandoLoca"  type="number" step="0.01" placeholder="Ingrese Importe" name="monto1" /></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><input th:value="${ultimaLoca.otros[__${1}__].concepto}" id="montoAgua" class="capitalizar"  type="text" placeholder="Ingrese Concepto" name="concepto2"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimaLoca.otros[__${1}__].monto}"  id="montoAgua" onchange="sumaLoca()" class="sumandoLoca"  type="number" step="0.01" placeholder="Ingrese Importe" name="monto2"/></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><input th:value="${ultimaLoca.otros[__${2}__].concepto}" id="montoAgua" class="capitalizar"  type="text" placeholder="Ingrese Concepto" name="concepto3"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimaLoca.otros[__${2}__].monto}"  id="montoAgua" onchange="sumaLoca()" class="sumandoLoca"  type="number" step="0.01"  placeholder="Ingrese Importe" name="monto3"/></td>
+
+                             
+                                    </tr>
+                                   
+                                    <tr>
+                                        <td>Intereses y punitorios en mora</td>
+                                        <td class="d-flex"><p class="me-2 ">$</p><input onchange="sumaLoca()" id="interesesLoca" th:value="${ultimaLoca.interesesPuni}" name="interesesPuni" class="sumandoLoca" type="number" step="0.01" placeholder="Ingrese Importe"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total a pagar:</td>
+                                        <td class="d-flex"><p  class="me-2 ">$</p><p id="sumaLoca"></p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="botonDiv"  >   
+                                <button type="submit" class="btn btn-primary boton"  >Actualizar montos</button> 
+                                </div> 
+                                <div class="d-flex justify-content-center">
+                                    <a th:href="@{/recibo_loca/__${contrato.idContrato}__/__${ultimaLoca.idPago}__}">Generar recibo</a>
+                                </div>
+                        </form> 
+                        </div>
+                        
+                        <div th:unless="${ultimaLoca!=null}" class="detalle " >
+                            <div style="margin: 0;" class="section-title d-flex justify-content-center"  ><p style="margin: 0%;">No hay mas cuotas</p></div>
+                        </div>
+                    </div>
+                   
+                        <div class="col-md-4" >
+                           
+                        <div th:if="${ultimoHono!=null}" class="detalle">
+                            <div class="section-title d-flex">Locador<p th:text="${ultimoHono.mesAno +' | Cuota N° ' +  ultimoHono.numeroCuota }" class="fechaCuota m-0 ps-2"></p></div>
+                            
+                            <form onsubmit="return cargando()" method="POST" th:action="@{/datosReciboHono/__${contrato.idContrato}__}">
+                                <input type="hidden" value="honorario" name="tipo">
+                           <input type="hidden" th:value="${ultimoHono.idPago}" name="idPago">
+                           <input th:if="${siguienteHono!=null}" type="hidden" th:value="${siguienteHono.idPago}" name="idPagoSgte">
+
+                            <table class="table montos">
+                                <thead>
+                                    <tr>
+                                        <th>Concepto</th>
+                                        <th>Importe</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Locación</td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input   th:value="${ultimoHono.importe}" id="montoHonorarios" onchange="sumaHono()" class="sumandoHono" type="number" step="0.01" name="monto" placeholder="Ingrese Importe"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tasa General de Inmuebles</td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimoHono.importeTasa}" id="montoTasa" onchange="sumaHono()" class="sumandoHono" type="number" step="0.01" placeholder="Ingrese Importe" name="montoTasa"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Agua Corriente y Cloacas</td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimoHono.importeAgua}" id="montoAgua" onchange="sumaHono()" class="sumandoHono" name="montoAgua" type="number" step="0.01" placeholder="Ingrese Importe"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><input class="capitalizar" th:value="${ultimoHono.otros[__${0}__].concepto}" id="montoAgua" type="text" placeholder="Ingrese Concepto" name="concepto1"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input id="montoAgua"  th:value="${ultimoHono.otros[__${0}__].monto}"  onchange="sumaHono()" class="sumandoHono"  type="number" step="0.01" placeholder="Ingrese Importe" name="monto1" /></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><input class="capitalizar" th:value="${ultimoHono.otros[__${1}__].concepto}" id="montoAgua"  type="text" placeholder="Ingrese Concepto" name="concepto2"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimoHono.otros[__${1}__].monto}"  id="montoAgua" onchange="sumaHono()" class="sumandoHono"  type="number" step="0.01" placeholder="Ingrese Importe" name="monto2"/></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><input class="capitalizar" th:value="${ultimoHono.otros[__${2}__].concepto}" id="montoAgua"  type="text" placeholder="Ingrese Concepto" name="concepto3"></td>
+                                    </td>
+                                        <td class="d-flex justify-content-end">  <p class="me-2 ">$</p><input th:value="${ultimoHono.otros[__${2}__].monto}"  id="montoAgua" onchange="sumaHono()" class="sumandoHono"  type="number" step="0.01"  placeholder="Ingrese Importe" name="monto3"/></td>
+
+                             
+                                    </tr>
+
+                                    
+                                    <tr>
+                                        <td>Descuento Honorarios</td>
+                                        <td class="d-flex"><p class="me-2 ">$</p><input onchange="sumaHono()" id="restandoHono" th:value="${ultimoHono.descuentoHono}" name="descuentoHono" type="number" step="0.01" class="restandoHono" placeholder="Ingrese Importe"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total a pagar:</td>
+                                        <td class="d-flex"><p  class="me-2 ">$</p><p id="sumaHono"></p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="botonDiv" >   
+                                <button type="submit" class="btn btn-primary boton"  >Actualizar montos</button> 
+                            </div> 
+                            <div class="d-flex justify-content-center">
+                            <a th:href="@{/recibo/__${contrato.idContrato}__/__${ultimoHono.idPago}__}">Generar recibo</a>
+                        </div>
+                        </form>
+                        </div>
+                        <div th:unless="${ultimoHono!=null}" class="detalle " >
+                        <div style="margin: 0;" class="section-title d-flex justify-content-center"  ><p style="margin: 0%;">No hay mas cuotas</p></div>
+                    </div>
+                    </div>
+                    
+                </div>
+                <div class="detalle d-flex justify-content-center" >
+                <iframe title="Calculadora de alquileres" src="https://arquiler.com/mini" width="800" height="600"></iframe>
+                </div>
+                <div class="detalle">
+                    <div class="section-title">Codeudores</div>
+                    <ul class="list-group">
+                        <li th:each="codeudor : ${contrato.codeudores}" class="list-group-item capitalizar">
+                            
+                            <a th:text="${codeudor.nombre + ' ' + codeudor.apellido}" th:href="@{/persona/__${codeudor.idPersona}__/codeudor/__${contrato.idContrato}__}"  > </a>
+                            
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="detalle">
+                    <div class="section-title d-flex justify-content-between align-items-center">
+                        <p style="margin: 0;">Titulares</p>
+                        <div class="d-flex  align-self-end">
+                        
+                        </div>
+                    </div>
+                    <p class="list-group-item capitalizar" th:text="${contrato.inmueble.titulares}"></p>
+                
+            </div>
+                <div class="detalle">
+                    <div class="section-title">Archivos</div>
+                    <ul class="list-group">
+                        
+                        <li th:each="archivo : ${contrato.archivos}" class="list-group-item" ><a th:text="${archivo.nombre}"  th:target="'_blank'" th:href="@{/archivo/__${archivo.id}__}"></a><button class="btn-primary ms-2 eliminarArchivoBtn" th:data-idContrato="${contrato.idContrato}" th:data-idArchivo="${archivo.id}">Eliminar Archivo</button> </li>
+                        
+                        <li><form method="post" onsubmit="return cargando()" th:action="@{/archivo/agregar/__${contrato.idContrato}__}" enctype="multipart/form-data">
+                            <div class="d-flex flex-column justify-content-center align-items-center" >
+                            <input id="word" style="width: 50%;" class="form-control form-group" type="file"   name="archivo">
+                        <button type="submit"   style="width: 20%;" class="btn-primary boton">Guardar</button>
+                    </div>
+                    </form>
+                     </li>
+                    </ul>
+                </div>
+            
+     
+
+           
+                <div class="row mt-5">
+                    
+                
+                    <div class="col-md-6">
+                        <div class="detalle">
+                            <div class="section-title">Locatario</div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Mes/Año</th>
+                                        <th>Realizado</th>
+                                        <th>Recibo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="pago : ${contrato.locaciones}">
+                                        <td th:text="${pago.mesAno}"></td>
+                                        <td>
+                                            <span th:if="${pago.realizado}">Pagado</span>
+                                            <span class="destacar" th:unless="${pago.realizado}">Adeuda</span>
+                                        </td>
+                                        <td> 
+                                            <span th:if="${pago.numeroCuota==1 && pago.recibo==null}" ><a th:href="@{/recibo_loca/__${contrato.idContrato}__/__${pago.idPago}__}">Generar cuota 1</a></span>
+
+                                            <span th:if="${pago.recibo}" ><a th:if="${pago.realizado}" th:href="@{/archivo/__${pago.recibo.pdf.id}__}">Ver recibo</a></span>
+                                            <span th:if="${!pago.realizado}" >El pago aún no se ha realizado</span>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detalle">
+                            <div class="section-title">Locador</div>
+                            <p hidden class="listaFechas" th:data-mi-objeto="${contrato.honorarios}"></p>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Mes/Año</th>
+                                        <th>Realizado</th>
+                                        <th>Recibo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="pago : ${contrato.honorarios}">
+                                        <td th:text="${pago.mesAno}"></td>
+                                        <td>
+                                            <span th:if="${pago.realizado}">Pagado</span>
+                                            <span class="destacar" th:unless="${pago.realizado}">Adeuda</span>
+                                        </td>
+                                        <td>
+                                            <span th:if="${pago.numeroCuota==1 && pago.recibo==null }" ><a th:href="@{/recibo/__${contrato.idContrato}__/__${pago.idPago}__}">Generar cuota 1</a></span>
+
+                                            <span th:if="${pago.recibo}" ><a th:if="${pago.realizado}"  th:href="@{/archivo/__${pago.recibo.pdf.id}__}">Ver recibo</a></span>
+                                            <span th:if="${!pago.realizado}" >El pago aún no se ha realizado</span>
+                                            
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+   <!-- <-- <div class="detalle">
+        <div class="section-title">Seguro</div>
+        <ul>
+            <li th:text="${contrato.seguro.nombre}"></li>
+        </ul>
+    </div> -->
+   
+
+    
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="/contratosScript.js"></script>
+
+    </body>
+
+</html>

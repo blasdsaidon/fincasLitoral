@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/reciboStyle.css">
+    <script src="/html2pdf.bundle.min.js"></script>   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+     <title>Factura</title>
+    
+    </head>
+    <page backtop="0" backbottom="0" backleft="0" backright="0" style="display: flex; justify-content: center; flex-direction: column;">
+        <form th:action="@{/datosReciboHono/__${contrato.idContrato}__}" id="miFormulario" method="POST">
+        <div  >
+            <div id="contenido" class="row factura">
+                <div class="d-flex"><div class="col-6">
+                    <div class="d-flex justify-content-between  align-items-end me-2">
+                        <img src="/1574430140clbe3-fincasdellitorallogo.png" alt="Logo de la empresa" style="width: 50%;">
+                        <div style="font-size: 11px; text-align: right;"><p>Hemilse Ivana Salari</p>
+                        <p>Corredor Inmobiliario</p>
+                        <p>MP CCI 444</p></div>
+                        
+                    </div>
+                    <div style="font-size: 11px; margin-top: 7px;">
+                        <p><a href="http://www.fincasdellitoral.com">www.fincasdellitoral.com</a> - fincasdellitoral@gmail.com</p>
+                        <p>Avenida Lujan 2606 (3016) - Tel. (0342) 156122650</p>
+                    </div>
+                </div>
+                <div class="col-6 d-flex recibo-x " >
+                    <div ></i><i class="bi bi-file-excel-fill" style="font-size: 45px;"></i></div>
+                    <div style="margin: auto;">
+                        <h6 style="font-weight: bold; margin: 0;">RECIBO</h6>
+                        <p style="font-size: 11px; margin: 0;">DOCUMENTO NO VALIDO COMO FACTURA</p>
+                        <div class="d-flex"><p>N°: 00005-</p><p th:text="${stringHonorario}" id="identificador"></p></div>
+                        <div class="d-flex"><p style="margin-right: 4px;">Fecha:</p><p id="fecha"></p></div>
+                        <p style="font-size: 10px; margin: 0;" >CUIT: 27-31103339-0</p>
+                        <p style="font-size: 10px; margin: 0;" >Ing. Brutos: 011-181581-4</p>
+                        <p style="font-size: 10px; margin: 0;" >Inicio de Actividades: 01/09/2016</p>
+                    </div>
+                </div></div>
+        
+                <p hidden th:text="honorario" id="tipoRecibo"></p>
+        
+                <div class="segunda-parte">
+            <div class="detalles-cliente">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex"><p class="me-2">Cliente:</p>
+                    <p class="capitalizar" id="nombreCliente" th:text="${contrato.propietario.nombre + ' ' + contrato.propietario.apellido}"></p></div>
+                <div class="d-flex"><p class="me-2">CUIT:</p>
+                <p class="capitalizar" th:text="${contrato.propietario.cuit}"></p></div>
+            </div>
+               <div class="d-flex justify-content-between">
+                <div class="d-flex"> <p class="me-2">Domicilio:</p>
+                <p class="capitalizar" th:text="${contrato.propietario.domicilio.calle + ' ' + contrato.propietario.domicilio.numero}" ></p>
+            </div>
+            <div class="d-flex">
+                <p>Localidad:</p>
+                <p class="capitalizar" th:text="${contrato.propietario.domicilio.localidad}"></p>
+            </div>
+        </div>
+                
+            </div>
+            
+            <div style="height: 1px; background-color: #c3bbbb; margin: 3px;"></div>
+
+                <div class="detalles-cliente">
+                    
+                    <div class="d-flex justify-content-between">
+                       <div class="d-flex"> <p class="me-2">Contrato:</p>
+                        <p  class="capitalizar" th:text="${contrato.numContrato}"></p>
+                    </div>
+                    <div class="d-flex">
+                        <p class="me-2">Inicio:</p>
+                    <p class="capitalizar" th:text="${contrato.fechaInicio}"></p>
+                    </div>
+                    <div class="d-flex">
+                    <p class="me-2">Fin:</p>
+                <p class="capitalizar" th:text="${contrato.fechaFinaliz}"></p>
+                </div>
+                </div>
+                   <div class="d-flex justify-content-between">
+                     
+                    <div class="d-flex"><p class="me-2">Inmueble Locado:</p>
+                    <p class="capitalizar"  th:text="${contrato.inmueble.domicilio.calle + ' ' + contrato.inmueble.domicilio.numero}"></p>
+                    </div>
+                    <div class="d-flex"><p class="me-2">Localidad:</p>
+                        <p class="capitalizar" th:text="${contrato.inmueble.domicilio.localidad}"></p></div>
+                </div>
+                    <div class="d-flex"><p class="me-2">Locatario:</p>
+                        <p class="capitalizar" th:text="${contrato.inquilino.nombre + ' ' + contrato.inquilino.apellido}" ></p>
+                    </div>
+                </div>
+    
+            <div class="detalle-servicios ">
+                
+                <table   >
+                    <thead >
+                        <tr>
+                            <th style="width: 35%;">Concepto</th>
+                            <th style="width: 10%;">Cuota</th>
+                            <span th:if="${pago.numeroCuota==1}" ><th style="width: 12%;"></th></span>
+                            <th style="width: 13%;">Mes</th>
+                            <th style="width: 10%;">Año</th>
+                            <span th:if="${pago.numeroCuota==1}" ><th style="width: 20%;">Importe</th></span>
+                            <span th:unless="${pago.numeroCuota==1}"><th style="width: 32%;">Importe</th></span>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <!-- @PathVariable String idContrato, String idPago, String idPagoSgte,  Double monto, Double montoAgua, Double montoTasa, String concepto1, String concepto2, String concepto3, Double monto1, Double monto2, Double monto3, Double interesesPuni, Double descuentoHono,String tipo) -->
+                        <input type="hidden" value="honorario" name="tipo">   
+
+                         <input type="hidden" th:value="${pago.idPago}" name="idPago">   
+                        <tr>
+                            <td>Locacion</td>
+                            <td th:text="${pago.numeroCuota}"></td>
+                            <span th:if="${pago.numeroCuota==1}" ><td class="d-flex"><input class=""  ><p>Días</p></td></span>
+                            <td class="fechaIso" th:text="${pago.mesAno}"></td>
+                            <td class="añoIso"></td>
+                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importe}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto"> </span></td>
+                        </tr>
+                        <tr>
+                            <td>Tasa General de Inmuebles</td>
+                            <td ></td>
+                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                            <td  ></td>
+                            <td ></td>
+                            
+                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeTasa}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono" name="montoTasa"  onchange="sumaHono()" type="number"> </span></td>
+                                
+                        </tr>
+                        
+                        <tr>
+                            <td>Agua Corriente y Cloacas</td>
+                            <td ></td>
+                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                             <td  ></td>
+                             <td ></td> 
+                             
+                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeAgua}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="montoAgua"> </span></td>
+  
+                        
+                        </tr>           
+                        <tr>                            
+                            <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar"  th:text="${pago.otros[__${0}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text" name="concepto1"> </span></td>
+                            <!-- <td><p th:text="${pago.otros[__${0}__].concepto}" class="capitalizar" type="text"   ></td> -->
+                            <td ></td>
+                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                             <td  ></td>
+                             <td ></td> 
+                             
+                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${0}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto1"> </span></td>
+
+                            <!-- <td class="d-flex"> <p class="me-2">$</p><p  class="sumandoHono"  onchange="sumaHono()" type="number" th:text="${pago.otros[__${0}__].monto}" ></td> -->
+                        </tr>
+                        <tr>
+                            <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar"  th:text="${pago.otros[__${1}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input type="text" name="concepto2"> </span></td>
+
+                            <td ></td>
+                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                             <td  ></td>
+                             <td ></td> 
+                             
+                               
+                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${1}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto2"> </span></td>
+                             </tr>
+                        <tr>
+                            <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar" th:text="${pago.otros[__${2}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text"  name="concepto3"> </span></td>
+                                <td ></td>
+                                <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                             <td  ></td>
+                             <td ></td> 
+                             
+                               
+                             <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${2}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto3"> </span></td>
+                             </tr>
+                           
+                        <tr style="border-bottom: 2px solid black;">
+                            <td>Descuento Honorarios</td>
+                            <td ></td>
+                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                            <td  ></td>
+                            <td ></td>
+                            
+                            <td class="d-flex"> <p class="me-2">$</p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.descuentoHono}" id="restandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input id="restandoHono"  onchange="sumaHono()" type="number" name="descuentoHono"> </span></td>
+
+                            
+                        
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between " style="margin-bottom: 20px;">
+                <div style="font-size: 11px;">
+                <p>Observaciones: LA ACTIVIDAD DE RENTA DE INMUEBLES PROPIOS </P>
+                    <P>ESTA ALCANZADA POR EL REGIMEN IMPOSITIVO NACIONAL</p>
+                    </div>
+            <div class="total d-flex ">
+                <p class="me-2" >Total a Pagar: $ </p>
+                <p id="sumaHono"></p>
+            </div>
+        </div>
+        <div class="d-flex" style="width: 100%;">
+            <p class="me-2">Recibí la cantidad de pesos: </p>
+            <textarea  style="display: flex; flex: 1; background-color: #c3bbbb;" type="text"></textarea>
+        </div>
+        <div style="text-align: center; margin-top: 30px ; font-weight: bold; ">
+            
+            <p>----------------------------</p>
+            <p  >Firma</p>
+        </div>
+        </div>
+        </div>
+        <p hidden th:text="${pago.idPago}" id="idCuota" ></p>
+        </div>
+    
+
+       <span id="esCuota1" class="d-flex justify-content-center" th:if="${pago.numeroCuota==1}" ><button type="submit" id="boton" class="btn-primary align-self-center m-2" onclick="generarPDF()" >Generar PDF</button></span>
+
+    <span class="d-flex justify-content-center" th:if="${pago.numeroCuota!=1}"><button id="boton" class="btn-primary align-self-center m-2" onclick="generarPDF()" >Generar PDF</button></span>
+    
+    </form>
+    
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="/recibo.js"></script>
+        
+    </page>
+</html>
