@@ -82,7 +82,7 @@
                 <div   class="col-6">
                     <legend>Domicilio</legend>
                     <input maxlength="50"  class="form-control form-group" type="text" th:value="${calle}"  name="calle" placeholder="Calle"> 
-                    <input maxlength="5" class="form-control form-group" type="number" th:value="${numero}"  name="numero" placeholder="Número"> 
+                    <input maxlength="50" class="form-control form-group" type="text" th:value="${numero}"  name="numero" placeholder="Número"> 
                     <input maxlength="3" class="form-control form-group" type="text" th:value="${piso}" name="piso" placeholder="Piso"> 
                     <input  class="form-control form-group" type="text" th:value="${departamento}"  name="departamento" placeholder="Departamento"> 
                     <select id="provinciasLocad" required class="form-control form-select form-group selectProvincia"  name="provincia">
@@ -122,7 +122,7 @@
                 <div   class="col-6">
                     <legend>Domicilio</legend>
                     <input maxlength="50" class="form-control form-group" type="text" th:value="${calle}"  name="calle" placeholder="Calle"> 
-                    <input maxlength="5"  class="form-control form-group" type="number" th:value="${numero}"  name="numero" placeholder="Número"> 
+                    <input maxlength="50"  class="form-control form-group" type="text" th:value="${numero}"  name="numero" placeholder="Número"> 
                     <input maxlength="3" class="form-control form-group" type="text" th:value="${piso}" name="piso" placeholder="Piso"> 
                     <input  class="form-control form-group" type="text" th:value="${departamento}" name="departamento" placeholder="Departamento"> 
                     <select id="provinciasLocat" required class="form-control form-select form-group selectProvincia" th:value="${provincia}" name="provincia">
@@ -162,8 +162,8 @@
                 <div   class="col-6">
                     <legend>Domicilio</legend>
                     <input maxlength="50" class="form-control form-group" type="text" th:value="${calle}" name="calle" placeholder="Calle"> 
-                    <input maxlength="5"  class="form-control form-group" type="number" th:value="${numero}"  name="numero" placeholder="Número"> 
-                    <input maxlength="3"  class="form-control form-group" type="text" th:value="${piso}"  name="piso" placeholder="Piso"> 
+                    <input maxlength="50"  class="form-control form-group" type="text" th:value="${numero}"  name="numero" placeholder="Número"> 
+                    <input maxlength="50"  class="form-control form-group" type="text" th:value="${piso}"  name="piso" placeholder="Piso"> 
                     <input  class="form-control form-group" type="text" th:value="${departamento}" name="departamento" placeholder="Departamento"> 
                     <select id="provinciasCod" required class="form-control form-select form-group selectProvincia" th:value="${provincia}" name="provincia">
                         <option value="" selected>Seleccione provincia</option>
@@ -192,7 +192,7 @@
                     <div   class="col-6">
                         <legend>Domicilio</legend>
                         <input  class="form-control form-group" type="text" th:value="${calle}"  name="calle" placeholder="Calle"> 
-                        <input  class="form-control form-group" type="number" th:value="${numero}" name="numero" placeholder="Número"> 
+                        <input  class="form-control form-group" type="text" th:value="${numero}" name="numero" placeholder="Número"> 
                         <input  class="form-control form-group" type="text" th:value="${piso}" name="piso" placeholder="Piso"> 
                         <input  class="form-control form-group" type="text" th:value="${departamento}" name="departamento" placeholder="Departamento"> 
                         <select th:value="${provincia}" id="provinciasInm" required class="form-control form-select form-group selectProvincia" name="provincia">
@@ -222,10 +222,10 @@
                 
                 <legend>Inscripción en Registro de la Propiedad</legend>
 
-                <input  class="form-control form-group" type="number" th:value="${numRegPropiedad}" name="numRegPropiedad" placeholder="Número">
+                <input  class="form-control form-group" type="text" th:value="${numRegPropiedad}" name="numRegPropiedad" placeholder="Número">
                  
-                <input  class="form-control form-group" type="number" th:value="${tomo}" name="tomo" placeholder="Tomo">
-                <input  class="form-control form-group" type="number" th:value="${folio}" name="folio" placeholder="Folio">
+                <input  class="form-control form-group" type="text" th:value="${tomo}" name="tomo" placeholder="Tomo">
+                <input  class="form-control form-group" type="text" th:value="${folio}" name="folio" placeholder="Folio">
                 <label class="form-label" for="customFile">Fecha</label> 
                 <input id="fechaActual" class="form-control form-group" type="date" th:value="${fechaRegProp}" name="fechaRegProp" placeholder="Fecha"> 
                 <input type="hidden" th:value="${notas}" name="notas">
