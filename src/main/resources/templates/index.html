@@ -20,15 +20,27 @@
         
     <div class="containera" >
         <header class="d-flex justify-content-center py-3">
-          <ul class="nav nav-pills" style="flex-grow: 1; justify-content: center;" >
-            <li class="nav-item"><a href="#locador" class="nav-link">Locador</a></li>
-            <li class="nav-item"><a href="#locatario" class="nav-link">Locatario</a></li>
-            <li class="nav-item"><a href="#codeudor" class="nav-link">Codeudores</a></li>
-            <li class="nav-item"><a href="#inmueble" class="nav-link">Inmueble</a></li>
-            <li class="nav-item"><a href="#contrato" class="nav-link">Contrato</a></li>
-            <li class="nav-item"><a th:href="@{/contratos}" class="nav-link">Lista de contratos</a></li>
-            <li class="nav-item"><a th:href="@{/mostrar-datos}" class="nav-link">Honorarios</a></li>
-        </ul>
+            <ul class="nav nav-pills" style="flex-grow: 1; justify-content: center; align-items: center;">
+                <li class="nav-item"><a href="#locador" class="nav-link">Locador</a></li>
+                <li class="nav-item"><a href="#locatario" class="nav-link">Locatario</a></li>
+                <li class="nav-item"><a href="#codeudor" class="nav-link">Codeudores</a></li>
+                <li class="nav-item"><a href="#inmueble" class="nav-link">Inmueble</a></li>
+                <li class="nav-item"><a href="#contrato" class="nav-link">Contrato</a></li>
+                <li class="nav-item"><a th:href="@{/contratos}" class="nav-link">Lista de contratos</a></li>
+                <li class="nav-item"><a th:href="@{/mostrar-datos}" class="nav-link">Honorarios</a></li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a style="background-color: #9c0202; display: flex; align-items: center;" class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span style="color: white; margin-right: 8px;">Personas</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> 
+                            <li><a class="dropdown-item" href="/listaPersonas/locador">Locadores</a></li>
+                            <li><a class="dropdown-item" href="/listaPersonas/locatario">Locatarios</a></li>
+                            <li><a class="dropdown-item" href="/listaPersonas/codeudor">Codeudores</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
             <div class="dropdown" style="align-self: flex-end; margin-right: 7px;">
                 <a style="background-color: #9c0202 " class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-person-square" style="font-size: 25px; color: white"></i>

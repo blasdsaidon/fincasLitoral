@@ -234,3 +234,35 @@ window.addEventListener("load", function() {
     
     
 });
+
+function searchTable() {
+    // Obtener el valor de búsqueda
+    let input = document.getElementById('searchInput');
+    let filter = input.value.toUpperCase();
+    let table = document.querySelector(".custom-table");
+    let tr = table.getElementsByTagName("tr");
+
+    // Iterar sobre todas las filas de la tabla (excepto el encabezado)
+    for (let i = 1; i < tr.length; i++) {
+        let tdArray = tr[i].getElementsByTagName("td");
+        let found = false;
+
+        // Buscar en cada celda de la fila actual
+        for (let j = 0; j < tdArray.length; j++) {
+            let td = tdArray[j];
+            if (td) {
+                if (td.innerText.toUpperCase().indexOf(filter) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        // Mostrar u ocultar la fila según si se encontró una coincidencia
+        if (found) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+}

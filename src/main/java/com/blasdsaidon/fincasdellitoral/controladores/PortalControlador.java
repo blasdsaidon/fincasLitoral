@@ -12,6 +12,7 @@ import com.blasdsaidon.fincasdellitoral.entidades.Inquilino;
 import com.blasdsaidon.fincasdellitoral.entidades.Otros;
 import com.blasdsaidon.fincasdellitoral.entidades.ContratoHonorariosDTO;
 import com.blasdsaidon.fincasdellitoral.entidades.Pago;
+import com.blasdsaidon.fincasdellitoral.entidades.Persona;
 import com.blasdsaidon.fincasdellitoral.entidades.Propietario;
 import com.blasdsaidon.fincasdellitoral.entidades.Seguro;
 import com.blasdsaidon.fincasdellitoral.entidades.Usuario;
@@ -223,7 +224,7 @@ public class PortalControlador {
         }
         
         
-        return "redirect:/";
+        return "redirect:/#locatario";
     }
     
     @PostMapping("/inmueble/crear")
@@ -239,7 +240,7 @@ public class PortalControlador {
         }
         
     
-        return "redirect:/";
+        return "redirect:/#inmueble";
     }
     
     @GetMapping("/inmueble/{idInmueble}/{idContrato}")
@@ -273,7 +274,7 @@ public class PortalControlador {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "redirect:/";
+        return "redirect:/#codeudor";
     }
         @PostMapping("/inquilino/crear")
         public String crearInquilino ( String nombre, String apellido, String fechaNac, String dni, String cuit, String email, String telefono,   String calle,   String numero, @RequestParam(required=false)  String piso,  @RequestParam(required=false)String departamento, 
@@ -284,30 +285,37 @@ public class PortalControlador {
         } catch (Exception e) {
             e.printStackTrace();
         }
-                return "redirect:/";
+                return "redirect:/#locador";
             }
         
         @PostMapping("/modificar/{idPersona}/{tipoPersona}")
-        public String modificarInquilino(@PathVariable String idPersona,@PathVariable String tipoPersona, String idContrato, String nombre, String apellido, String fechaNac, String dni, String cuit, String email, String telefono,   String calle,   String numero, String piso, String departamento, 
+        public String modificarPersona(@PathVariable String idPersona,@PathVariable String tipoPersona, String idContrato, String nombre, String apellido, String fechaNac, String dni, String cuit, String email, String telefono,   String calle,   String numero, String piso, String departamento, 
             String provincia, String localidad ){
-            
-            if (tipoPersona.equalsIgnoreCase("inquilino")) {
+            System.out.println("aca id contrato");
+            System.out.println(idContrato);
+            if (tipoPersona.equalsIgnoreCase("locador")) {
             inquilinoServicio.modificarInquilino(idPersona, nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad);
             }
             
-            if (tipoPersona.equalsIgnoreCase("propietario")) {
+            if (tipoPersona.equalsIgnoreCase("locatario")) {
                 propietarioServicio.modificarPropietario(idPersona, nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad);
             }
             if (tipoPersona.equalsIgnoreCase("codeudor")) {
                 codeudorServicio.modificarCodeudor(idPersona, nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad);
             }
-            return "redirect:/contratos/"+idContrato;
+            
+            if (tipoPersona!=null && idContrato.isEmpty()) {
+                return "redirect:/listaPersonas/"+ tipoPersona;
+           
+            }else {
+                 return "redirect:/contratos/"+idContrato;
+            }
         }
         
-        @GetMapping("/persona/{idPersona}/{tipoPersona}/{idContrato}")
-        public String detallePersona(@PathVariable String idContrato, @PathVariable String tipoPersona, @PathVariable String idPersona, ModelMap modelo ){
+        @GetMapping("/persona/{idPersona}/{tipoPersona}")
+        public String detallePersonas(@PathVariable String tipoPersona, @PathVariable String idPersona, ModelMap modelo ){
            
-            if (tipoPersona.equalsIgnoreCase("inquilino")) {
+            if (tipoPersona.equalsIgnoreCase("locador")) {
                 Inquilino inquilino = inquilinoServicio.getOne(idPersona);
                  modelo.addAttribute("persona", inquilino);
             }
@@ -316,7 +324,29 @@ public class PortalControlador {
                 modelo.addAttribute("persona", codeudor);
             }
             
-            if (tipoPersona.equalsIgnoreCase("propietario")) {
+            if (tipoPersona.equalsIgnoreCase("locatario")) {
+                Propietario propietario = propietarioServicio.getOne(idPersona);
+                 modelo.addAttribute("persona", propietario);
+            }
+            
+            
+            modelo.addAttribute("tipoPersona", tipoPersona);
+            return "persona_detalle";
+        }
+        
+        @GetMapping("/persona/contrato/{idPersona}/{tipoPersona}/{idContrato}")
+        public String detallePersona(@PathVariable String idContrato, @PathVariable String tipoPersona, @PathVariable String idPersona, ModelMap modelo ){
+           
+            if (tipoPersona.equalsIgnoreCase("locador")) {
+                Inquilino inquilino = inquilinoServicio.getOne(idPersona);
+                 modelo.addAttribute("persona", inquilino);
+            }
+            if (tipoPersona.equalsIgnoreCase("codeudor")) {
+                Codeudor codeudor = codeudorServicio.getOne(idPersona);
+                modelo.addAttribute("persona", codeudor);
+            }
+            
+            if (tipoPersona.equalsIgnoreCase("locatario")) {
                 Propietario propietario = propietarioServicio.getOne(idPersona);
                  modelo.addAttribute("persona", propietario);
             }
@@ -334,11 +364,11 @@ public class PortalControlador {
                 contratoServicio.crearContrato(esComercial, periodoActualiza, indice, fechaInicio, codeudores, fechaFin, idInq, idProp, idInm, archivos, numContrato, numeroCuenta, poliza, fechaVenceSeguro, porcentajeHono);
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/";
+            return "redirect:/#contrato";
                 
             }
             
-            return "redirect:/";
+            return "redirect:/#contrato";
         }
         
         @DeleteMapping("/archivo/eliminar/{idArchivo}/{idContrato}")
@@ -386,6 +416,32 @@ public class PortalControlador {
             return "redirect:/contratos/"+idContrato;
         }
         
+        @GetMapping("/listaPersonas/{tipoPersona}")
+        public String listado_personas (ModelMap modelo, HttpSession session, @PathVariable String tipoPersona ){
+            modelo.addAttribute(tipoPersona, tipoPersona);
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            if(tipoPersona.equals("codeudor")){
+                List<Codeudor> codeudores = codeudorServicio.mostraCodeudor();
+                modelo.addAttribute("listaPersonas", codeudores);
+                modelo.addAttribute("titulo", "Lista de Codeudores");
+            }
+            if(tipoPersona.equals("locador")){
+                List<Inquilino> locadores = inquilinoServicio.mostraInquilino();
+                modelo.addAttribute("listaPersonas", locadores);
+                modelo.addAttribute("titulo", "Lista de Locadores");
+            }
+            if(tipoPersona.equals("locatario")){
+                List<Propietario> propietarios = propietarioServicio.mostraPropietario();
+                modelo.addAttribute("listaPersonas", propietarios);
+                modelo.addAttribute("titulo", "Lista de Locatarios");
+            }
+             
+             if (logueado == null) {
+           return "redirect:/login";
+       }
+            
+            return "lista_personas.html";
+        }
         
         @GetMapping("/contratos")
         public String listado_contratos (ModelMap modelo, HttpSession session ){

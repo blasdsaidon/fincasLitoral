@@ -20,8 +20,7 @@ xlmns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="containera" >
         <header class="d-flex justify-content-center py-3">
           <ul class="nav nav-pills" style="flex-grow: 1; justify-content: center;" >
-
-            <li class="nav-item"><a th:href="@{/contratos/__${idContrato}__}"  class="nav-link">Volver</a></li>
+            <li class="nav-item"><a href="javascript:history.back()"  class="nav-link">Volver</a></li>           
             <li class="nav-item"><a th:href="@{/}" class="nav-link">Crear</a></li>
             <li class="nav-item"><a th:href="@{/contratos}" class="nav-link">Lista de contratos</a></li>
             
@@ -134,6 +133,7 @@ xlmns:sec="http://www.thymeleaf.org/extras/spring-security">
                    
             </div>
         </div>
+        <input type="hidden" th:value="${origin}" name="origin">
         <input type="hidden" th:value="${idContrato}" name="idContrato">
         <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-primary ">Actualizar</button></div>

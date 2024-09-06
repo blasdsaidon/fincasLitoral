@@ -12,7 +12,7 @@ body {
      padding: 20px;
      display: flex;
      flex-direction: column;
-     justify-content: space-between;
+    /* justify-content: space-between;*/
      
   
 }
@@ -168,4 +168,12 @@ width: 100%;
 
 .deshabilitado {
     background-color: red !important;
+}
+
+.end {
+  display: flex;
+  justify-content: flex-end;
+}
+.enda {
+  text-align: right !important;
 }

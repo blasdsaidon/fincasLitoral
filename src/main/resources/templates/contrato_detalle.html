@@ -77,8 +77,8 @@
 
                     <ul class="list-group">
                         <li class="list-group-item">Numero Contrato: <span th:text="${contrato.numContrato}"></span></li>
-                        <li class="list-group-item capitalizar">Inquilino: <a th:href="@{/persona/__${contrato.inquilino.idPersona}__/inquilino/__${contrato.idContrato}__}" > <span th:text="${contrato.inquilino.nombre + ' ' + contrato.inquilino.apellido}"></span></a></li>
-                        <li class="list-group-item capitalizar">Propietario: <a th:href="@{/persona/__${contrato.propietario.idPersona}__/propietario/__${contrato.idContrato}__}" > <span th:text="${contrato.propietario.nombre + ' ' + contrato.propietario.apellido}"></span></a></li>
+                        <li class="list-group-item capitalizar">Inquilino: <a th:href="@{/persona/contrato/__${contrato.inquilino.idPersona}__/locador/__${contrato.idContrato}__}" > <span th:text="${contrato.inquilino.nombre + ' ' + contrato.inquilino.apellido}"></span></a></li>
+                        <li class="list-group-item capitalizar">Propietario: <a th:href="@{/persona/contrato/__${contrato.propietario.idPersona}__/locatario/__${contrato.idContrato}__}" > <span th:text="${contrato.propietario.nombre + ' ' + contrato.propietario.apellido}"></span></a></li>
                         <li class="list-group-item capitalizar">Inmueble: <a th:href="@{/inmueble/__${contrato.inmueble.idInm}__/__${contrato.idContrato}__}"> <span th:text="${contrato.inmueble.domicilio.calle + ' ' + contrato.inmueble.domicilio.numero}"></span></a></li>
                         <li class="list-group-item ">Porcentaje Honorarios: <span id="porcentajeHono" th:text="${contrato.porcentajeHonorario*100}"></span></li>
                         <li class="list-group-item ">Fecha Inicio: <span th:text="${contrato.fechaInicio}"></span></li>
@@ -164,7 +164,7 @@
                                 <button type="submit" class="btn btn-primary boton"  >Actualizar montos</button> 
                                 </div> 
                                 <div class="d-flex justify-content-center">
-                                    <a th:href="@{/recibo_loca/__${contrato.idContrato}__/__${ultimaLoca.idPago}__}">Generar recibo</a>
+                                    <a target="_blank" th:href="@{/recibo_loca/__${contrato.idContrato}__/__${ultimaLoca.idPago}__}">Generar recibo</a>
                                 </div>
                         </form> 
                         </div>
@@ -241,7 +241,7 @@
                                 <button type="submit" class="btn btn-primary boton"  >Actualizar montos</button> 
                             </div> 
                             <div class="d-flex justify-content-center">
-                            <a th:href="@{/recibo/__${contrato.idContrato}__/__${ultimoHono.idPago}__}">Generar recibo</a>
+                            <a target="_blank" th:href="@{/recibo/__${contrato.idContrato}__/__${ultimoHono.idPago}__}">Generar recibo</a>
                         </div>
                         </form>
                         </div>
@@ -259,7 +259,7 @@
                     <ul class="list-group">
                         <li th:each="codeudor : ${contrato.codeudores}" class="list-group-item capitalizar">
                             
-                            <a th:text="${codeudor.nombre + ' ' + codeudor.apellido}" th:href="@{/persona/__${codeudor.idPersona}__/codeudor/__${contrato.idContrato}__}"  > </a>
+                            <a th:text="${codeudor.nombre + ' ' + codeudor.apellido}" th:href="@{/persona/contrato/__${codeudor.idPersona}__/codeudor/__${contrato.idContrato}__}"  > </a>
                             
                         </li>
                     </ul>

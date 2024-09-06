@@ -47,6 +47,10 @@ a img {
     background-color: #FFFF99; /* Cambia el color de fondo según tus preferencias */
     font-weight: bold; /* Hace que el texto sea más visible */
 }
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
 
 
 .nav-link {
