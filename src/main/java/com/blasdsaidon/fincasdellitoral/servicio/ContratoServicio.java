@@ -312,7 +312,7 @@ public class ContratoServicio {
     
     @Transactional
     public void modificarContrato(String idContrato, String indice, String periodoActualiza, String tipoContrato, 
-    String numeroCuenta, String poliza, String fechaVencSeguro  ){
+    String numeroCuenta, String poliza, String fechaVencSeguro, Double porcentajeHono  ){
     
         Contrato contrato = getOne(idContrato);
         
@@ -321,6 +321,7 @@ public class ContratoServicio {
         contrato.setIndice(indice);
         contrato.setPeriodoActualiza(periodoActualiza);
         contrato.setEsComercial(false);
+        contrato.setPorcentajeHonorario(porcentajeHono);
         
         if (tipoContrato.equalsIgnoreCase("comercial")) {
             contrato.setEsComercial(true);

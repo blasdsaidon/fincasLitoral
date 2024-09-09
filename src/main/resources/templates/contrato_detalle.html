@@ -80,7 +80,7 @@
                         <li class="list-group-item capitalizar">Inquilino: <a th:href="@{/persona/contrato/__${contrato.inquilino.idPersona}__/locador/__${contrato.idContrato}__}" > <span th:text="${contrato.inquilino.nombre + ' ' + contrato.inquilino.apellido}"></span></a></li>
                         <li class="list-group-item capitalizar">Propietario: <a th:href="@{/persona/contrato/__${contrato.propietario.idPersona}__/locatario/__${contrato.idContrato}__}" > <span th:text="${contrato.propietario.nombre + ' ' + contrato.propietario.apellido}"></span></a></li>
                         <li class="list-group-item capitalizar">Inmueble: <a th:href="@{/inmueble/__${contrato.inmueble.idInm}__/__${contrato.idContrato}__}"> <span th:text="${contrato.inmueble.domicilio.calle + ' ' + contrato.inmueble.domicilio.numero}"></span></a></li>
-                        <li class="list-group-item ">Porcentaje Honorarios: <span id="porcentajeHono" th:text="${contrato.porcentajeHonorario*100}"></span></li>
+                        <li class="list-group-item ">Porcentaje Honorarios: <span id="porcentajeHono" th:text="${#numbers.formatDecimal(contrato.porcentajeHonorario*100, 0,0)}"></span><span>%</span></li>
                         <li class="list-group-item ">Fecha Inicio: <span th:text="${contrato.fechaInicio}"></span></li>
                         <li class="list-group-item">Fecha Finalización: <span th:text="${contrato.fechaFinaliz}"></span></li>
                         <li class="list-group-item">Tipo de Contrato:<span th:if="${contrato.esComercial}">

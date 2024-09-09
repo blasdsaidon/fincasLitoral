@@ -409,9 +409,9 @@ public class PortalControlador {
         
         @PostMapping("/modificarContrato/{idContrato}")
         public String modificaContrato(@PathVariable String idContrato, String indice, String periodoActualiza, String tipoContrato, 
-    String numeroCuenta, String poliza, String fechaVencSeguro){
+    String numeroCuenta, String poliza, String fechaVencSeguro, Double porcentajeHono ){
             
-            contratoServicio.modificarContrato(idContrato, indice, periodoActualiza, tipoContrato, numeroCuenta, poliza, fechaVencSeguro);
+            contratoServicio.modificarContrato(idContrato, indice, periodoActualiza, tipoContrato, numeroCuenta, poliza, fechaVencSeguro, porcentajeHono);
             
             return "redirect:/contratos/"+idContrato;
         }

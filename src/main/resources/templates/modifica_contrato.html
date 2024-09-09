@@ -121,6 +121,17 @@ xlmns:sec="http://www.thymeleaf.org/extras/spring-security">
                             <option value="OTRO">OTRO</option>
                     </select>
                 </div>
+                <div>
+                <label for="localidad">Porcentaje honorarios:</label>
+                   
+                <select required  style="width: 180px;" id="porcentaje" class="form-control form-select form-group capitalizar" name="porcentajeHono"  >
+                    <option selected th:text="${#numbers.formatDecimal(contrato.porcentajeHonorario * 100, 0, 0)} + '%'">
+                        </option>     
+                               
+                                
+        
+                </select>
+            </div>
             </div>
         </div>
 
