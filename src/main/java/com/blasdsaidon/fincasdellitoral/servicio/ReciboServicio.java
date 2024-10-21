@@ -35,7 +35,7 @@ public class ReciboServicio {
         
         Recibo recibo = new Recibo();
         int numeroSinCeros = Integer.parseInt(identificador);
-        System.out.println("transforma string a numero" + numeroSinCeros);
+      
         
         if(tipoRecibo.equalsIgnoreCase("honorario")){
             recibo.setIdentificadorHonorario(numeroSinCeros);

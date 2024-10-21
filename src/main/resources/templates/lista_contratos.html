@@ -9,7 +9,9 @@
         <meta charset="UTF-8" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
             <link rel="stylesheet" href="/style.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+            
 
 
             
@@ -26,7 +28,18 @@
                
                 <li class="nav-item"><a th:href="@{/}" class="nav-link">Crear</a></li>
                 <li class="nav-item"><a th:href="@{/mostrar-datos}" class="nav-link">Honorarios</a></li>
-                
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a style="background-color: #9c0202; display: flex; align-items: center;" class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span style="color: white; margin-right: 8px;">Personas</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> 
+                            <li><a class="dropdown-item" href="/listaPersonas/locador">Locadores</a></li>
+                            <li><a class="dropdown-item" href="/listaPersonas/locatario">Locatarios</a></li>
+                            <li><a class="dropdown-item" href="/listaPersonas/codeudor">Codeudores</a></li>
+                        </ul>
+                    </div>
+                </li>
                 
             </ul>
                 <div class="dropdown" style="align-self: flex-end; margin-right: 7px;">
@@ -47,23 +60,26 @@
         </nav>
     <body class="body-index">
        
-        <input type="text" id="searchInput" placeholder="Buscar..." onkeyup="searchTable()" style="margin-bottom: 20px;">
+       
 
 
         <div class="container mt-4" > 
         <h1 class="section-title">Lista de Contratos</h1>
-       
+        <!-- Botón para mostrar filas ocultas -->
+                 
+<div class="d-flex justify-content-between"> <input type="text" id="searchInput" placeholder="Buscar..." onkeyup="searchTable()" ><button class="btn btn-primary boton " id="mostrarFilasOcultas" style="display: none;" onclick="mostrarFilas()">Contratos ocultos</button></div>
             <div class="table-responsive custom-table-responsive" style="margin-top: 52px;">
-                <table class="table custom-table" border="5px" style="width: 100%; font-size: 20px; text-align: center">
+                <table id="miTabla" class="table custom-table" border="5px" style="width: 100%; font-size: 20px; text-align: center">
                     <thead class="thead-dark">
                         <tr>
                             <th style="width: 5%">Número</th>
                             <th style="width: 15%">Direccion</th>
-                            <th style="width: 15%">Locador</th>
-                            <th style="width: 15%">Locatario</th>
+                            <th style="width: 10%">Locador</th>
+                            <th style="width: 10%">Locatario</th>
                             <th style="width: 15%" >Proxima cuota</th>
-                            <th style="width: 15%" >Fin contrato</th>
-                            <th style="width: 15%" >Detalles</th>
+                            <th style="width: 13%" >Fin contrato</th>
+                            <th style="width: 13%" >Fin Seguro</th>
+                            <th style="width: 8%" >Detalles</th>
                             <!-- <th style="width: 15%" sec:authorize="hasRole('ROLE_ADMIN')">Teléfono</th>
                             <th style="width: 10%" sec:authorize="hasRole('ROLE_ADMIN')">Estado</th>
                             <th style="width: 10%" sec:authorize="hasRole('ROLE_ADMIN')"></th>
@@ -88,13 +104,13 @@
 
                             <td scope="row">
                                 <div class="container capitalizar">
-                                    <p th:text="${contrato.propietario.nombre + ' ' + contrato.propietario.apellido}"></p>
+                                    <span th:if="${contrato.propietario!=null}"> <p th:text="${contrato.propietario.nombre + ' ' + contrato.propietario.apellido}"></p></span>
                                 </div>
                             </td>
 
                             <td>
                                 <div class="container capitalizar">
-                                    <p th:text="${contrato.inquilino.nombre + ' ' + contrato.inquilino.apellido}"></p>
+                                   <span th:if="${contrato.inquilino!=null}" > <p th:text="${contrato.inquilino.nombre + ' ' + contrato.inquilino.apellido}"></p></span>
                                 </div>
                             </td>
 
@@ -102,16 +118,21 @@
 
                             <td scope="row">
                                 <div class="container">
-                                    <p class="cuotaActual" th:data-mi-objeto="${contrato.honorarios}"></p>
+                                    <p th:data-periodo-actualiza="${contrato.periodoActualiza}" class="cuotaActual" th:data-mi-objeto="${contrato.locaciones}"></p>
                                 </div>
                             </td>
 
                             <td scope="row" >
                                 <div  class="container">
-                                    <p class="fechaTabla" th:text="${contrato.fechaFinaliz}"></p>
+                                    <p th:if="${contrato.inactivo==true}" class="rescindido" >Contrato rescindido</p>
+                                    <p th:unless="${contrato.inactivo==true}" class="fechaTabla" th:text="${contrato.fechaFinaliz}"></p>
                                 </div>
                             </td>
-
+                            <td scope="row" >
+                                <div  class="container">
+                                    <p class="seguroVence" th:text="${contrato.seguro.fechaVencSeguro}"></p>
+                                </div>
+                            </td>
                             <td scope="row" >
                                 <div class="d-flex justify-content-center align-items-center " >
                                     <a th:href="@{/contratos/__${contrato.idContrato}__}">Ver más</a>
@@ -163,7 +184,9 @@
                             </td> -->
                         </tr>
                     </tbody>
-                </table>             
+                </table> 
+               
+            
             </div>
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

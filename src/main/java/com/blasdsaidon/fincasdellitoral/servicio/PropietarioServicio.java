@@ -107,5 +107,12 @@ public class PropietarioServicio {
         
     }
     
+     @Transactional
+    public void deleteLocatario(String idLocatario){
+        
+        propietarioRepo.deleteById(idLocatario);
+        
+    }
+    
     
 }

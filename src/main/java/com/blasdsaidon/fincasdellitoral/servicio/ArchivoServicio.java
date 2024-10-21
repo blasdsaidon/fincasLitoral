@@ -33,7 +33,7 @@ public class ArchivoServicio {
     @Transactional
      public Archivo guardarUno(MultipartFile documento) throws Exception{
         
-         System.out.println("en archivo servixios" + documento.getContentType());
+        
          
          
          if(documento!=null){

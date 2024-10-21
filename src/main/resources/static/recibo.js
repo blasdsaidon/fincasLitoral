@@ -2,88 +2,102 @@
 
         var fechaActual = moment().format("DD/MM/YYYY");
         const inserteFecha = document.getElementById("fecha");
-        console.log(fechaActual);
+        
         inserteFecha.innerText = fechaActual;
 
         async function generarPDF() {
-            const elementoParaConvertir = document.getElementById("contenido"); // <-- Aquí puedes elegir cualquier elemento del DOM
+            const elementoParaConvertir = document.getElementById("contenido");
             let boton = document.getElementById("boton");
-
+        
             boton.classList.add("btn-secondary");
             boton.setAttribute("disabled", true);
-            boton.innerText = "Cargando..."
-
-            let nombreCliente = document.getElementById("nombreCliente").innerText
-            let fechaActual = document.getElementById("fecha").innerText
-            
-            const pdf = await html2pdf()
-
-            .set({
-                margin: 0,
-                filename: `${nombreCliente}_${fechaActual}.pdf`,
-                image: {
-                    type: 'jpeg',
-                    quality: 0.8,
-                    
-                },
-                html2canvas: {
-                    scale: 2, // A mayor escala, mejores gráficos, pero más peso
-                    letterRendering: true,
-                   width: 793,
-                   height: 1000,
-                   scrollY: 20,
-                   scrollX: -10,
-                    
-                    
-                },
-                jsPDF: {
-                    unit: "in",
-                    format: "a4",
-                    orientation: 'portrait' // landscape o portrait
-                }
-            })
-            .from(elementoParaConvertir)
-            .save()
-            .toPdf().output('blob').then( (data) => {
-               
-                console.log(data);
-           
-    // Convierte el objeto PDF en un Blob para enviarlo al servidor
-    const idCuota = document.getElementById('idCuota').innerText;
-    const tipoRecibo = document.getElementById('tipoRecibo').innerText;
-    const identificador = document.getElementById('identificador').innerText;
-    const formData = new FormData();
-    formData.append('tipoRecibo',tipoRecibo);
-    formData.append('identificador',identificador);
-    formData.append('file', new File([data], `${nombreCliente}_${fechaActual}.pdf`, { type: 'application/pdf' }));
-    formData.append('idCuota', idCuota);
-    // Envía el archivo al servidor
-   fetch('/api/pdf/guardar', {
-        method: 'POST',
-        body: formData,
-    })
-
-    
-    .then(data => {
-        let esCuota1=document.getElementById('esCuota1')
-        let enviarForm=document.getElementById('miFormulario');
-         
-        if(esCuota1){
-         
-         enviarForm.submit();
-     }
-
-    })
-    .catch(error => console.error('Error al enviar el archivo al servidor', error))
-    .finally(() => {
-        // Restaura el estado del botón después de completar la operación
-        boton.classList.remove("btn-secondary");
-        boton.removeAttribute("disabled");
-        boton.innerText = "Generar PDF";
+            boton.innerText = "Cargando...";
         
-    }) 
+            let nombreCliente = document.getElementById("nombreCliente").innerText;
+            let fechaActual = document.getElementById("fecha").innerText;
+        
+            // Obtener todos los elementos textarea en la página
+    const textareas = document.querySelectorAll('textarea');
+    const replacements = [];
 
-})
+    // Reemplazar cada textarea con un párrafo temporalmente
+    textareas.forEach((textarea) => {
+        const textareaContent = textarea.value;
+
+        // Crear un nuevo párrafo con el mismo tamaño y estilo del textarea
+        const newParagraph = document.createElement('p');
+        newParagraph.textContent = textareaContent;
+        newParagraph.style.cssText = window.getComputedStyle(textarea).cssText; // Copia el estilo del textarea
+        newParagraph.style.whiteSpace = 'pre-wrap'; // Para que respete los saltos de línea
+
+        // Reemplazar el textarea con el nuevo párrafo
+        textarea.parentNode.replaceChild(newParagraph, textarea);
+
+        // Guardar la referencia del párrafo y textarea para restaurarlos más tarde
+        replacements.push({ textarea, newParagraph });
+    });
+        
+            const pdf = await html2pdf()
+                .set({
+                    margin: 0,
+                    filename: `${nombreCliente}_${fechaActual}.pdf`,
+                    image: {
+                        type: 'jpeg',
+                        quality: 0.8,
+                    },
+                    html2canvas: {
+                        scale: 2,
+                        letterRendering: true,
+                        width: 793,
+                        height: 1000,
+                        scrollY: 20,
+                        scrollX: -10,
+                    },
+                    jsPDF: {
+                        unit: "in",
+                        format: "a4",
+                        orientation: 'portrait'
+                    }
+                })
+                .from(elementoParaConvertir)
+                .save()
+                .toPdf().output('blob')
+                .then((data) => {
+                    
+        
+                    const idCuota = document.getElementById('idCuota').innerText;
+                    const tipoRecibo = document.getElementById('tipoRecibo').innerText;
+                    const identificador = document.getElementById('identificador').innerText;
+                    const formData = new FormData();
+                    formData.append('tipoRecibo', tipoRecibo);
+                    formData.append('identificador', identificador);
+                    formData.append('file', new File([data], `${nombreCliente}_${fechaActual}.pdf`, { type: 'application/pdf' }));
+                    formData.append('idCuota', idCuota);
+        
+                    fetch('/api/pdf/guardar', {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(data => {
+                        let esCuota1 = document.getElementById('esCuota1');
+                        let enviarForm = document.getElementById('miFormulario');
+        
+                        if (esCuota1) {
+                            enviarForm.submit();
+                        }
+                    })
+                    .catch(error => console.error('Error al enviar el archivo al servidor', error))
+                    .finally(() => {
+                        boton.classList.remove("btn-secondary");
+                        boton.removeAttribute("disabled");
+                        boton.innerText = "Generar PDF";
+        
+                        // Restaurar el textarea después de generar el PDF
+                        newParagraph.parentNode.replaceChild(textarea, newParagraph);
+                    });
+                });
+        
+        
         // Descarga el PDF en el navegador
        
            
@@ -123,7 +137,7 @@
         
         let sumatoria = 0;
         Array.from(sumandos).forEach((sumando)=>{
-            console.log(sumando)
+            
 
           if(sumando.innerText) {
             

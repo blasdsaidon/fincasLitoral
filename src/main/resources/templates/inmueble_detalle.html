@@ -140,8 +140,8 @@ xlmns:sec="http://www.thymeleaf.org/extras/spring-security">
                             <input type="text" class="form-control" id="fechaRegProp" name="fechaRegProp" th:value="${inmueble.fechaRegProp}">
                         </div>
                         <div class=" form-group">
-                            <label for="notas" class="form-label">Notas</label>
-                            <textarea cols="3" style="resize: none;" type="text" class="form-control" id="notas" name="notas" th:text="${inmueble.notas}"></textarea>
+                            <label for="notas" class="form-label">Notas (Maximo 255 caracteres)</label>
+                            <textarea maxlength="255" cols="3"  type="text" class="form-control" id="notas" name="notas" th:text="${inmueble.notas}"></textarea>
                         </div>
                     
                 

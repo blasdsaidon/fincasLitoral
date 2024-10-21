@@ -11,7 +11,7 @@ services:
     networks:
       - mynetwork
   springbootapp:
-    image: blasdsaidon/fincas.litoral:latest
+    image: blasdsaidon/fincas.litoral:v1.2
     container_name: springboot-container
     depends_on:
       - mysql
@@ -22,7 +22,7 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
     volumes:
-      - C:\Users\blasd\Documents\mysqlDB:/var/lib/mysql
+      - /Users/juliavallejos/Documents/fincas-litoral/mysqlDB:/var/lib/mysql
     networks:
       - mynetwork
 networks:

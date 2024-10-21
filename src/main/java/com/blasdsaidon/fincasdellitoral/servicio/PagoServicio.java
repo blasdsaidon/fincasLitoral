@@ -164,7 +164,7 @@ public void esDiferenciaMayorAUnMes(String fechaInicio, String fechaFin) throws 
             pago.setDescuentoHono(descuentoHono);
             pago.setInteresesPuni(interesesPuni);
             
-            System.out.println("pago antes de save"+pago.toString());
+            
             
             pagoRepo.save(pago);
         }

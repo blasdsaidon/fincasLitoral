@@ -82,12 +82,23 @@ public class ContratoServicio {
     private PagoRepositorio pagoRepo;
     @Autowired
     private SeguroServicio seguroServicio;
-    
+    @Autowired
+    private InquilinoServicio inquilinoServicio;
+    @Autowired
+    private PropietarioServicio propietarioServicio;
+    @Autowired 
+    private CodeudorServicio codeudorServicio;
     
     
     @Transactional
     public void crearContrato (String esComercial, String periodoActualiza, String indice, String fechaInicio, ArrayList<String> codeudores, String fechaFin, String idInq, String idProp, String idInm, List<MultipartFile> archivos,Integer numContrato, String numeroCuenta, String poliza, String fechaVenceSeguro, Double porcentajeHono) throws Exception{
-       
+        
+        if(fechaInicio.isEmpty() || fechaFin.isEmpty()) {
+            
+           throw new Exception("Contrato no creado, ninguna fecha seleccionada");
+        }
+        
+        
         if(codeudores==null){
             throw new Exception("Contrato no creado, ningun codeudor seleccionado");
         }else if(codeudores.isEmpty()){
@@ -105,13 +116,13 @@ public class ContratoServicio {
        
         
         
-        System.out.println("in service");
+        
         Propietario propietario = new Propietario();
-        System.out.println("in service despues propietario");
+        
         Inmueble inmueble =  new Inmueble();
-        System.out.println("in service despues inmueble");
+       
         Inquilino inquilino = new Inquilino();
-        System.out.println("in service despues inquilino");
+       
         boolean comercial=false;
         Optional<Propietario> respuestaProp = propietarioRepo.findById(idProp);
         if (respuestaProp.isPresent()) {
@@ -133,25 +144,25 @@ public class ContratoServicio {
              
             
         }
-           System.out.println("codeudores"+codeudores.toString());  
+            
         Contrato contrato = new Contrato();
         Collection<Codeudor> codeudoresNueva = new ArrayList<>();
      
         for (String cadaCodeudor : codeudoress) {
-                System.out.println("entral al for"+cadaCodeudor);
+                
                 Optional<Codeudor> respuestaCod = codeudorRepo.findById(cadaCodeudor);
-                System.out.println("hay algo en el optional"+respuestaCod);
+              
                 if (respuestaCod.isPresent()) {
                
                   
               Codeudor codeudor = respuestaCod.get();
-              System.out.println("codeudor " + codeudor.toString());
+        
             
             codeudoresNueva.add(codeudor);
             
         }
             }
-        System.out.println("###############"+codeudoresNueva);
+        
        
         
         
@@ -190,9 +201,9 @@ public class ContratoServicio {
         Contrato contrato = getOne(idContrato);
         
         Collection<Archivo> archivos = contrato.getArchivos();
-        System.out.println("antes de agregar el nuevo"+archivos);
+        
         archivos.add(archivo);
-        System.out.println("despues de agregar archivo nuevo"+archivos);
+     
         contrato.setArchivos(archivos);
         
         contratoRepositorio.save(contrato);
@@ -203,7 +214,7 @@ public class ContratoServicio {
     
     @Transactional
     public List<Contrato> mostraContrato(){
-        List<Contrato> contratoLista = contratoRepositorio.findAll();
+        List<Contrato> contratoLista = contratoRepositorio.findAllByOrderByNumContratoAsc();
         
         return contratoLista;
     }
@@ -272,14 +283,14 @@ public class ContratoServicio {
         Contrato contrato = getOne(idContrato);
         List<Pago> lista = null;
         Pago actualYSiguiente[] = new Pago[2];
-        System.out.println("idContrato"+idContrato);
+        
         if (tipoPago.equalsIgnoreCase("locacion")) {
             lista = (List<Pago>) contrato.getLocaciones();
         }else{
             lista = (List<Pago>) contrato.getHonorarios();
         }
         Collections.sort(lista, (pago1, pago2) -> Integer.compare(pago1.getNumeroCuota(), pago2.getNumeroCuota()));
-        System.out.println("despues de ordenar -----------------------");
+       
         for (Pago pago : lista) {
             if(!pago.getRealizado()){
                 
@@ -293,7 +304,7 @@ public class ContratoServicio {
             }
             
         }
-        System.out.println("despues del for-------------");
+       
         return actualYSiguiente;  
     }
     
@@ -330,21 +341,20 @@ public class ContratoServicio {
         @Transactional    
     public void eliminarArchivo(String idContrato, String idArchivo){
         
-            System.out.println("idcontrato"+idContrato);
-            System.out.println("idArchivo"+idArchivo);
+            
         
         Contrato contrato = getOne(idContrato);
-            System.out.println("coontrato"+contrato);
+         
         Collection<Archivo> archivos = contrato.getArchivos();
         
             Archivo archivo = archivoServicio.getOne(idArchivo);
-            System.out.println("++++++++++"+archivo.getId());
+         
             archivos.remove(archivo);
-            System.out.println("archivos"+archivos.size());
+           
             contrato.setArchivos(archivos);
             
             contratoRepositorio.save(contrato);
-            System.out.println("despues de contrato save");
+           
             archivoServicio.borrar(idArchivo);
             
         
@@ -367,4 +377,104 @@ public class ContratoServicio {
         
     }
     
+    public List<Contrato> obtenerContratosPorCodeudorId(String idPersona) {
+        return contratoRepositorio.findContratosByCodeudorId(idPersona);
+    }
+    
+    @Transactional
+    public void eliminarCodeudoresContrato(String idPersona) {
+        List<Contrato> contratosCodeudores = obtenerContratosPorCodeudorId(idPersona);
+        
+        for (Contrato contrato : contratosCodeudores) {
+            List <Codeudor> codeudores = (List <Codeudor>) contrato.getCodeudores();
+            Optional <Codeudor> respuesta = codeudorRepo.findById(idPersona);
+            if (respuesta.isPresent()) {
+               Codeudor codeudor = respuesta.get();
+               codeudores.remove(codeudor);
+            }
+            
+            contrato.setCodeudores(codeudores);
+        }
+        
+    }
+    
+    public List<Contrato> obtenerContratoPorInquilinoId(String idPersona) {
+        return contratoRepositorio.findContratosByInquilinoId(idPersona);
+    }
+    
+    @Transactional
+    public void eliminarInquilinoContrato(String idPersona) {
+        List<Contrato> contratosInquilino = obtenerContratoPorInquilinoId(idPersona);
+        
+        for (Contrato contrato : contratosInquilino) {
+            
+            contrato.setInquilino(null);
+            contratoRepositorio.save(contrato);
+            
+        }
+        
+    }
+    
+    public List<Contrato> obtenerContratoPorPropietarioId(String idPersona) {
+        return contratoRepositorio.findContratosByPropietarioId(idPersona);
+    }
+    
+    @Transactional
+    public void eliminarPropietarioContrato(String idPersona) {
+        List<Contrato> contratosPropietarios = obtenerContratoPorPropietarioId(idPersona);
+        
+        for (Contrato contrato : contratosPropietarios) {
+            
+            contrato.setPropietario(null);
+            contratoRepositorio.save(contrato);
+            
+        }
+        
+    }
+    
+    @Transactional
+    public void agregarPersonaContrato(String tipoPersona, String idPersona, String idContrato){
+        if(tipoPersona.equals("locatario")){
+            
+            Inquilino inquilino = inquilinoServicio.getOne(idPersona);
+            
+            Contrato contrato = getOne(idContrato);
+           
+            contrato.setInquilino(inquilino);
+           
+            contratoRepositorio.save(contrato);
+        }
+        if(tipoPersona.equals("locador")){
+            Propietario propietario = propietarioServicio.getOne(idPersona);
+            Contrato contrato = getOne(idContrato);
+            contrato.setPropietario(propietario);
+            contratoRepositorio.save(contrato);
+        }
+        if(tipoPersona.equals("codeudor")){
+            Codeudor codeudor = codeudorServicio.getOne(idPersona);
+            Contrato contrato = getOne(idContrato);
+            List <Codeudor> codeudores = (List <Codeudor>) contrato.getCodeudores();
+            if (!codeudores.contains(codeudor)) {
+    codeudores.add(codeudor);
+    contrato.setCodeudores(codeudores);
+    contratoRepositorio.save(contrato);
+} else {
+    // Opcional: manejar el caso en el que el codeudor ya está en la lista
+    
+}
+        }
+        
+    }
+    
+    @Transactional
+    public void contratoInactivo(String idContrato){
+        
+        Contrato contrato = getOne(idContrato);
+        
+        contrato.setInactivo(true);
+        
+        contratoRepositorio.save(contrato);
+    
+}
+          
 }

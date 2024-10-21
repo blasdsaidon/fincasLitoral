@@ -34,8 +34,8 @@
                             <span style="color: white; margin-right: 8px;">Personas</span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> 
-                            <li><a class="dropdown-item" href="/listaPersonas/locador">Locadores</a></li>
-                            <li><a class="dropdown-item" href="/listaPersonas/locatario">Locatarios</a></li>
+                            <li><a class="dropdown-item" href="/listaPersonas/locador">Locatarios</a></li>
+                            <li><a class="dropdown-item" href="/listaPersonas/locatario">Locadores</a></li>
                             <li><a class="dropdown-item" href="/listaPersonas/codeudor">Codeudores</a></li>
                         </ul>
                     </div>
@@ -59,7 +59,7 @@
     </nav>
     <!-- <li class="nav-item"><a class="nav-link" href="/logout">Cambiar de cuenta</a></li>
             <li class="nav-item"><a class="nav-link" th:href="@{/modificarPerfil/__${session.usuariosession.idUsuario}__}">Modificar cuenta</a></li>     -->
-            <div th:if="${error != null}" id="mensajeError" class="alert alert-success bg-danger" role="alert" style="width:400px;margin:auto; margin-top: 150px;">
+            <div th:if="${error != null}" id="mensajeError" class="alert alert-success bg-danger" role="alert" >
                 <h4 class="alert-heading bg-danger text-white" th:text="${error}" style="text-align:center"></h4>
             </div>
             <body class="body-index">
@@ -255,7 +255,7 @@
             <!-- •	Nombre y apellido, DNI, CUIL/T, fecha de nacimiento, domicilio, teléfonos, e-mail  -->
          <div>
             <div id="contrato" class=" title" ><h3>Crear contrato</h3></div>
-            <form id="formContrato" method="POST" th:action="@{/contrato/crear}" onsubmit="return validacionInput()" enctype="multipart/form-data">
+            <form id="formContrato" method="POST" th:action="@{/contrato/crear}" onsubmit="return confirmarEnvio()" enctype="multipart/form-data">
                 <div class="col-form" >
                     <div  class="col-6 ">
                     <legend>Datos</legend>
@@ -278,8 +278,8 @@
                         <input class="form-control form-group" type="number" placeholder="Numero de contrato" th:value="${numContrato}" name="numContrato">
                         
                         <select id="Locatario" required class="form-control form-select form-group capitalizar" name="idInq">
-                            <option value="" disabled selected>Seleccione Locatario</option>
-                            <option
+                            <option class="capitalizar" value="" disabled selected>Seleccione Locatario</option>
+                            <option class="capitalizar"
                                 th:each="inquilino:${listaInquilino}"
                                 th:value="${inquilino.idPersona}"
                                 th:text="${inquilino.nombre + ' ' + inquilino.apellido}"/>
@@ -287,8 +287,8 @@
                         </select> 
 
                         <select id="Locador" required class="form-control form-select form-group capitalizar" name="idProp">
-                            <option value="" disabled selected>Seleccione Locador</option>
-                            <option
+                            <option class="capitalizar" value="" disabled selected>Seleccione Locador</option>
+                            <option class="capitalizar"
                                 th:each="propietario:${listaPropietario}"
                                 th:value="${propietario.idPersona}"
                                 th:text="${#strings.concat(propietario.nombre, ' ', propietario.apellido)}"/>
@@ -311,7 +311,7 @@
                         </select>
                         <div class="columnas form-group">
                         
-                        <div><label class="form-label" >Codeudores seleccionados:</label> 
+                        <div><label class="form-label capitalizar" >Codeudores seleccionados:</label> 
                             <ul id="opcionesSeleccionadas"></ul>
 
                             
@@ -342,11 +342,11 @@
                         <div class="d-flex justify-content-between" style="max-width: 80%;">
                             <div>
                         <label class="form-label" for="customFile">Fecha inicio </label> 
-                        <input   style="width: 180px;" class="form-control form-group" type="date" value="${fechaInicio}" name="fechaInicio" >  
+                        <input required   style="width: 180px;" class="form-control form-group" type="date" value="${fechaInicio}" name="fechaInicio" >  
                     </div>
                     <div >
                         <label class="form-label" for="customFile">Fecha finalización</label> 
-                        <input style="width: 180px;"  class="form-control form-group " type="date" value="${fechaFin}" name="fechaFin" >
+                        <input required style="width: 180px;"  class="form-control form-group " type="date" value="${fechaFin}" name="fechaFin" >
                     </div>
                     </div>
                         <div class="d-flex justify-content-between" style="max-width: 80%;">

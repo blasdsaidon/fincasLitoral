@@ -56,6 +56,7 @@ public class InquilinoServicio {
         
         if (respuesta.isPresent()) {
             inquilino = respuesta.get();
+            
         }
         
         return inquilino;
@@ -94,6 +95,12 @@ public class InquilinoServicio {
             inquilinoRepo.save(inquilino);
             
         }
+        
+    }
+     @Transactional
+    public void deleteLocador(String idLocador){
+        
+        inquilinoRepo.deleteById(idLocador);
         
     }
 }

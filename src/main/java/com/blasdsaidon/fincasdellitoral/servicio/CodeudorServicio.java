@@ -106,4 +106,11 @@ public class CodeudorServicio {
         return codeudor;
         
     }
+    
+    @Transactional
+    public void deleteCodeudor(String idCodeudor){
+        
+        codeudorRepo.deleteById(idCodeudor);
+        
+    }
 }

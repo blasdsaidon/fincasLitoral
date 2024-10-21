@@ -6,6 +6,7 @@ package com.blasdsaidon.fincasdellitoral.entidades;
 
 import java.util.Collection;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -33,6 +34,7 @@ public class Inmueble {
     private String tomo;
     private String folio;
     private String fechaRegProp;
+    @Column(length = 500)
     private String notas;
 
     public Inmueble() {

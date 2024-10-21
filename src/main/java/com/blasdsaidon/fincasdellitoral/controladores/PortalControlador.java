@@ -186,7 +186,7 @@ public class PortalControlador {
     @PostMapping("/validarContraseña/{idUsuario}")
     public String validarContraseña(@PathVariable String idUsuario, String password, ModelMap modelo){
          modelo.put("usuario", usuarioRepositorio.getOne(idUsuario));
-         System.out.println(idUsuario + password);
+        
         try {
            usuarioServicio.validarContraseña(idUsuario, password);
            return "modificar_perfil.html"; 
@@ -224,7 +224,7 @@ public class PortalControlador {
         }
         
         
-        return "redirect:/#locatario";
+        return "redirect:/#locador";
     }
     
     @PostMapping("/inmueble/crear")
@@ -285,14 +285,13 @@ public class PortalControlador {
         } catch (Exception e) {
             e.printStackTrace();
         }
-                return "redirect:/#locador";
+                return "redirect:/#locatario";
             }
         
         @PostMapping("/modificar/{idPersona}/{tipoPersona}")
         public String modificarPersona(@PathVariable String idPersona,@PathVariable String tipoPersona, String idContrato, String nombre, String apellido, String fechaNac, String dni, String cuit, String email, String telefono,   String calle,   String numero, String piso, String departamento, 
             String provincia, String localidad ){
-            System.out.println("aca id contrato");
-            System.out.println(idContrato);
+           
             if (tipoPersona.equalsIgnoreCase("locador")) {
             inquilinoServicio.modificarInquilino(idPersona, nombre, apellido, fechaNac, dni, cuit, email, telefono, calle, numero, piso, departamento, provincia, localidad);
             }
@@ -363,8 +362,9 @@ public class PortalControlador {
                 
                 contratoServicio.crearContrato(esComercial, periodoActualiza, indice, fechaInicio, codeudores, fechaFin, idInq, idProp, idInm, archivos, numContrato, numeroCuenta, poliza, fechaVenceSeguro, porcentajeHono);
             } catch (Exception e) {
+                
                 redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/#contrato";
+            return "redirect:/";
                 
             }
             
@@ -377,10 +377,44 @@ public class PortalControlador {
         return ResponseEntity.ok("Archivo eliminado correctamente");
     }
     
+    
+    
+     @GetMapping("/{tipoPersona}/eliminar/{idPersona}")
+    public String eliminarCodeudor(@PathVariable String idPersona, @PathVariable String tipoPersona ) {
+         if (tipoPersona.equals("codeudor")) {
+          contratoServicio.eliminarCodeudoresContrato(idPersona);
+        codeudorServicio.deleteCodeudor(idPersona);   
+         }
+         if (tipoPersona.equals("locador")) {
+             contratoServicio.eliminarInquilinoContrato(idPersona);
+             
+             inquilinoServicio.deleteLocador(idPersona);
+         }
+         if (tipoPersona.equals("locatario")){
+             contratoServicio.eliminarPropietarioContrato(idPersona);
+             
+             propietarioServicio.deleteLocatario(idPersona);
+             
+         }
+        
+        return "redirect:/";
+    }
+    
+    @PostMapping("/{tipoPersona}/agregar/{idContrato}")
+    public String agregarPersonaContrato(@PathVariable String tipoPersona, @RequestParam String idPersona, @PathVariable String idContrato  ) {
+        
+        contratoServicio.agregarPersonaContrato(tipoPersona, idPersona, idContrato);
+        
+        return "redirect:/contratos/"+idContrato;
+    
+    }
+    
+    
+    
     @PostMapping("/archivo/agregar/{idContrato}")
     public String agregarArchivo(@PathVariable String idContrato, MultipartFile archivo) throws Exception{
         
-        System.out.println("archivo" + archivo.getOriginalFilename());
+     
         
         contratoServicio.agregarArchivo(idContrato, archivo);
         
@@ -399,7 +433,14 @@ public class PortalControlador {
         
         @GetMapping("/contrato/{idContrato}")
         public String modificarContrato (@PathVariable String idContrato, ModelMap modelo){
-            
+            List<Propietario> listaPropietario = propietarioServicio.mostraPropietario();
+            List<Inquilino> listaInquilino = inquilinoServicio.mostraInquilino();
+            List<Codeudor> listaCodeudor = codeudorServicio.mostraCodeudor();
+            List<Inmueble> listaInmueble = inmuebleServicio.mostraInmueble();
+            modelo.addAttribute("listaPropietario", listaPropietario);  
+            modelo.addAttribute("listaInquilino", listaInquilino);   
+            modelo.addAttribute("listaCodeudor", listaCodeudor);   
+            modelo.addAttribute("listaInmueble", listaInmueble);
             Contrato contrato = contratoServicio.getOne(idContrato);
             modelo.addAttribute("contrato",contrato);
             
@@ -543,7 +584,7 @@ public class PortalControlador {
         
         @GetMapping("/recibo/{idContrato}/{idPago}")
         public String recibo(@PathVariable String idContrato, @PathVariable String idPago, ModelMap modelo){
-            System.out.println("idPago" + idPago);
+           
             Optional<Pago> respuesta = pagoRepo.findById(idPago);
             Pago pago=new Pago();
             if (respuesta.isPresent()) {
@@ -570,9 +611,9 @@ public class PortalControlador {
             numeroHonorario = reciboRepo.encontrarMaxIdentificadorHonorario();
             }
             numeroHonorario = numeroHonorario + 1;
-            System.out.println("numerphonorario " + numeroHonorario);    
+            
             String stringHonorario=String.format("%07d", numeroHonorario);
-            System.out.println("string honorario"+stringHonorario);
+          
             modelo.addAttribute("contrato", contrato);
             modelo.addAttribute("pago", pago);
             modelo.addAttribute("stringHonorario", stringHonorario);
@@ -583,7 +624,7 @@ public class PortalControlador {
         
         @GetMapping("/recibo_loca/{idContrato}/{idPago}")
         public String reciboLoca(@PathVariable String idContrato, @PathVariable String idPago, ModelMap modelo){
-            System.out.println("idPago" + idPago);
+           
             Optional<Pago> respuesta = pagoRepo.findById(idPago);
             Pago pago=new Pago();
             if (respuesta.isPresent()) {
@@ -627,7 +668,7 @@ public class PortalControlador {
             ArrayList<Otros> otros = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
             ArrayList<Otros> otrosSgte = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
             
-            System.out.println("descuendotot hono " + descuentoHono);
+          
             pagoServicio.guardarMontos(monto, montoAgua, montoTasa, idPago, otros, interesesPuni, descuentoHono,tipo,idContrato);
             
             if(idPagoSgte!=null){
@@ -640,10 +681,8 @@ public class PortalControlador {
         public String cargarMontosLoca(@PathVariable String idContrato, String idPagoLoca, String idPagoSgteLoca,  Double montoLoca, Double montoAguaLoca, Double montoTasaLoca ,Double seguroImporte,String concepto1, String concepto2, String concepto3, Double monto1, Double monto2, Double monto3,Double interesesPuni, Double descuentoHono, String tipo){
             ArrayList<Otros> otros = otrosServicio.insertarOtros(concepto1, concepto2, concepto3, monto1, monto2, monto3);
             ArrayList<Otros> otrosSgte = (ArrayList<Otros>) otrosServicio.crearOtros();
-     System.out.println("antes de guardar");
-          System.out.println("idContrato" + idContrato);
-          System.out.println("idSgte "+ idPagoSgteLoca);
-           System.out.println("idLoa "+ idPagoLoca);
+    
+        
             contratoServicio.montoSeguro(idContrato, seguroImporte);
             pagoServicio.guardarMontos(montoLoca, montoAguaLoca, montoTasaLoca, idPagoLoca, otros, interesesPuni, descuentoHono, tipo, idContrato );
             Double interesesSgte = 0.0;
@@ -651,7 +690,7 @@ public class PortalControlador {
             if(idPagoSgteLoca!=null){
             pagoServicio.guardarMontos(montoLoca, montoAguaLoca, montoTasaLoca, idPagoSgteLoca, otrosSgte, interesesSgte, descuentoHono,tipo,idContrato);
               }
-            System.out.println("despues de guardar");
+         
             return "redirect:/contratos/"+idContrato;
         }
         
@@ -692,6 +731,13 @@ public class GlobalExceptionHandler implements ErrorController {
     public String sample() {
         // Lanza una excepción para probar el manejo de errores
         throw new RuntimeException("Este es un error de ejemplo");
+    }
+    
+    @GetMapping("/inactivar/{idContrato}")
+    public String inactivarContrato(@PathVariable String idContrato) {
+        contratoServicio.contratoInactivo(idContrato);
+        
+       return "redirect:/contratos/";
     }
 
 }

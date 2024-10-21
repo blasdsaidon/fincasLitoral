@@ -1,9 +1,9 @@
-setTimeout(function() {
+ setTimeout(function() {
     var mensajeErrorElement = document.getElementById('mensajeError');
     if (mensajeErrorElement) {
         mensajeErrorElement.style.display = 'none';
     }
-}, 5000);
+}, 5000); 
 
 /*Elegir provincia y ciudad, llamado a la api*/
 
@@ -26,7 +26,7 @@ async function obtenerProvincia(){
         const selectCod=document.getElementById("provinciasCod")
         const modifPersonaProv=document.getElementById("modificaProvPersona")
 
-        console.log(modifPersonaProv,modifPersonaCiudad)
+        
 
         Array.from(selectProvincia).forEach(select =>{
         data.provincias.forEach(provincia=> {
@@ -48,7 +48,7 @@ async function obtenerProvincia(){
          
     
     }).catch(error=>{
-        console.log(error)
+        
     })
 
 
@@ -400,7 +400,7 @@ function validacionInputLocador(){
         return false
     } else{
 
-        console.log("sin errores")
+       
         cargando();
 
         return true
@@ -501,9 +501,7 @@ function agregarOpcion() {
                 nuevaOpcion.classList.add("d-flex")
                 
                 nuevaOpcion.innerHTML =  '<div class="capitalizar" style="text-align: center;">' +
-                codeuName +
-                '<button class="btn-primary button-remove ms-2" type="button" onclick="quitarOpcion(\'' + opcion + '\')">Quitar</button>' +
-                '</div>';
+                codeuName + '</div> <button class="btn-primary button-remove ms-2" type="button" onclick="quitarOpcion(\'' + opcion + '\')">Quitar</button>' ;
                 opcionesSeleccionadas.appendChild(nuevaOpcion);
             }
         }
@@ -603,7 +601,71 @@ window.addEventListener("load", function() {
 porcentajes();
 })
 
+function capitalizarPrimeraLetra(texto) {
+    return texto.replace(/\b\w/g, char => char.toUpperCase());
+}
 
+function confirmarEnvio() {
+    // Obtener valores de los campos del formulario
+    const tipoContrato = document.querySelector('input[name="esComercial"]:checked').nextElementSibling.textContent.trim();
+    const numContrato = document.querySelector('input[name="numContrato"]').value;
+    let locatario = document.getElementById('Locatario').selectedOptions[0].innerText;
+    let locador = document.getElementById('Locador').selectedOptions[0].text;
+    const inmueble = document.getElementById('Inmueble').selectedOptions[0].text;
+    const codeudores = Array.from(document.getElementById('opcionesSeleccionadas').querySelectorAll('li'))
+                            .map(li => li.firstChild.innerText)
+                            .join(', ');
+    const poliza = document.querySelector('input[name="poliza"]').value;
+    const numeroCuenta = document.querySelector('input[name="numeroCuenta"]').value;
+    const fechaInicio = document.querySelector('input[name="fechaInicio"]').value;
+    const fechaFin = document.querySelector('input[name="fechaFin"]').value;
+    const periodoActualiza = document.querySelector('select[name="periodoActualiza"]').selectedOptions[0].text;
+    const indice = document.querySelector('select[name="indice"]').selectedOptions[0].text;
+    const porcentajeHono = document.querySelector('select[name="porcentajeHono"]').selectedOptions[0]?.text || 'N/A';
+
+    locador = capitalizarPrimeraLetra(locador);
+    locatario = capitalizarPrimeraLetra(locatario);
+
+     // Obtener nombres de los archivos seleccionados
+     const archivosWord = document.querySelector('input[id="word"]').files;
+     const archivosPdf = document.querySelector('input[id="pdf"]').files;
+     const otrosArchivos = document.querySelector('input[id="files"]').files;
+
+     // Crear una lista con los nombres de los archivos seleccionados
+     const listaArchivosWord = archivosWord.length ? Array.from(archivosWord).map(file => file.name).join(', ') : 'Ninguno';
+     const listaArchivosPdf = archivosPdf.length ? Array.from(archivosPdf).map(file => file.name).join(', ') : 'Ninguno';
+     const listaOtrosArchivos = otrosArchivos.length ? Array.from(otrosArchivos).map(file => file.name).join(', ') : 'Ninguno';
+
+     // Crear el mensaje de confirmación
+     const mensajeConfirmacion = `
+         ¿Está seguro de que desea enviar el formulario con los siguientes datos?
+
+         Tipo de Contrato: ${tipoContrato}
+         Número de Contrato: ${numContrato}
+         Locatario: ${locatario}
+         Locador: ${locador}
+         Inmueble: ${inmueble}
+         Codeudores: ${codeudores || 'Ninguno'}
+         Póliza: ${poliza}
+         Número de Cuenta: ${numeroCuenta}
+         Fecha Inicio: ${fechaInicio}
+         Fecha Finalización: ${fechaFin}
+         Periodo de Actualización: ${periodoActualiza}
+         Índice de Actualización: ${indice}
+         Porcentaje de Honorarios: ${porcentajeHono}
+
+         Archivos seleccionados:
+         - Contrato Word: ${listaArchivosWord}
+         - Contrato PDF: ${listaArchivosPdf}
+         - Otros Archivos: ${listaOtrosArchivos}
+     `;
+
+     // Mostrar el cuadro de confirmación
+     const confirmacion = window.confirm(mensajeConfirmacion);
+
+     // Retornar la decisión del usuario (true para enviar, false para cancelar)
+     return confirmacion;
+ }
 
 
 

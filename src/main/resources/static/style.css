@@ -13,6 +13,14 @@ body{
     width: 80%;
 }
 
+.alert {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+}
+
 a img {
     text-decoration: none; /* Elimina el subrayado del enlace */
     border: none; /* Elimina el borde del enlace (en algunos navegadores) */
@@ -258,9 +266,11 @@ div.divider{
 }
 
 .destacar {
-    background-color: rgb(255, 0, 0); 
+    background-color: orange;
 }
-
+.vencido {
+    background-color: red;
+}
 .titular-list {
     list-style-type: none;
     padding: 0;

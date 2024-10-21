@@ -46,7 +46,7 @@ xlmns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
     
 
-<form th:action="@{/modificarContrato/__${contrato.idContrato}__}" method="post" class="formulario" style="padding-top: 230px;">
+<form id="formContrato" th:action="@{/modificarContrato/__${contrato.idContrato}__}" method="post" class="formulario" style="padding-top: 230px;">
     <div style="background-color: #f5f5f5; padding: 20px;">
 
         <!-- Sección de domicilio -->
@@ -122,15 +122,84 @@ xlmns:sec="http://www.thymeleaf.org/extras/spring-security">
                     </select>
                 </div>
                 <div>
+                    <div class="col-md-4 form-group">  
                 <label for="localidad">Porcentaje honorarios:</label>
                    
-                <select required  style="width: 180px;" id="porcentaje" class="form-control form-select form-group capitalizar" name="porcentajeHono"  >
-                    <option selected th:text="${#numbers.formatDecimal(contrato.porcentajeHonorario * 100, 0, 0)} + '%'">
+                <select required  style="width: 180px;" id="porcentaje" class="form-control capitalizar" name="porcentajeHono"  >
+                    <option selected th:value="${contrato.porcentajeHonorario}" th:text="${#numbers.formatDecimal(contrato.porcentajeHonorario * 100, 0, 0)} + '%'">
                         </option>     
                                
                                 
         
                 </select>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button style="margin-bottom: 5px ;" type="submit" form="formContrato" class="btn btn-primary">Actualizar Contrato</button></div>
+                </div>
+            </form>
+                <h4 style="background-color: #9c0202; color: white; padding: 10px;">Personas</h4>
+               
+                <form th:action="@{/codeudor/agregar/__${contrato.idContrato}__}" method="post" id="formCodeudor">
+                    <div class="d-flex">
+                        <p>Codeudores:&nbsp;</p>
+                        <span th:if="${contrato.codeudores != null && !#lists.isEmpty(contrato.codeudores)}">
+                            <ul>
+                                <li th:each="codeudor : ${contrato.codeudores}">
+                                    <span class="capitalizar" th:text="${#strings.concat(codeudor.nombre, ' ', codeudor.apellido)}"></span><a class="ms-3" th:href="@{/codeudor/eliminar/__${codeudor.idPersona}__}" 
+                                    onclick="return confirm('¿Estás seguro de que deseas eliminar este registro de la base de datos?');">Borrar</a>
+                                </li>
+                            </ul>
+                        </span>
+                        <span th:if="${#lists.isEmpty(contrato.codeudores)}">
+                            <p>No hay codeudores asignados</p>
+                        </span>
+                    </div>
+                    
+                <select id="Locatario" required class="form-control form-select form-group capitalizar" name="idPersona">
+                    <option value="" disabled selected>Seleccione Codeudor</option>
+                    <option
+                        th:each="codeudor:${listaCodeudor}"
+                        th:value="${codeudor.idPersona}"
+                        th:text="${codeudor.nombre + ' ' + codeudor.apellido}"></option>
+                        
+                </select> 
+                <div class="d-flex justify-content-center">
+                    <button type="submit" form="formCodeudor" class="btn btn-primary">Agregar Codeudor</button>
+                </div>
+            </form>
+
+                <form th:action="@{/locatario/agregar/__${contrato.idContrato}__}" method="post" id="formLocatario">
+                    <div class="d-flex" ><p>Locatario Actual:&nbsp;</p><span class="d-flex" th:if="${contrato.inquilino != null}" ><p class="capitalizar" th:text="${#strings.concat(contrato.inquilino.nombre, ' ', contrato.inquilino.apellido)}" ></p> <a class="ms-3" th:href="@{/locador/eliminar/__${contrato.inquilino.idPersona}__}" 
+                        onclick="return confirm('¿Estás seguro de que deseas eliminar este registro de la base de datos?');">Borrar</a></span></div>
+                <select id="Locatario" required class="form-control form-select form-group capitalizar" name="idPersona">
+                    <option value="" disabled selected>Seleccione Locatario</option>
+                    <option
+                        th:each="inquilino:${listaInquilino}"
+                        th:value="${inquilino.idPersona}"
+                        th:text="${inquilino.nombre + ' ' + inquilino.apellido}"></option>
+                        
+                </select> 
+                <div class="d-flex justify-content-center">
+                    <button type="submit" form="formLocatario" class="btn btn-primary">Actualizar Locatario</button>
+                </div>
+            </form>
+            <form th:action="@{/locador/agregar/__${contrato.idContrato}__}" method="post" id="formLocador"> 
+               <div class="d-flex" ><p>Locador Actual:&nbsp;</p><span class="d-flex" th:if="${contrato.propietario != null}" ><p class="capitalizar" th:text="${#strings.concat(contrato.propietario.nombre, ' ', contrato.propietario.apellido)}" ></p><a class="ms-3" th:href="@{/locatario/eliminar/__${contrato.propietario.idPersona}__}" 
+                onclick="return confirm('¿Estás seguro de que deseas eliminar este registro de la base de datos?');">Borrar</a></span></div>
+                <select id="Locador" required class="form-control form-select form-group capitalizar" name="idPersona">
+                    <option disabled selected>Seleccione Locador</option>
+                    <option
+                        th:each="propietario : ${listaPropietario}"
+                        th:value="${propietario.idPersona}"
+                        th:text="${#strings.concat(propietario.nombre, ' ', propietario.apellido)}"></option>
+                        
+                    </option>
+                </select> 
+                <div class="d-flex justify-content-center">
+                    <button type="submit" form="formLocador" class="btn btn-primary">Actualizar Locador</button>
+                </div>
+            </form>
+            
             </div>
             </div>
         </div>
@@ -142,10 +211,7 @@ xlmns:sec="http://www.thymeleaf.org/extras/spring-security">
 
         
         
-        <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-primary">Actualizar Contrato</button></div>
-    </div>
-</form>
+        
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>

@@ -43,7 +43,7 @@
         
                 <p hidden th:text="locacion" id="tipoRecibo"></p>
         
-                <div class="segunda-parte">
+                <div class="segunda-parte" style="padding: 2px;">
             <div class="detalles-cliente">
                 <div class="d-flex justify-content-between">
                     <div class="d-flex"><p class="me-2">Cliente:</p>
@@ -116,16 +116,27 @@
                         
                             <input type="hidden" th:value="${pago.idPago}" name="idPagoLoca">   
 
-                        <tr>
-                            <td>Locacion</td>
-                            <td th:text="${pago.numeroCuota}"></td> 
-                            <span th:if="${pago.numeroCuota==1}" ><td class="d-flex align-items-center"><input    type="number"><p>Días</p></td></span>
-                            <td class="fechaIso" th:text="${pago.mesAno}"></td>
-                            <td class="añoIso"></td>
-                            <td>$</td>
-                            <td class="end" ></p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importe}" class="sumandoHono" onchange="sumaHono()" type="number" > </span> <span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="montoLoca"> </span></td>
-
-                        </tr>
+                            <tr>
+                                <td>Locacion</td>
+                                <td th:text="${pago.numeroCuota}"></td>
+                                <span th:if="${pago.numeroCuota==1}">
+                                    <td class="d-flex align-items-center">
+                                        <input style="width: 32px;" type="number">
+                                        <p style="margin-left: 5px;">Días</p>
+                                    </td>
+                                </span>
+                                <td class="fechaIso" th:text="${pago.mesAno}"></td>
+                                <td class="añoIso"></td>
+                                <td>$</td>
+                                <td class="end">
+                                    <span th:if="${pago.numeroCuota!=1}">
+                                        <p th:text="${pago.importe}" class="sumandoHono" onchange="sumaHono()" type="number"></p>
+                                    </span>
+                                    <span th:if="${pago.numeroCuota==1}">
+                                        <input class="sumandoHono" onchange="sumaHono()" type="number" name="monto">
+                                    </span>
+                                </td>
+                            </tr>
                         <tr>
                             <td>Tasa General de Inmuebles</td>
                             <td ></td>
@@ -161,13 +172,13 @@
                         </tr> 
                     </tr>     
                     <tr >
-                        <td>Intereses y punitorios en mora</td>
+                        <td ><input value="Intereses y punitorios en mora" type="text"></td>
                         <td ></td>
                         <span th:if="${pago.numeroCuota==1}" ><td></td></span>
                         <td  ></td>
                         <td ></td>
                         <td>$</td>
-                        <td class="end" ></p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.interesesPuni}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="interesesPuni"> </span></td>
+                        <td class="end" ></p><span th:if="${pago.numeroCuota!=1}" ><input style="text-align: right;" th:value="${pago.interesesPuni}" class="sumandoHono" onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class="sumandoHono " onchange="sumaHono()" type="number" name="interesesPuni"> </span></td>
                     
                     </tr>
                     <tr>
@@ -211,22 +222,22 @@
                 </table>
             </div>
 
-            <div class="d-flex justify-content-between " style="margin-bottom: 20px;">
+            <div class="d-flex justify-content-between " style="margin-bottom: 0px;">
                 <div style="font-size: 11px;">
-                <p>Observaciones: LA ACTIVIDAD DE RENTA DE INMUEBLES PROPIOS </P>
-                    <P>ESTA ALCANZADA POR EL REGIMEN IMPOSITIVO NACIONAL</p>
+                
                     </div>
             <div class="total d-flex ">
                 <p class="me-2" >Total a Pagar: $ </p>
                 <p id="sumaHono"></p>
             </div>
         </div>
-        <div class="d-flex" style="width: 100%;">
-            <p class="me-2">Recibí la cantidad de pesos: </p>
-            <textarea cols="2" style="display: flex; flex: 1; background-color: #c3bbbb;" type="text"></textarea>
-        </div>
-        <div style="text-align: center; margin-top: 30px ; font-weight: bold; ">
-            <img src="/firma1.jpeg" alt="firma" style="width: 250px;">
+        <p ><strong>Observaciones:</strong> </p>
+                    <textarea ></textarea>  
+        
+            <p style="align-self: center;" ><strong>Recibí la cantidad de pesos: </strong></p>
+            <textarea   type="text"></textarea>
+        <div style="text-align: center; margin-top: 0px ; font-weight: bold; ">
+            <img src="/firma1.jpeg" alt="firma" style="width: 150px;">
             
             <p style="font-size: 11px;">Hemilse Ivana Salari</p>
 

@@ -113,14 +113,26 @@
                         <input type="hidden" value="honorario" name="tipo">   
 
                          <input type="hidden" th:value="${pago.idPago}" name="idPago">   
-                        <tr>
+                         <tr>
                             <td>Locacion</td>
                             <td th:text="${pago.numeroCuota}"></td>
-                            <span th:if="${pago.numeroCuota==1}" ><td class="d-flex"><input class=""  ><p>Días</p></td></span>
+                            <span th:if="${pago.numeroCuota==1}">
+                                <td class="d-flex align-items-center">
+                                    <input style="width: 32px;" type="number">
+                                    <p style="margin-left: 5px;">Días</p>
+                                </td>
+                            </span>
                             <td class="fechaIso" th:text="${pago.mesAno}"></td>
                             <td class="añoIso"></td>
                             <td>$</td>
-                            <td class="end" ></p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importe}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto"> </span></td>
+                            <td class="end">
+                                <span th:if="${pago.numeroCuota!=1}">
+                                    <p th:text="${pago.importe}" class="sumandoHono" onchange="sumaHono()" type="number"></p>
+                                </span>
+                                <span th:if="${pago.numeroCuota==1}">
+                                    <input class="sumandoHono" onchange="sumaHono()" type="number" name="monto">
+                                </span>
+                            </td>
                         </tr>
                         <tr>
                             <td>Tasa General de Inmuebles</td>
@@ -179,36 +191,50 @@
                              <td class="end" ></p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${2}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto3"> </span></td>
                              </tr>
                            
-                        <tr style="border-bottom: 2px solid black;">
-                            <td>Descuento Honorarios</td>
-                            <td ></td>
-                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
-                            <td  ></td>
-                            <td ></td>
-                            <td>$</td>
-                            <td class="end" ></p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.descuentoHono}" id="restandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input id="restandoHono"  onchange="sumaHono()" type="number" name="descuentoHono"> </span></td>
-
+                             <tr style="border-bottom: 2px solid black;">
+                                <td    >
+                                    <div class="d-flex align-items-center">
+                                        <input value="Descuento Honorarios"></input>
+                                       
+                                    </div>
+                                </td>
+                                <td colspan="3" > <input type="text" name="descuentoHonoText" ></td>
+                                <td th:if="${pago.numeroCuota==1}"></td>
+                                
+                                <td>$</td>
+                                <td class="end">
+                                    <span th:if="${pago.numeroCuota!=1}">
+                                        <input th:value="${pago.descuentoHono}" id="restandoHono" onchange="sumaHono()" type="number" style="text-align: right;"></input>
+                                    </span>
+                                    <span th:if="${pago.numeroCuota==1}">
+                                        <input id="restandoHono" onchange="sumaHono()" type="number" name="descuentoHono" style="width: 60px;">
+                                    </span>
+                                </td>
+                            </tr>
                             
-                        
-                        </tr>
+                            
                     </tbody>
                 </table>
             </div>
 
-            <div class="d-flex justify-content-between " style="margin-bottom: 20px;">
-                <div style="font-size: 11px;">
-                <p>Observaciones: LA ACTIVIDAD DE RENTA DE INMUEBLES PROPIOS </P>
-                    <P>ESTA ALCANZADA POR EL REGIMEN IMPOSITIVO NACIONAL</p>
-                    </div>
-            <div class="total d-flex ">
-                <p class="me-2" >Total a Pagar: $ </p>
-                <p id="sumaHono"></p>
+            <div class="d-flex justify-content-between" style="margin-bottom: 20px;">
+                <div class="flex-grow-1 me-3" style="font-size: 11px;">
+                    <p>LA ACTIVIDAD DE RENTA DE INMUEBLES PROPIOS </P>
+                        <P>ESTA ALCANZADA POR EL REGIMEN IMPOSITIVO NACIONAL</p>                 
+                </div>
+                
+                <div class="total d-flex ">
+                    <p class="me-2" >Total a Pagar: $ </p>
+                    <p id="sumaHono"></p>
+                </div>
             </div>
-        </div>
-        <div class="d-flex" style="width: 100%;">
-            <p class="me-2">Recibí la cantidad de pesos: </p>
-            <textarea  style="display: flex; flex: 1; background-color: #c3bbbb;" type="text"></textarea>
-        </div>
+            
+            <p ><strong>Observaciones:</strong> </p>
+                    <textarea ></textarea>  
+        
+            <p style="align-self: center;" ><strong>Recibí la cantidad de pesos: </strong></p>
+            <textarea   type="text"></textarea>
+        
         <div style="text-align: center; margin-top: 30px ; font-weight: bold; ">
             
             <p>----------------------------</p>

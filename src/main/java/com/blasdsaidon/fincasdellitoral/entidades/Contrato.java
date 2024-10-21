@@ -57,11 +57,13 @@ public class Contrato {
     private Seguro seguro;
     
     private Integer numContrato;
+    
+    private boolean inactivo;
 
     public Contrato() {
     }
 
-    public Contrato(String idContrato, Inquilino inquilino, Propietario propietario, Inmueble inmueble, Collection<Codeudor> codeudores, Collection<Archivo> archivos, String fechaInicio, String fechaFinaliz, boolean esComercial, String periodoActualiza, Double porcentajeHonorario, String indice, Collection<Pago> honorarios, Collection<Pago> locaciones, Seguro seguro, Integer numContrato) {
+    public Contrato(String idContrato, Inquilino inquilino, Propietario propietario, Inmueble inmueble, Collection<Codeudor> codeudores, Collection<Archivo> archivos, String fechaInicio, String fechaFinaliz, boolean esComercial, String periodoActualiza, Double porcentajeHonorario, String indice, Collection<Pago> honorarios, Collection<Pago> locaciones, Seguro seguro, Integer numContrato, boolean inactivo) {
         this.idContrato = idContrato;
         this.inquilino = inquilino;
         this.propietario = propietario;
@@ -78,7 +80,18 @@ public class Contrato {
         this.locaciones = locaciones;
         this.seguro = seguro;
         this.numContrato = numContrato;
+        this.inactivo = inactivo;
     }
+
+    public boolean isInactivo() {
+        return inactivo;
+    }
+
+    public void setInactivo(boolean inactivo) {
+        this.inactivo = inactivo;
+    }
+
+  
 
     public void setPorcentajeHonorario(Double porcentajeHonorario) {
         this.porcentajeHonorario = porcentajeHonorario;
@@ -206,6 +219,11 @@ public class Contrato {
 
     public void setNumContrato(Integer numContrato) {
         this.numContrato = numContrato;
+    }
+
+    @Override
+    public String toString() {
+        return "Contrato{" + "idContrato=" + idContrato + ", inquilino=" + inquilino + ", propietario=" + propietario + ", inmueble=" + inmueble + ", codeudores=" + codeudores + ", archivos=" + archivos + ", fechaInicio=" + fechaInicio + ", fechaFinaliz=" + fechaFinaliz + ", esComercial=" + esComercial + ", periodoActualiza=" + periodoActualiza + ", porcentajeHonorario=" + porcentajeHonorario + ", indice=" + indice + ", honorarios=" + honorarios + ", locaciones=" + locaciones + ", seguro=" + seguro + ", numContrato=" + numContrato + '}';
     }
 
     

@@ -26,6 +26,7 @@
                
                 <li class="nav-item"><a th:href="@{/}" class="nav-link">Crear</a></li>
                 <li class="nav-item"><a th:href="@{/mostrar-datos}" class="nav-link">Honorarios</a></li>
+                <li class="nav-item"><a th:href="@{/contratos}" class="nav-link">Lista de contratos</a></li>
                 
                 
             </ul>
@@ -39,6 +40,7 @@
                         </div>
                       <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
                       <li><a class="dropdown-item" th:href="@{/modificarPerfil/__${session.usuariosession.idUsuario}__}">Modificar cuenta</a></li>
+                        
                     </ul>
                   </div>
             
@@ -64,6 +66,7 @@
                             <th style="width: 15%" >Mail</th>
                             <th style="width: 15%" >Teléfono</th>
                             <th style="width: 15%" >Detalles</th>
+                            <th style="width: 5%" >Eliminar</th>
                             <!-- <th style="width: 15%" sec:authorize="hasRole('ROLE_ADMIN')">Teléfono</th>
                             <th style="width: 10%" sec:authorize="hasRole('ROLE_ADMIN')">Estado</th>
                             <th style="width: 10%" sec:authorize="hasRole('ROLE_ADMIN')"></th>
@@ -117,6 +120,14 @@
                                     <a th:href="@{/persona/__${persona.idPersona}__/__${tipoPersona}__}" >Ver más</a>
                                 </div>
                             </td>
+
+                            <td scope="row">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <a th:href="@{/__${tipoPersona}__/eliminar/__${persona.idPersona}__}" 
+                                       onclick="return confirm('¿Estás seguro de que deseas eliminar este registro de la base de datos?');">Borrar</a>
+                                </div>
+                            </td>
+                            
 
                             
 

@@ -168,7 +168,8 @@ public class Pago {
             + "\"realizado\": " + realizado + ", "
             + "\"importe\": " + importe + ", "
             + "\"importeAgua\": " + importeAgua + ", "
-            + "\"importeTasa\": " + importeTasa       
+            + "\"importeTasa\": " + importeTasa + ", "
+            + "\"numeroCuota\": " + numeroCuota
             + "}";
     }
 
