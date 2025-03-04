@@ -82,11 +82,18 @@ public List<Pago> crearPagos(String fechaInicio, String fechaFinal) throws Excep
     // Calcular la diferencia en meses entre las dos fechas
     Period periodo = Period.between(fechaInicial, fechaFin);
     int numMeses = periodo.getYears() * 12 + periodo.getMonths();
+    if(fechaFin.getDayOfMonth()<=10){
+        numMeses+=1;
+    }
     LocalDate fechaActual = LocalDate.now();
     // Agregar fechas aumentando de a mes
     for (int i = 0; i <= numMeses; i++) {
+        int diaMes = 10;
+        if (i==numMeses){
+            diaMes=fechaFin.getDayOfMonth();
+        }
         // Establecer el día al número 10 de cada mes
-        LocalDate nuevaFecha = LocalDate.of(fechaInicial.plusMonths(i).getYear(), fechaInicial.plusMonths(i).getMonth(), 10);
+        LocalDate nuevaFecha = LocalDate.of(fechaInicial.plusMonths(i).getYear(), fechaInicial.plusMonths(i).getMonth(), diaMes);
 
         Pago pago = new Pago();
         pago.setMesAno(formatter.format(nuevaFecha));

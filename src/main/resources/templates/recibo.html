@@ -34,7 +34,7 @@
                         <h6 style="font-weight: bold; margin: 0;">RECIBO</h6>
                         <p style="font-size: 11px; margin: 0;">DOCUMENTO NO VALIDO COMO FACTURA</p>
                         <div class="d-flex"><p>N°: 00005-</p><p th:text="${stringHonorario}" id="identificador"></p></div>
-                        <div class="d-flex"><p style="margin-right: 4px;">Fecha:</p><p id="fecha"></p></div>
+                        <div class="d-flex"><p style="margin-right: 4px;">Fecha:</p><p id="fecha" contenteditable="true"></p></div>
                         <p style="font-size: 10px; margin: 0;" >CUIT: 27-31103339-0</p>
                         <p style="font-size: 10px; margin: 0;" >Ing. Brutos: 011-181581-4</p>
                         <p style="font-size: 10px; margin: 0;" >Inicio de Actividades: 01/09/2016</p>
@@ -100,12 +100,12 @@
                         <tr>
                             <th style="width: 34%;">Concepto</th>
                             <th style="width: 10%;">Cuota</th>
-                            <span th:if="${pago.numeroCuota==1}" ><th style="width: 12%;"></th></span>
+                            <span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" ><th style="width: 12%;"></th></span>
                             <th style="width: 13%;">Mes</th>
                             <th style="width: 10%;">Año</th>
                             <th style="width: 2%;"></th>
-                            <span th:if="${pago.numeroCuota==1}" ><th class="enda" style="width: 20%;">Importe</th></span>
-                            <span th:unless="${pago.numeroCuota==1}"><th class="enda" style="width: 15%;">Importe</th></span>
+                            <span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" ><th class="enda" style="width: 20%;">Importe</th></span>
+                            <span th:unless="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}"><th class="enda" style="width: 15%;">Importe</th></span>
                         </tr>
                     </thead>
                     <tbody >
@@ -114,81 +114,87 @@
 
                          <input type="hidden" th:value="${pago.idPago}" name="idPago">   
                          <tr>
-                            <td>Locacion</td>
-                            <td th:text="${pago.numeroCuota}"></td>
-                            <span th:if="${pago.numeroCuota==1}">
-                                <td class="d-flex align-items-center">
-                                    <input style="width: 32px;" type="number">
-                                    <p style="margin-left: 5px;">Días</p>
+                            <td>Honorarios</td>
+                            <td style="width: 40px; text-align: center;" th:text="${pago.numeroCuota}"></td>
+
+                            
+                            <!-- Corregido: Condición directamente en el <td> -->
+                                <td th:if="${pago.numeroCuota == 1 || pago.numeroCuota == contrato.honorarios.size()}" style="display: flex; align-items: center;">
+                                    <input style="width: 32px; margin-right: 5px;" type="number">
+                                    <span>Días</span>
                                 </td>
-                            </span>
+                                
+                        
                             <td class="fechaIso" th:text="${pago.mesAno}"></td>
                             <td class="añoIso"></td>
                             <td>$</td>
+                            
                             <td class="end">
-                                <span th:if="${pago.numeroCuota!=1}">
+                                <span th:if="${pago.numeroCuota != 1 && pago.numeroCuota != contrato.honorarios.size()}">
+
                                     <p th:text="${pago.importe}" class="sumandoHono" onchange="sumaHono()" type="number"></p>
                                 </span>
-                                <span th:if="${pago.numeroCuota==1}">
+                                <span th:if="${pago.numeroCuota == 1 || pago.numeroCuota == contrato.honorarios.size()}">
                                     <input class="sumandoHono" onchange="sumaHono()" type="number" name="monto">
                                 </span>
                             </td>
                         </tr>
+                        
                         <tr>
                             <td>Tasa General de Inmuebles</td>
                             <td ></td>
-                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                            <span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" ><td></td></span>
                             <td  ></td>
                             <td ></td>
                             <td>$</td>
-                            <td class="end" ></p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeTasa}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono" name="montoTasa"  onchange="sumaHono()" type="number"> </span></td>
+                            <td class="end" ></p><span th:if="${pago.numeroCuota != 1 && pago.numeroCuota != contrato.honorarios.size()}"><p  th:text="${pago.importeTasa}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" >  <input class=" sumandoHono" name="montoTasa"  onchange="sumaHono()" type="number"> </span></td>
                                 
                         </tr>
                         
                         <tr>
                             <td>Agua Corriente y Cloacas</td>
                             <td ></td>
-                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                            <span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" ><td></td></span>
                              <td  ></td>
                              <td ></td> 
                              <td>$</td>
-                             <td class="end" ></p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.importeAgua}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="montoAgua"> </span></td>
+                             <td class="end" ></p><span th:if="${pago.numeroCuota != 1 && pago.numeroCuota != contrato.honorarios.size()}"><p  th:text="${pago.importeAgua}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="montoAgua"> </span></td>
   
                         
                         </tr>           
                         <tr>                            
-                            <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar"  th:text="${pago.otros[__${0}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text" name="concepto1"> </span></td>
+                            <td> <span th:if="${pago.numeroCuota != 1 && pago.numeroCuota != contrato.honorarios.size()}"><p class="capitalizar"  th:text="${pago.otros[__${0}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" >  <input  type="text" name="concepto1"> </span></td>
                             <!-- <td><p th:text="${pago.otros[__${0}__].concepto}" class="capitalizar" type="text"   ></td> -->
                             <td ></td>
-                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                            <span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" ><td></td></span>
                              <td  ></td>
                              <td ></td> 
                              <td>$</td>
-                            <td class="end" ></p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${0}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto1"> </span></td>
+                            <td class="end" ></p><span th:if="${pago.numeroCuota != 1 && pago.numeroCuota != contrato.honorarios.size()}"><p  th:text="${pago.otros[__${0}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto1"> </span></td>
 
                             <!-- <td class="d-flex"> <p class="me-2">$</p><p  class="sumandoHono"  onchange="sumaHono()" type="number" th:text="${pago.otros[__${0}__].monto}" ></td> -->
                         </tr>
                         
                         <tr>
-                            <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar"  th:text="${pago.otros[__${1}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input type="text" name="concepto2"> </span></td>
+                            <td> <span th:if="${pago.numeroCuota != 1 && pago.numeroCuota != contrato.honorarios.size()}"><p class="capitalizar"  th:text="${pago.otros[__${1}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" >  <input type="text" name="concepto2"> </span></td>
 
                             <td ></td>
-                            <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                            <span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" ><td></td></span>
                              <td  ></td>
                              <td ></td> 
                              <td>$</td>
                                
-                             <td class="end" ></p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${1}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto2"> </span></td>
+                             <td class="end" ></p><span th:if="${pago.numeroCuota != 1 && pago.numeroCuota != contrato.honorarios.size()}"><p  th:text="${pago.otros[__${1}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto2"> </span></td>
                              </tr>
                         <tr>
-                            <td> <span th:if="${pago.numeroCuota!=1}" ><p class="capitalizar" th:text="${pago.otros[__${2}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1}" >  <input  type="text"  name="concepto3"> </span></td>
+                            <td> <span th:if="${pago.numeroCuota != 1 && pago.numeroCuota != contrato.honorarios.size()}"><p class="capitalizar" th:text="${pago.otros[__${2}__].concepto}"  type="text" ></span><span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" >  <input  type="text"  name="concepto3"> </span></td>
                                 <td ></td>
-                                <span th:if="${pago.numeroCuota==1}" ><td></td></span>
+                                <span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" ><td></td></span>
                              <td  ></td>
                              <td ></td> 
                              <td>$</td>
                                
-                             <td class="end" ></p><span th:if="${pago.numeroCuota!=1}" ><p  th:text="${pago.otros[__${2}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto3"> </span></td>
+                             <td class="end" ></p><span th:if="${pago.numeroCuota != 1 && pago.numeroCuota != contrato.honorarios.size()}"><p  th:text="${pago.otros[__${2}__].monto}" class="sumandoHono"  onchange="sumaHono()" type="number" ></span><span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" >  <input class=" sumandoHono"  onchange="sumaHono()" type="number" name="monto3"> </span></td>
                              </tr>
                            
                              <tr style="border-bottom: 2px solid black;">
@@ -199,15 +205,16 @@
                                     </div>
                                 </td>
                                 <td colspan="3" > <input type="text" name="descuentoHonoText" ></td>
-                                <td th:if="${pago.numeroCuota==1}"></td>
+                                <td th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}"></td>
                                 
                                 <td>$</td>
                                 <td class="end">
-                                    <span th:if="${pago.numeroCuota!=1}">
+                                    <span th:if="${pago.numeroCuota != 1 && pago.numeroCuota != contrato.honorarios.size()}">
+
                                         <input th:value="${pago.descuentoHono}" id="restandoHono" onchange="sumaHono()" type="number" style="text-align: right;"></input>
                                     </span>
-                                    <span th:if="${pago.numeroCuota==1}">
-                                        <input id="restandoHono" onchange="sumaHono()" type="number" name="descuentoHono" style="width: 60px;">
+                                    <span th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}">
+                                        <input id="restandoHono" onchange="sumaHono()" type="number" name="descuentoHono">
                                     </span>
                                 </td>
                             </tr>
@@ -246,9 +253,9 @@
         </div>
     
 
-       <span id="esCuota1" class="d-flex justify-content-center" th:if="${pago.numeroCuota==1}" ><button type="submit" id="boton" class="btn-primary align-self-center m-2" onclick="generarPDF()" >Generar PDF</button></span>
+       <span id="esCuota1" class="d-flex justify-content-center" th:if="${pago.numeroCuota==1 || pago.numeroCuota == contrato.honorarios.size()}" ><button type="submit" id="boton" class="btn-primary align-self-center m-2" onclick="generarPDF()" >Generar PDF</button></span>
 
-    <span class="d-flex justify-content-center" th:if="${pago.numeroCuota!=1}"><button id="boton" class="btn-primary align-self-center m-2" onclick="generarPDF()" >Generar PDF</button></span>
+    <span class="d-flex justify-content-center" th:if="${pago.numeroCuota!=1 && pago.numeroCuota != contrato.honorarios.size() }"><button id="boton" class="btn-primary align-self-center m-2" onclick="generarPDF()" >Generar PDF</button></span>
     
     </form>
     

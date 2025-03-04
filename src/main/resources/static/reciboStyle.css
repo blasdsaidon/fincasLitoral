@@ -173,7 +173,13 @@ width: 100%;
 .end {
   display: flex;
   justify-content: flex-end;
+  text-align: right !important;
+  
+}
+.end input{
+  text-align: right !important;
 }
 .enda {
   text-align: right !important;
 }
+

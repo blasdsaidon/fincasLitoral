@@ -8,10 +8,13 @@ services:
       MYSQL_DATABASE: inmobiliaria
     ports:
       - "3306:3306"  
+    volumes:
+      - /Users/juliavallejos/Downloads/mysql-data:/var/lib/mysql:delegated
     networks:
       - mynetwork
+
   springbootapp:
-    image: blasdsaidon/fincas.litoral:v1.2
+    image: blasdsaidon/fincas.litoral:v1.3
     container_name: springboot-container
     depends_on:
       - mysql
@@ -21,10 +24,10 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/inmobiliaria?allowPublicKeyRetrieval=true&useSSL=FALSE&useTimezone=true&serverTimezone=GMT&characterEncoding=UTF-8
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-    volumes:
-      - /Users/juliavallejos/Documents/fincas-litoral/mysqlDB:/var/lib/mysql
     networks:
       - mynetwork
+
 networks:
   mynetwork:
     driver: bridge
+

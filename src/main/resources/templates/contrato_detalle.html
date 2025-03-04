@@ -344,7 +344,7 @@
                                             <span class="destacar" th:unless="${pago.realizado}">Adeuda</span>
                                         </td>
                                         <td> 
-                                            <span th:if="${pago.numeroCuota==1 && pago.recibo==null}" ><a th:href="@{/recibo_loca/__${contrato.idContrato}__/__${pago.idPago}__}">Generar cuota 1</a></span>
+                                            <span th:if="${pago.numeroCuota==1  && pago.recibo==null}" ><a th:href="@{/recibo_loca/__${contrato.idContrato}__/__${pago.idPago}__}">Generar cuota 1</a></span>
 
                                             <span th:if="${pago.recibo}" ><a th:if="${pago.realizado}" th:href="@{/archivo/__${pago.recibo.pdf.id}__}">Ver recibo</a></span>
                                             <span th:if="${!pago.realizado}" >El pago aún no se ha realizado</span>
@@ -376,7 +376,6 @@
                                         </td>
                                         <td>
                                             <span th:if="${pago.numeroCuota==1 && pago.recibo==null }" ><a th:href="@{/recibo/__${contrato.idContrato}__/__${pago.idPago}__}">Generar cuota 1</a></span>
-
                                             <span th:if="${pago.recibo}" ><a th:if="${pago.realizado}"  th:href="@{/archivo/__${pago.recibo.pdf.id}__}">Ver recibo</a></span>
                                             <span th:if="${!pago.realizado}" >El pago aún no se ha realizado</span>
                                             
